@@ -12,287 +12,381 @@
   --blue: #1A4F8A;
   --blue-dark: #0D2A4A;
   --blue-light: #2563B0;
+  --blue-mid: #153E70;
   --orange: #F5A324;
   --orange-dark: #D4881A;
+  --orange-light: #FFB84D;
   --dark: #080808;
   --white: #FFFFFF;
   --gray: #6B7280;
   --gray-light: #F3F4F6;
+  --gray-border: #E5E7EB;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: 'Nunito', sans-serif; background: #F8F9FA; color: #1a1a2e; padding-top: 130px; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:#F0F4F9;color:#1a1a2e;padding-top:134px;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--blue-dark);height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;}
+.topbar-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.topbar-soc{display:flex;gap:12px;}
+.topbar-soc a{color:rgba(255,255,255,.5);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
+.topbar-soc a:hover{color:var(--orange);}
+.topbar-soc svg{width:14px;height:14px;fill:currentColor;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-wa{display:flex;align-items:center;gap:6px;color:var(--orange);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.5px;}
+.topbar-wa svg{width:13px;height:13px;fill:currentColor;}
+.ticker-wrap{flex:1;overflow:hidden;margin:0 20px;height:36px;display:flex;align-items:center;}
+.ticker{display:flex;gap:48px;animation:tick 32s linear infinite;white-space:nowrap;}
+.ticker span{font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:8px;}
+.ticker span b{color:var(--orange);font-weight:700;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── PLAYER BAR ── */
-#player-bar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  background: #080808; border-bottom: 2px solid var(--orange);
-  height: 64px; display: flex; align-items: center; padding: 0 20px; gap: 14px;
+#player-bar{
+  position:fixed;top:36px;left:0;right:0;z-index:1001;
+  background:#0a0a0a;border-bottom:2px solid var(--orange);
+  height:50px;display:flex;align-items:center;padding:0 20px;gap:14px;
 }
-.live-badge {
-  background: #DC2626; color: #fff; font-family: 'Raleway', sans-serif;
-  font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  padding: 3px 9px; border-radius: 3px;
-  animation: pulse-live 1.4s ease-in-out infinite;
-  flex-shrink: 0;
-}
-@keyframes pulse-live { 0%,100%{opacity:1} 50%{opacity:.45} }
-.play-btn {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--orange);
-  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: .2s; flex-shrink: 0;
-}
-.play-btn:hover { background: var(--orange-dark); transform: scale(1.06); }
-.play-btn svg { width: 15px; height: 15px; fill: #080808; margin-left: 2px; }
-.player-info { flex: 1; min-width: 0; }
-.player-name { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.player-sub  { font-size: 11px; color: var(--gray); margin-top: 1px; }
-.waveform { display: flex; align-items: center; gap: 2px; height: 24px; }
-.waveform span { display: block; width: 3px; background: var(--orange); border-radius: 2px; animation: wv 1s ease-in-out infinite; }
-.waveform span:nth-child(1){height:8px;animation-delay:0s}
-.waveform span:nth-child(2){height:16px;animation-delay:.1s}
-.waveform span:nth-child(3){height:12px;animation-delay:.2s}
-.waveform span:nth-child(4){height:20px;animation-delay:.3s}
-.waveform span:nth-child(5){height:14px;animation-delay:.4s}
-.waveform span:nth-child(6){height:18px;animation-delay:.5s}
-.waveform span:nth-child(7){height:10px;animation-delay:.6s}
-.waveform.paused span { animation-play-state: paused; height: 4px !important; transition: height .3s; }
-@keyframes wv { 0%,100%{transform:scaleY(.4)} 50%{transform:scaleY(1)} }
-.vol-wrap { display: flex; align-items: center; gap: 8px; }
-.vol-wrap svg { width: 16px; height: 16px; fill: var(--gray); flex-shrink: 0; }
-.vol-slider { -webkit-appearance: none; width: 80px; height: 3px; background: #333; border-radius: 2px; outline: none; cursor: pointer; }
-.vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); cursor: pointer; }
-.p-socials { display: flex; gap: 12px; }
-.p-socials a { color: var(--gray); display: flex; align-items: center; transition: color .2s; text-decoration: none; }
-.p-socials a:hover { color: var(--orange); }
-.p-socials svg { width: 18px; height: 18px; fill: currentColor; }
+.live-badge{background:#DC2626;color:#fff;font-family:'Raleway',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 9px;border-radius:3px;animation:pulse-live 1.4s ease-in-out infinite;flex-shrink:0;}
+@keyframes pulse-live{0%,100%{opacity:1}50%{opacity:.4}}
+.play-btn{width:36px;height:36px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;}
+.play-btn:hover{background:var(--orange-dark);transform:scale(1.08);}
+.play-btn svg{width:13px;height:13px;fill:#080808;margin-left:2px;}
+.player-info{flex:1;min-width:0;}
+.player-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.player-sub{font-size:10px;color:var(--gray);margin-top:1px;}
+.waveform{display:flex;align-items:center;gap:2px;height:22px;}
+.waveform span{display:block;width:3px;background:var(--orange);border-radius:2px;animation:wv 1s ease-in-out infinite;}
+.waveform span:nth-child(1){height:7px;animation-delay:0s}
+.waveform span:nth-child(2){height:14px;animation-delay:.1s}
+.waveform span:nth-child(3){height:10px;animation-delay:.2s}
+.waveform span:nth-child(4){height:18px;animation-delay:.3s}
+.waveform span:nth-child(5){height:12px;animation-delay:.4s}
+.waveform span:nth-child(6){height:16px;animation-delay:.5s}
+.waveform span:nth-child(7){height:9px;animation-delay:.6s}
+.waveform.paused span{animation-play-state:paused;height:4px!important;transition:height .3s;}
+@keyframes wv{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.vol-wrap{display:flex;align-items:center;gap:8px;}
+.vol-wrap svg{width:14px;height:14px;fill:var(--gray);flex-shrink:0;}
+.vol-slider{-webkit-appearance:none;width:70px;height:3px;background:#333;border-radius:2px;outline:none;cursor:pointer;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--orange);cursor:pointer;}
+.p-socials{display:flex;gap:10px;}
+.p-socials a{color:var(--gray);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
+.p-socials a:hover{color:var(--orange);}
+.p-socials svg{width:16px;height:16px;fill:currentColor;}
 
 /* ── HEADER ── */
-header {
-  position: fixed; top: 64px; left: 0; right: 0; z-index: 999;
-  background: var(--blue); height: 66px; display: flex; align-items: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,.25);
-}
-.hdr { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
-.logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-.logo-icon { width: 40px; height: 40px; flex-shrink: 0; }
-.logo-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 17px; color: #fff; display: block; line-height: 1.1; }
-.logo-sub   { font-size: 10px; color: var(--orange); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; }
-nav { display: flex; align-items: center; gap: 2px; }
-nav a { font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 13px; color: rgba(255,255,255,.85); text-decoration: none; padding: 8px 13px; border-radius: 6px; transition: .2s; letter-spacing: .4px; }
-nav a:hover, nav a.active { color: #fff; background: rgba(255,255,255,.15); }
-nav a.cta { background: var(--orange); color: var(--dark); font-weight: 700; }
-nav a.cta:hover { background: var(--orange-dark); }
-.burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
-.burger span { display: block; width: 22px; height: 2px; background: #fff; margin: 5px 0; transition: .3s; }
+header{position:fixed;top:86px;left:0;right:0;z-index:1000;background:var(--blue);height:48px;display:flex;align-items:center;box-shadow:0 3px 16px rgba(0,0,0,.3);}
+.hdr{max-width:1200px;margin:0 auto;width:100%;padding:0 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+nav{display:flex;align-items:center;gap:1px;}
+nav a{font-family:'Raleway',sans-serif;font-weight:600;font-size:12.5px;color:rgba(255,255,255,.82);text-decoration:none;padding:7px 12px;border-radius:5px;transition:.2s;letter-spacing:.3px;}
+nav a:hover,nav a.active{color:#fff;background:rgba(255,255,255,.14);}
+nav a.cta{background:var(--orange);color:var(--dark);font-weight:700;border-radius:5px;}
+nav a.cta:hover{background:var(--orange-dark);}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:8px;}
+.burger span{display:block;width:20px;height:2px;background:#fff;margin:4px 0;transition:.3s;}
 
 /* ── HERO ── */
-.hero {
-  background: linear-gradient(135deg, #06172B 0%, #1A4F8A 55%, #06172B 100%);
-  min-height: 520px; display: flex; align-items: center; position: relative; overflow: hidden;
-}
-.hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(245,163,36,.15) 0%, transparent 60%);
-}
-.hero-ring {
-  position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
-  width: 520px; height: 520px; border-radius: 50%;
-  border: 1px solid rgba(245,163,36,.08);
-  pointer-events: none;
-}
-.hero-ring::before { content:''; position:absolute; inset:50px; border-radius:50%; border:1px solid rgba(245,163,36,.06); }
-.hero-ring::after  { content:''; position:absolute; inset:100px; border-radius:50%; border:1px solid rgba(245,163,36,.1); background:radial-gradient(circle,rgba(245,163,36,.04) 0%,transparent 70%); }
-.hero-inner {
-  max-width: 1200px; margin: 0 auto; width: 100%; padding: 70px 24px;
-  position: relative; z-index: 1;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-}
-.hero-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(245,163,36,.14); border: 1px solid rgba(245,163,36,.4); color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; font-family: 'Raleway', sans-serif; }
-.hero h1 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: clamp(34px,5vw,60px); color: #fff; line-height: 1.05; margin-bottom: 6px; }
-.hero h1 span { color: var(--orange); }
-.hero-presenter { font-size: 15px; color: rgba(255,255,255,.6); letter-spacing: 1px; margin-bottom: 18px; font-family: 'Raleway', sans-serif; }
-.hero-desc { font-size: 16px; color: rgba(255,255,255,.72); line-height: 1.7; margin-bottom: 32px; max-width: 420px; }
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-.btn-pri { background: var(--orange); color: var(--dark); font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 14px; padding: 13px 26px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: .2s; border: none; cursor: pointer; }
-.btn-pri:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,163,36,.4); }
-.btn-sec { background: rgba(255,255,255,.1); color: #fff; font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 14px; padding: 13px 26px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: .2s; border: 1px solid rgba(255,255,255,.2); }
-.btn-sec:hover { background: rgba(255,255,255,.2); }
-.hero-mic { display: flex; align-items: center; justify-content: center; }
-.hero-mic svg { width: 220px; height: 220px; filter: drop-shadow(0 0 40px rgba(245,163,36,.3)); animation: float 4s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.hero{background:linear-gradient(135deg,#06172B 0%,#1A4F8A 55%,#06172B 100%);min-height:500px;display:flex;align-items:center;position:relative;overflow:hidden;}
+.hero-particles{position:absolute;inset:0;pointer-events:none;}
+.note{position:absolute;font-size:20px;opacity:.08;animation:floatNote linear infinite;}
+@keyframes floatNote{0%{transform:translateY(100%) rotate(0deg);opacity:0}10%{opacity:.12}90%{opacity:.05}100%{transform:translateY(-120px) rotate(360deg);opacity:0}}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 72% 50%,rgba(245,163,36,.14) 0%,transparent 60%);}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;padding:60px 24px;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,163,36,.14);border:1px solid rgba(245,163,36,.4);color:var(--orange);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;font-family:'Raleway',sans-serif;}
+.dot-live{width:7px;height:7px;border-radius:50%;background:#DC2626;animation:pulse-live 1.4s infinite;}
+.hero h1{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(32px,4.5vw,58px);color:#fff;line-height:1.05;margin-bottom:6px;}
+.hero h1 span{color:var(--orange);}
+.hero-presenter{font-size:14px;color:rgba(255,255,255,.55);letter-spacing:1px;margin-bottom:18px;font-family:'Raleway',sans-serif;}
+.hero-desc{font-size:15px;color:rgba(255,255,255,.7);line-height:1.75;margin-bottom:32px;max-width:400px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-pri{background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;padding:12px 24px;border-radius:7px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:.25s;border:none;cursor:pointer;}
+.btn-pri:hover{background:var(--orange-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,163,36,.4);}
+.btn-sec{background:rgba(255,255,255,.1);color:#fff;font-family:'Raleway',sans-serif;font-weight:600;font-size:13px;padding:12px 24px;border-radius:7px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:.25s;border:1px solid rgba(255,255,255,.2);}
+.btn-sec:hover{background:rgba(255,255,255,.2);}
+.hero-visual{display:flex;align-items:center;justify-content:center;position:relative;}
+.hero-mic-wrap{animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hero-rings{position:absolute;inset:-40px;border-radius:50%;border:1px solid rgba(245,163,36,.06);animation:expand 4s ease-in-out infinite;}
+.hero-rings::before{content:'';position:absolute;inset:30px;border-radius:50%;border:1px solid rgba(245,163,36,.08);}
+.hero-rings::after{content:'';position:absolute;inset:70px;border-radius:50%;border:1px solid rgba(245,163,36,.1);}
+@keyframes expand{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+
+/* ── STATS BAR ── */
+.stats-bar{background:var(--blue);padding:32px 24px;}
+.stats-bar-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.stat-item{text-align:center;padding:20px 10px;position:relative;}
+.stat-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.12);}
+.stat-n{font-family:'Raleway',sans-serif;font-weight:900;font-size:38px;color:#fff;line-height:1;margin-bottom:4px;}
+.stat-n span{color:var(--orange);}
+.stat-l{font-size:12px;color:rgba(255,255,255,.5);letter-spacing:.5px;font-weight:600;text-transform:uppercase;}
 
 /* ── SECTIONS ── */
-section { padding: 72px 24px; }
-.wrap { max-width: 1200px; margin: 0 auto; }
-.sec-hdr { text-align: center; margin-bottom: 48px; }
-.eyebrow { font-family: 'Raleway', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
-.sec-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: clamp(26px,4vw,38px); color: var(--blue-dark); margin-bottom: 12px; }
-.sec-desc { font-size: 16px; color: var(--gray); max-width: 480px; margin: 0 auto; line-height: 1.65; }
+section{padding:64px 24px;}
+.wrap{max-width:1200px;margin:0 auto;}
+.sec-hdr{margin-bottom:40px;}
+.sec-hdr.center{text-align:center;}
+.sec-hdr.center .sec-title{margin:0 auto 12px;}
+.eyebrow{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:24px;height:2px;background:var(--orange);display:block;border-radius:2px;}
+.sec-hdr.center .eyebrow{justify-content:center;}
+.sec-hdr.center .eyebrow::before{display:none;}
+.sec-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:clamp(24px,3.5vw,34px);color:var(--blue-dark);margin-bottom:10px;line-height:1.15;}
+.sec-desc{font-size:15px;color:var(--gray);line-height:1.7;}
 
 /* ── PODCASTS ── */
-.podcasts { background: #F8F9FA; }
-.pod-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 24px; }
-.pod-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 14px rgba(0,0,0,.06); transition: .3s; }
-.pod-card:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(0,0,0,.13); }
-.pod-thumb { height: 155px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 44px; }
-.pt1{background:linear-gradient(135deg,#1A4F8A,#2563B0)}
-.pt2{background:linear-gradient(135deg,#0D2A4A,#1A4F8A)}
-.pt3{background:linear-gradient(135deg,#F5A324,#D4881A)}
-.pt4{background:linear-gradient(135deg,#1A4F8A,#F5A324)}
-.pod-ep { position:absolute; top:10px; left:10px; background:var(--orange); color:var(--dark); font-family:'Raleway',sans-serif; font-weight:700; font-size:11px; padding:3px 8px; border-radius:4px; }
-.pod-play { position:absolute; bottom:10px; right:10px; width:34px; height:34px; background:rgba(255,255,255,.9); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.2s; border:none; }
-.pod-play:hover { transform:scale(1.12); background:var(--orange); }
-.pod-play svg { width:13px; height:13px; fill:#080808; margin-left:2px; }
-.pod-info { padding: 16px; }
-.pod-date { font-size:11px; color:var(--gray); margin-bottom:6px; }
-.pod-title { font-family:'Raleway',sans-serif; font-weight:700; font-size:14px; color:var(--blue-dark); margin-bottom:8px; line-height:1.35; }
-.pod-dur { font-size:12px; color:var(--gray); display:flex; align-items:center; gap:4px; }
+.podcasts{background:#fff;}
+.pod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+.pod-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);transition:.3s;cursor:pointer;border:1px solid var(--gray-border);}
+.pod-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.13);border-color:var(--blue);}
+.pod-thumb{height:160px;position:relative;display:flex;align-items:center;justify-content:center;font-size:50px;overflow:hidden;}
+.pt1{background:linear-gradient(145deg,#1A4F8A,#0D2A4A)}
+.pt2{background:linear-gradient(145deg,#0D2A4A,#153E70)}
+.pt3{background:linear-gradient(145deg,#F5A324,#D4881A)}
+.pt4{background:linear-gradient(145deg,#1A4F8A,#F5A324)}
+.pod-thumb-overlay{position:absolute;inset:0;background:rgba(0,0,0,.3);opacity:0;transition:.3s;display:flex;align-items:center;justify-content:center;}
+.pod-card:hover .pod-thumb-overlay{opacity:1;}
+.pod-thumb-overlay-btn{width:52px;height:52px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;transform:scale(.8);transition:.3s;}
+.pod-card:hover .pod-thumb-overlay-btn{transform:scale(1);}
+.pod-thumb-overlay-btn svg{width:18px;height:18px;fill:#080808;margin-left:3px;}
+.pod-ep{position:absolute;top:10px;left:10px;background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-weight:700;font-size:10px;padding:3px 8px;border-radius:4px;}
+.pod-info{padding:16px;}
+.pod-date{font-size:11px;color:var(--gray);margin-bottom:6px;}
+.pod-title{font-family:'Raleway',sans-serif;font-weight:700;font-size:13.5px;color:var(--blue-dark);margin-bottom:10px;line-height:1.4;}
+.pod-footer{display:flex;align-items:center;justify-content:space-between;}
+.pod-dur{font-size:11px;color:var(--gray);display:flex;align-items:center;gap:4px;}
+.pod-dur svg{width:11px;height:11px;fill:currentColor;}
+.pod-bar{height:3px;background:var(--gray-border);border-radius:2px;margin-top:8px;overflow:hidden;}
+.pod-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--orange));border-radius:2px;transition:width .3s;}
+
+/* ── TOP 10 ── */
+.top10{background:var(--blue-dark);}
+.top10 .sec-title{color:#fff;}
+.top10 .eyebrow{color:rgba(245,163,36,.8);}
+.top10-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.top10-item{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transition:.25s;cursor:pointer;}
+.top10-item:hover{background:rgba(255,255,255,.09);border-color:rgba(245,163,36,.3);transform:translateX(4px);}
+.top10-num{font-family:'Raleway',sans-serif;font-weight:900;font-size:22px;color:rgba(245,163,36,.25);min-width:32px;text-align:center;line-height:1;}
+.top10-item:hover .top10-num{color:var(--orange);}
+.top10-item.top3 .top10-num{color:var(--orange);}
+.top10-info{flex:1;min-width:0;}
+.top10-song{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.top10-artist{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:2px;}
+.top10-play{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-shrink:0;}
+.top10-item:hover .top10-play{background:var(--orange);}
+.top10-play svg{width:10px;height:10px;fill:rgba(255,255,255,.7);margin-left:2px;}
+.top10-item:hover .top10-play svg{fill:#080808;}
 
 /* ── PROGRAMAÇÃO ── */
-.prog { background: var(--blue-dark); }
-.prog .sec-title { color: #fff; }
-.prog .eyebrow { color: rgba(245,163,36,.8); }
-.day-tabs { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:32px; }
-.day-btn { font-family:'Raleway',sans-serif; font-size:13px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid rgba(255,255,255,.2); background:transparent; color:rgba(255,255,255,.6); cursor:pointer; transition:.2s; }
-.day-btn:hover { border-color:var(--orange); color:var(--orange); }
-.day-btn.active { background:var(--orange); border-color:var(--orange); color:var(--dark); font-weight:700; }
-.sched-list { max-width: 700px; margin: 0 auto; }
-.sched-item { display:flex; align-items:center; gap:18px; padding:15px 20px; border-radius:10px; margin-bottom:8px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); transition:.2s; }
-.sched-item:hover { background:rgba(255,255,255,.1); }
-.sched-item.feat { background:rgba(245,163,36,.1); border-color:rgba(245,163,36,.28); }
-.sched-time { font-family:'Raleway',sans-serif; font-weight:700; font-size:14px; color:var(--orange); min-width:85px; }
-.sched-prog { flex:1; }
-.sched-name { font-family:'Raleway',sans-serif; font-weight:700; font-size:15px; color:#fff; }
-.sched-pres { font-size:13px; color:rgba(255,255,255,.48); margin-top:2px; }
-.sched-badge { background:#DC2626; color:#fff; font-family:'Raleway',sans-serif; font-size:10px; font-weight:700; letter-spacing:1px; padding:3px 8px; border-radius:4px; white-space:nowrap; }
+.prog{background:var(--gray-light);}
+.prog .sec-title{color:var(--blue-dark);}
+.day-tabs{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap;}
+.day-btn{font-family:'Raleway',sans-serif;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:20px;border:1.5px solid var(--gray-border);background:#fff;color:var(--gray);cursor:pointer;transition:.2s;}
+.day-btn:hover{border-color:var(--blue);color:var(--blue);}
+.day-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700;}
+.sched-list{display:grid;gap:8px;}
+.sched-item{display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:10px;background:#fff;border:1px solid var(--gray-border);transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.sched-item:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(26,79,138,.1);}
+.sched-item.feat{background:linear-gradient(90deg,rgba(26,79,138,.06),rgba(245,163,36,.04));border-color:rgba(26,79,138,.2);}
+.sched-time{font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;color:var(--blue);min-width:80px;}
+.sched-dot{width:8px;height:8px;border-radius:50%;background:var(--gray-border);flex-shrink:0;}
+.sched-item.feat .sched-dot{background:var(--orange);}
+.sched-prog{flex:1;}
+.sched-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;color:var(--blue-dark);}
+.sched-pres{font-size:12px;color:var(--gray);margin-top:2px;}
+.sched-badge{background:var(--blue);color:#fff;font-family:'Raleway',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:4px;white-space:nowrap;}
 
 /* ── NOTÍCIAS ── */
-.noticias { background: #fff; }
-.news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:28px; }
-.news-card { border-radius:12px; overflow:hidden; background:#fff; border:1px solid #E5E7EB; box-shadow:0 2px 10px rgba(0,0,0,.05); transition:.3s; cursor:pointer; }
-.news-card:hover { transform:translateY(-5px); box-shadow:0 12px 36px rgba(0,0,0,.1); border-color:var(--blue); }
-.news-img { height:190px; display:flex; align-items:center; justify-content:center; font-size:55px; position:relative; }
-.ni1{background:linear-gradient(135deg,rgba(26,79,138,.12),rgba(26,79,138,.28))}
-.ni2{background:linear-gradient(135deg,rgba(245,163,36,.12),rgba(245,163,36,.28))}
-.ni3{background:linear-gradient(135deg,rgba(13,42,74,.12),rgba(13,42,74,.28))}
-.news-cat { position:absolute; top:14px; left:14px; background:var(--blue); color:#fff; font-family:'Raleway',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:4px; }
-.news-body { padding: 20px; }
-.news-date { font-size:12px; color:var(--gray); margin-bottom:8px; }
-.news-title { font-family:'Raleway',sans-serif; font-weight:700; font-size:17px; color:var(--blue-dark); margin-bottom:10px; line-height:1.35; }
-.news-exc { font-size:14px; color:var(--gray); line-height:1.65; }
-.news-more { display:inline-flex; align-items:center; gap:4px; color:var(--blue); font-family:'Raleway',sans-serif; font-weight:600; font-size:13px; margin-top:12px; text-decoration:none; }
+.noticias{background:#fff;}
+.news-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
+.news-featured{border-radius:14px;overflow:hidden;background:#fff;border:1px solid var(--gray-border);box-shadow:0 2px 12px rgba(0,0,0,.06);transition:.3s;cursor:pointer;}
+.news-featured:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.12);}
+.news-featured-img{height:280px;background:linear-gradient(145deg,#0D2A4A,#1A4F8A);display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden;}
+.news-featured-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 60%);}
+.news-feat-cat{position:absolute;top:16px;left:16px;background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;z-index:1;}
+.news-feat-body{padding:24px;}
+.news-feat-date{font-size:12px;color:var(--gray);margin-bottom:10px;}
+.news-feat-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:22px;color:var(--blue-dark);margin-bottom:12px;line-height:1.3;}
+.news-feat-exc{font-size:14px;color:var(--gray);line-height:1.7;}
+.news-more{display:inline-flex;align-items:center;gap:4px;color:var(--blue);font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;margin-top:14px;text-decoration:none;transition:gap .2s;}
+.news-more:hover{gap:8px;color:var(--orange);}
+.news-sidebar{display:flex;flex-direction:column;gap:16px;}
+.news-card-sm{display:flex;gap:14px;padding:14px;border-radius:12px;background:#fff;border:1px solid var(--gray-border);box-shadow:0 1px 6px rgba(0,0,0,.04);transition:.25s;cursor:pointer;align-items:flex-start;}
+.news-card-sm:hover{border-color:var(--blue);transform:translateX(4px);box-shadow:0 6px 20px rgba(26,79,138,.1);}
+.news-sm-thumb{width:72px;height:60px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.nt1{background:linear-gradient(135deg,rgba(26,79,138,.15),rgba(26,79,138,.3))}
+.nt2{background:linear-gradient(135deg,rgba(245,163,36,.15),rgba(245,163,36,.3))}
+.nt3{background:linear-gradient(135deg,rgba(13,42,74,.15),rgba(13,42,74,.3))}
+.news-sm-body{flex:1;min-width:0;}
+.news-sm-cat{font-family:'Raleway',sans-serif;font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.news-sm-title{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--blue-dark);line-height:1.35;margin-bottom:5px;}
+.news-sm-date{font-size:11px;color:var(--gray);}
 
 /* ── SOBRE ── */
-.sobre { background: #EFF4FA; }
-.sobre-inner { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-.sobre-text .eyebrow, .sobre-text .sec-title { text-align:left; }
-.sobre-text p { font-size:16px; color:#4B5563; line-height:1.8; margin-bottom:16px; }
-.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:32px; }
-.stat { text-align:center; padding:16px 10px; background:#fff; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
-.stat-n { font-family:'Raleway',sans-serif; font-weight:800; font-size:28px; color:var(--blue); }
-.stat-l { font-size:12px; color:var(--gray); margin-top:4px; }
-.sobre-vis { display:flex; align-items:center; justify-content:center; }
-.mic-circle { width:300px; height:300px; border-radius:50%; background:linear-gradient(135deg,#1A4F8A,#0D2A4A); display:flex; align-items:center; justify-content:center; box-shadow:0 20px 60px rgba(26,79,138,.3); position:relative; }
-.mic-circle::before { content:''; position:absolute; inset:-16px; border-radius:50%; border:2px dashed rgba(245,163,36,.28); }
-.mic-circle svg { width:150px; height:150px; }
+.sobre{background:var(--gray-light);}
+.sobre-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.sobre-text p{font-size:15px;color:#4B5563;line-height:1.85;margin-bottom:16px;}
+.sobre-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;}
+.s-stat{text-align:center;padding:18px 10px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--gray-border);}
+.s-stat-n{font-family:'Raleway',sans-serif;font-weight:900;font-size:30px;color:var(--blue);line-height:1;}
+.s-stat-n span{color:var(--orange);}
+.s-stat-l{font-size:11px;color:var(--gray);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.sobre-vis{display:flex;align-items:center;justify-content:center;}
+.mic-circle{width:300px;height:300px;border-radius:50%;background:linear-gradient(135deg,#1A4F8A,#0D2A4A);display:flex;align-items:center;justify-content:center;box-shadow:0 20px 60px rgba(26,79,138,.25);position:relative;animation:float 5s ease-in-out infinite;}
+.mic-circle::before{content:'';position:absolute;inset:-16px;border-radius:50%;border:2px dashed rgba(245,163,36,.22);}
+.mic-circle::after{content:'';position:absolute;inset:-32px;border-radius:50%;border:1px dashed rgba(245,163,36,.1);}
+.mic-circle svg{width:150px;height:150px;}
 
 /* ── CONTATO ── */
-.contato { background: #fff; }
-.form-wrap { max-width: 560px; margin: 0 auto; }
-.f-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.f-group { margin-bottom: 16px; }
-label { display:block; font-family:'Raleway',sans-serif; font-weight:600; font-size:13px; color:#374151; margin-bottom:6px; }
-input, textarea { width:100%; padding:12px 14px; border:1.5px solid #E5E7EB; border-radius:8px; font-family:'Nunito',sans-serif; font-size:14px; outline:none; transition:border-color .2s; background:#fff; color:#111; resize:vertical; }
-input:focus, textarea:focus { border-color: var(--blue); }
-textarea { min-height: 130px; }
+.contato{background:#fff;}
+.contato-inner{display:grid;grid-template-columns:1fr 1.5fr;gap:56px;align-items:start;}
+.contato-info{padding-top:8px;}
+.contato-info h3{font-family:'Raleway',sans-serif;font-weight:800;font-size:20px;color:var(--blue-dark);margin-bottom:16px;}
+.contato-info p{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:28px;}
+.info-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.info-icon{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--blue-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.info-icon svg{width:16px;height:16px;fill:#fff;}
+.info-text strong{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--blue-dark);display:block;margin-bottom:2px;}
+.info-text span{font-size:13px;color:var(--gray);}
+.form-wrap{background:var(--gray-light);border-radius:16px;padding:32px;border:1px solid var(--gray-border);}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.f-group{margin-bottom:16px;}
+label{display:block;font-family:'Raleway',sans-serif;font-weight:600;font-size:12px;color:#374151;margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase;}
+input,textarea,select{width:100%;padding:11px 14px;border:1.5px solid var(--gray-border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;color:#111;resize:vertical;}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,79,138,.08);}
+textarea{min-height:120px;}
 
 /* ── FOOTER ── */
-footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px; }
-.ft-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; padding-bottom:40px; border-bottom:1px solid rgba(255,255,255,.08); }
-.ft-brand-logo { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-.ft-brand-logo svg { width:34px; height:34px; }
-.ft-bname { font-family:'Raleway',sans-serif; font-weight:800; font-size:15px; color:#fff; }
-.ft-bsub  { font-size:11px; color:var(--orange); }
-.ft-desc  { font-size:14px; line-height:1.7; margin-bottom:20px; max-width:250px; }
-.ft-soc { display:flex; gap:10px; }
-.ft-soc a { width:34px; height:34px; border-radius:7px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.65); text-decoration:none; transition:.2s; }
-.ft-soc a:hover { background:var(--orange); color:var(--dark); }
-.ft-soc svg { width:15px; height:15px; fill:currentColor; }
-.ft-col h4 { font-family:'Raleway',sans-serif; font-weight:700; font-size:14px; color:#fff; margin-bottom:16px; }
-.ft-col ul { list-style:none; }
-.ft-col ul li { margin-bottom:10px; }
-.ft-col ul li a { font-size:13px; color:rgba(255,255,255,.5); text-decoration:none; transition:color .2s; }
-.ft-col ul li a:hover { color:var(--orange); }
-.ft-bottom { max-width:1200px; margin:0 auto; padding-top:24px; display:flex; justify-content:space-between; align-items:center; font-size:13px; color:rgba(255,255,255,.3); flex-wrap:wrap; gap:8px; }
+.ft-social-bar{background:var(--blue);padding:22px 24px;text-align:center;}
+.ft-social-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;}
+.ft-social-bar p{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:rgba(255,255,255,.7);}
+.ft-social-bar .ft-soc{display:flex;gap:10px;}
+.ft-social-bar .ft-soc a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:.25s;}
+.ft-social-bar .ft-soc a:hover{background:var(--orange);color:var(--dark);}
+.ft-social-bar .ft-soc svg{width:16px;height:16px;fill:currentColor;}
+footer{background:#080808;color:rgba(255,255,255,.55);padding:48px 24px 24px;}
+.ft-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.07);}
+.ft-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ft-bname{font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;color:#fff;}
+.ft-bsub{font-size:10px;color:var(--orange);}
+.ft-desc{font-size:13px;line-height:1.75;margin-bottom:18px;max-width:240px;}
+.ft-soc{display:flex;gap:8px;}
+.ft-soc a{width:32px;height:32px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.55);text-decoration:none;transition:.2s;}
+.ft-soc a:hover{background:var(--orange);color:var(--dark);}
+.ft-soc svg{width:14px;height:14px;fill:currentColor;}
+.ft-col h4{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:#fff;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06);}
+.ft-col ul{list-style:none;}
+.ft-col ul li{margin-bottom:8px;}
+.ft-col ul li a{font-size:12.5px;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px;}
+.ft-col ul li a::before{content:'›';color:var(--orange);font-size:14px;}
+.ft-col ul li a:hover{color:var(--orange);}
+.ft-bottom{max-width:1200px;margin:0 auto;padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.25);flex-wrap:wrap;gap:8px;}
 
 /* ── REVEAL ── */
-.reveal { opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
-.reveal.visible { opacity:1; transform:none; }
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal-left.visible{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal-right.visible{opacity:1;transform:none;}
 
 /* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .pod-grid{grid-template-columns:repeat(2,1fr);}
+  .top10-grid{grid-template-columns:1fr;}
+  .stats-bar-inner{grid-template-columns:repeat(2,1fr);}
+}
 @media(max-width:900px){
-  .hero-inner { grid-template-columns:1fr; text-align:center; }
-  .hero-mic { display:none; }
-  .hero-btns { justify-content:center; }
-  .hero-desc { margin-left:auto; margin-right:auto; }
-  .sobre-inner { grid-template-columns:1fr; }
-  .sobre-vis { display:none; }
+  body{padding-top:122px;}
+  .hero-inner{grid-template-columns:1fr;text-align:center;}
+  .hero-visual{display:none;}
+  .hero-btns{justify-content:center;}
+  .hero-desc{margin:0 auto 32px;}
+  .news-layout{grid-template-columns:1fr;}
+  .sobre-inner{grid-template-columns:1fr;}
+  .sobre-vis{display:none;}
+  .contato-inner{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:768px){
-  body { padding-top:120px; }
-  .vol-wrap, .p-socials { display:none; }
-  nav { display:none; position:absolute; top:100%; left:0; right:0; background:#0D2A4A; flex-direction:column; padding:12px; gap:4px; box-shadow:0 8px 20px rgba(0,0,0,.3); }
-  nav.open { display:flex; }
-  nav a { width:100%; text-align:center; }
-  .burger { display:block; }
-  .header-inner { position:relative; }
-  .ft-grid { grid-template-columns:1fr 1fr; }
-  .ft-grid > .ft-brand { grid-column:1/-1; }
-  .f-row { grid-template-columns:1fr; }
+  .topbar{display:none;}
+  body{padding-top:98px;}
+  #player-bar{top:0;}
+  header{top:50px;}
+  .vol-wrap,.p-socials{display:none;}
+  nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0D2A4A;flex-direction:column;padding:10px;gap:3px;box-shadow:0 8px 20px rgba(0,0,0,.3);}
+  nav.open{display:flex;}
+  nav a{width:100%;text-align:center;}
+  .burger{display:block;}
+  .hdr{position:relative;}
+  .pod-grid{grid-template-columns:1fr 1fr;}
+  .top10-grid{grid-template-columns:1fr;}
+  .f-row{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+  .ft-grid > .ft-brand{grid-column:1/-1;}
 }
-@media(max-width:480px){
-  .ft-grid { grid-template-columns:1fr; }
+@media(max-width:520px){
+  .pod-grid{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr;}
+  .stats-bar-inner{grid-template-columns:1fr 1fr;}
+  .stat-item::after{display:none;}
 }
 </style>
 </head>
 <body>
 
+<!-- ══════════ TOPBAR ══════════ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-soc">
+      <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="#" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker" id="ticker">
+        <span>🎵 <b>Ao Vivo Agora:</b> Encontro de Adoradores com Anderson Gustavo</span>
+        <span>📻 <b>Próximo:</b> Culto em Adoração — 19h</span>
+        <span>🎙️ <b>Novo Podcast:</b> EP 248 — O Poder da Adoração Genuína — disponível agora</span>
+        <span>🙏 <b>Participe:</b> Envie seu pedido de oração pelo WhatsApp</span>
+        <span>🎵 <b>Ao Vivo Agora:</b> Encontro de Adoradores com Anderson Gustavo</span>
+        <span>📻 <b>Próximo:</b> Culto em Adoração — 19h</span>
+        <span>🎙️ <b>Novo Podcast:</b> EP 248 — O Poder da Adoração Genuína — disponível agora</span>
+        <span>🙏 <b>Participe:</b> Envie seu pedido de oração pelo WhatsApp</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="#contato" class="topbar-wa">
+        <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg>
+        Participe
+      </a>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ PLAYER BAR ══════════ -->
 <div id="player-bar">
   <span class="live-badge">AO VIVO</span>
-
   <button class="play-btn" id="playBtn" onclick="togglePlay()">
     <svg viewBox="0 0 24 24" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
   </button>
-
   <div class="player-info">
     <div class="player-name">Encontro de Adoradores</div>
     <div class="player-sub">com Anderson Gustavo</div>
   </div>
-
   <div class="waveform paused" id="waveform">
     <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
-
   <div class="vol-wrap">
     <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
     <input type="range" class="vol-slider" min="0" max="100" value="80" id="volSlider">
   </div>
-
   <div class="p-socials">
-    <a href="#" title="YouTube">
-      <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg>
-    </a>
-    <a href="#" title="Instagram">
-      <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
-    </a>
-    <a href="#" title="Facebook">
-      <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-    </a>
-    <a href="#" title="WhatsApp">
-      <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg>
-    </a>
+    <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+    <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+    <a href="#" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
   </div>
 </div>
 
@@ -300,7 +394,7 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
 <header>
   <div class="hdr" id="hdr">
     <a href="#" class="logo">
-      <svg width="52" height="52" viewBox="0 0 80 80" fill="none">
+      <svg width="44" height="44" viewBox="0 0 80 80" fill="none">
         <line x1="6"  y1="22" x2="6"  y2="38" stroke="#F5A324" stroke-width="3.5" stroke-linecap="round"/>
         <line x1="13" y1="16" x2="13" y2="44" stroke="#F5A324" stroke-width="3.5" stroke-linecap="round"/>
         <line x1="74" y1="22" x2="74" y2="38" stroke="#F5A324" stroke-width="3.5" stroke-linecap="round"/>
@@ -310,25 +404,23 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
         <line x1="30" y1="25" x2="50" y2="25" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="30" y1="32" x2="50" y2="32" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="30" y1="39" x2="50" y2="39" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="40" y1="6" x2="40" y2="48" stroke="rgba(26,79,138,.2)" stroke-width="1"/>
         <line x1="40" y1="48" x2="40" y2="60" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
         <circle cx="40" cy="67" r="10" fill="#F5A324"/>
         <text x="40" y="72" text-anchor="middle" font-size="12" fill="#080808" font-family="serif" font-weight="bold">♪</text>
       </svg>
       <div>
-        <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:16px;color:#fff;line-height:1;">Encontro de</div>
-        <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:22px;color:#fff;line-height:1.1;">Adoradores</div>
-        <div style="font-family:'Raleway',sans-serif;font-weight:700;font-size:10px;color:#F5A324;letter-spacing:2px;text-transform:uppercase;margin-top:2px;">com Anderson Gustavo</div>
+        <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:14px;color:#fff;line-height:1;">Encontro de</div>
+        <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:19px;color:#fff;line-height:1.1;">Adoradores</div>
+        <div style="font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;color:#F5A324;letter-spacing:2px;text-transform:uppercase;margin-top:1px;">com Anderson Gustavo</div>
       </div>
     </a>
-
     <button class="burger" id="burgerBtn" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
-
     <nav id="mainNav">
       <a href="#" class="active">Home</a>
       <a href="#podcasts">Podcasts</a>
+      <a href="#top10">Top Gospel</a>
       <a href="#programacao">Programação</a>
       <a href="#noticias">Notícias</a>
       <a href="#sobre">Sobre</a>
@@ -339,110 +431,160 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
 
 <!-- ══════════ HERO ══════════ -->
 <section class="hero">
-  <div class="hero-ring"></div>
+  <div class="hero-particles" id="heroParticles"></div>
   <div class="hero-inner">
     <div class="reveal">
-      <div class="hero-tag"><span>●</span> Transmissão ao vivo</div>
+      <div class="hero-tag"><span class="dot-live"></span> Transmissão ao vivo</div>
       <h1>Encontro de<br><span>Adoradores</span></h1>
       <div class="hero-presenter">com Anderson Gustavo</div>
       <p class="hero-desc">Um programa de adoração, fé e encontro com Deus. Música gospel, mensagens de esperança e uma comunidade que ama louvar.</p>
       <div class="hero-btns">
         <button class="btn-pri" onclick="togglePlay()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           Ouvir Agora
         </button>
         <a href="#podcasts" class="btn-sec">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
           Ver Podcasts
         </a>
       </div>
     </div>
-    <div class="hero-mic">
-      <svg viewBox="0 0 220 220" fill="none">
-        <circle cx="110" cy="88" r="68" stroke="rgba(245,163,36,.07)" stroke-width="1.5"/>
-        <circle cx="110" cy="88" r="84" stroke="rgba(245,163,36,.05)" stroke-width="1.5"/>
-        <line x1="20"  y1="78" x2="20"  y2="98"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-        <line x1="34"  y1="66" x2="34"  y2="110" stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-        <line x1="200" y1="78" x2="200" y2="98"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-        <line x1="186" y1="66" x2="186" y2="110" stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-        <rect x="73" y="18" width="74" height="100" rx="37" fill="white" opacity=".95"/>
-        <line x1="85" y1="52"  x2="135" y2="52"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-        <line x1="85" y1="66"  x2="135" y2="66"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-        <line x1="85" y1="80"  x2="135" y2="80"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-        <line x1="85" y1="94"  x2="135" y2="94"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-        <line x1="110" y1="118" x2="110" y2="152" stroke="white" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="110" cy="170" r="24" fill="#F5A324"/>
-        <text x="110" y="178" text-anchor="middle" font-size="24" fill="#080808" font-family="serif">♪</text>
-      </svg>
+    <div class="hero-visual">
+      <div class="hero-rings"></div>
+      <div class="hero-mic-wrap">
+        <svg width="210" height="210" viewBox="0 0 220 220" fill="none">
+          <circle cx="110" cy="88" r="68" stroke="rgba(245,163,36,.07)" stroke-width="1.5"/>
+          <circle cx="110" cy="88" r="84" stroke="rgba(245,163,36,.05)" stroke-width="1.5"/>
+          <line x1="20"  y1="78" x2="20"  y2="98"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+          <line x1="34"  y1="66" x2="34"  y2="110" stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+          <line x1="200" y1="78" x2="200" y2="98"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+          <line x1="186" y1="66" x2="186" y2="110" stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+          <rect x="73" y="18" width="74" height="100" rx="37" fill="white" opacity=".95"/>
+          <line x1="85" y1="52"  x2="135" y2="52"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
+          <line x1="85" y1="66"  x2="135" y2="66"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
+          <line x1="85" y1="80"  x2="135" y2="80"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
+          <line x1="85" y1="94"  x2="135" y2="94"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
+          <line x1="110" y1="118" x2="110" y2="152" stroke="white" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="110" cy="170" r="24" fill="#F5A324"/>
+          <text x="110" y="178" text-anchor="middle" font-size="24" fill="#080808" font-family="serif">♪</text>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ══════════ STATS BAR ══════════ -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <div class="stat-n" data-target="5">0<span>+ anos</span></div>
+      <div class="stat-l">No ar</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n" data-target="248">0<span> eps</span></div>
+      <div class="stat-l">Episódios</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n" data-target="50">0<span>k+</span></div>
+      <div class="stat-l">Ouvintes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n" data-target="7">0<span>x</span></div>
+      <div class="stat-l">Por semana</div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ PODCASTS ══════════ -->
 <section class="podcasts" id="podcasts">
   <div class="wrap">
-    <div class="sec-hdr reveal">
-      <div class="eyebrow">Ouça quando quiser</div>
-      <h2 class="sec-title">Últimos Podcasts</h2>
-      <p class="sec-desc">Reviva os melhores momentos e compartilhe com quem você ama.</p>
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="eyebrow">Ouça quando quiser</div>
+        <h2 class="sec-title">Últimos Podcasts</h2>
+        <p class="sec-desc">Reviva os melhores momentos do programa.</p>
+      </div>
+      <a href="#" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos</a>
     </div>
     <div class="pod-grid">
+
       <div class="pod-card reveal">
         <div class="pod-thumb pt1">🎙️
           <span class="pod-ep">EP 248</span>
-          <button class="pod-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
           <div class="pod-date">28 de março de 2026</div>
           <div class="pod-title">O Poder da Adoração Genuína</div>
-          <div class="pod-dur">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg>
-            47 min
-          </div>
+          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 47 min</span></div>
+          <div class="pod-bar"><div class="pod-bar-fill" style="width:72%"></div></div>
         </div>
       </div>
+
       <div class="pod-card reveal">
         <div class="pod-thumb pt2">🎵
           <span class="pod-ep">EP 247</span>
-          <button class="pod-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
           <div class="pod-date">21 de março de 2026</div>
           <div class="pod-title">Quando a Música Encontra a Fé</div>
-          <div class="pod-dur">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg>
-            52 min
-          </div>
+          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 52 min</span></div>
+          <div class="pod-bar"><div class="pod-bar-fill" style="width:45%"></div></div>
         </div>
       </div>
+
       <div class="pod-card reveal">
         <div class="pod-thumb pt3">✝️
           <span class="pod-ep">EP 246</span>
-          <button class="pod-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
           <div class="pod-date">14 de março de 2026</div>
           <div class="pod-title">Louvando em Meio à Tempestade</div>
-          <div class="pod-dur">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg>
-            38 min
-          </div>
+          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 38 min</span></div>
+          <div class="pod-bar"><div class="pod-bar-fill" style="width:100%"></div></div>
         </div>
       </div>
+
       <div class="pod-card reveal">
         <div class="pod-thumb pt4">🙏
           <span class="pod-ep">EP 245</span>
-          <button class="pod-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
           <div class="pod-date">07 de março de 2026</div>
           <div class="pod-title">Adoradores de Espírito e Verdade</div>
-          <div class="pod-dur">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg>
-            44 min
-          </div>
+          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 44 min</span></div>
+          <div class="pod-bar"><div class="pod-bar-fill" style="width:20%"></div></div>
         </div>
       </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TOP 10 GOSPEL ══════════ -->
+<section class="top10" id="top10">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+      <div>
+        <div class="eyebrow">As mais tocadas</div>
+        <h2 class="sec-title" style="color:#fff;">Top 10 Gospel da Semana</h2>
+      </div>
+      <span style="font-size:12px;color:rgba(255,255,255,.35);font-family:'Raleway',sans-serif;">Semana de 21 a 27 de abril de 2026</span>
+    </div>
+    <div class="top10-grid reveal">
+      <div class="top10-item top3"><span class="top10-num">1</span><div class="top10-info"><div class="top10-song">Quem É Esse?</div><div class="top10-artist">Julliany Souza</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3"><span class="top10-num">2</span><div class="top10-info"><div class="top10-song">Se Eu Não Te Ouvir ao Vivo</div><div class="top10-artist">Sarah Farias</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3"><span class="top10-num">3</span><div class="top10-info"><div class="top10-song">Um Novo Dia</div><div class="top10-artist">Get Worship</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">4</span><div class="top10-info"><div class="top10-song">Desconheço Outro Senhor ao Vivo</div><div class="top10-artist">Midian Lima</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">5</span><div class="top10-info"><div class="top10-song">Testemunho de Pedro ao Vivo</div><div class="top10-artist">Gisele Nascimento</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">6</span><div class="top10-info"><div class="top10-song">Graças a Deus ao Vivo</div><div class="top10-artist">Eula Cris</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">7</span><div class="top10-info"><div class="top10-song">Eis que Estou à Porta</div><div class="top10-artist">Fernandinho</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">8</span><div class="top10-info"><div class="top10-song">Ainda Tem Promessa ao Vivo</div><div class="top10-artist">Samuel Messias</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">9</span><div class="top10-info"><div class="top10-song">Este É o Mover ao Vivo</div><div class="top10-artist">Marine Friesen</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item"><span class="top10-num">10</span><div class="top10-info"><div class="top10-song">Foi o Senhor</div><div class="top10-artist">Kellen Byanca</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
     </div>
   </div>
 </section>
@@ -454,14 +596,14 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
       <div class="eyebrow">Não perca nenhum momento</div>
       <h2 class="sec-title">Programação Semanal</h2>
     </div>
-    <div class="day-tabs">
-      <button class="day-btn active" onclick="switchDay(this,'seg')">Seg</button>
-      <button class="day-btn" onclick="switchDay(this,'ter')">Ter</button>
-      <button class="day-btn" onclick="switchDay(this,'qua')">Qua</button>
-      <button class="day-btn" onclick="switchDay(this,'qui')">Qui</button>
-      <button class="day-btn" onclick="switchDay(this,'sex')">Sex</button>
-      <button class="day-btn" onclick="switchDay(this,'sab')">Sáb</button>
-      <button class="day-btn" onclick="switchDay(this,'dom')">Dom</button>
+    <div class="day-tabs reveal">
+      <button class="day-btn active" onclick="switchDay(this,'seg')">Segunda</button>
+      <button class="day-btn" onclick="switchDay(this,'ter')">Terça</button>
+      <button class="day-btn" onclick="switchDay(this,'qua')">Quarta</button>
+      <button class="day-btn" onclick="switchDay(this,'qui')">Quinta</button>
+      <button class="day-btn" onclick="switchDay(this,'sex')">Sexta</button>
+      <button class="day-btn" onclick="switchDay(this,'sab')">Sábado</button>
+      <button class="day-btn" onclick="switchDay(this,'dom')">Domingo</button>
     </div>
     <div class="sched-list" id="schedList"></div>
   </div>
@@ -470,37 +612,57 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
 <!-- ══════════ NOTÍCIAS ══════════ -->
 <section class="noticias" id="noticias">
   <div class="wrap">
-    <div class="sec-hdr reveal">
-      <div class="eyebrow">Fique por dentro</div>
-      <h2 class="sec-title">Últimas Notícias</h2>
-      <p class="sec-desc">Acompanhe as novidades do mundo gospel e do programa.</p>
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="eyebrow">Fique por dentro</div>
+        <h2 class="sec-title">Últimas Notícias</h2>
+      </div>
+      <a href="#" class="news-more" style="margin:0;">Ver todas <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
     </div>
-    <div class="news-grid">
-      <div class="news-card reveal">
-        <div class="news-img ni1"><span>🎶</span><span class="news-cat">Gospel</span></div>
-        <div class="news-body">
-          <div class="news-date">29 de março de 2026</div>
-          <div class="news-title">Anderson Gustavo lança nova temporada com músicos especiais</div>
-          <div class="news-exc">O programa inicia sua nova temporada com convidados especiais e um formato renovado de adoração ao vivo.</div>
-          <a href="#" class="news-more">Ler mais <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
+    <div class="news-layout reveal">
+      <div class="news-featured">
+        <div class="news-featured-img">🎶
+          <span class="news-feat-cat">Gospel</span>
+        </div>
+        <div class="news-feat-body">
+          <div class="news-feat-date">29 de março de 2026</div>
+          <div class="news-feat-title">Anderson Gustavo lança nova temporada com músicos especiais e formato renovado</div>
+          <div class="news-feat-exc">O programa inicia sua nova temporada com convidados especiais e um formato renovado de adoração ao vivo. Cada semana um artista diferente se junta a Anderson para um encontro único de fé.</div>
+          <a href="#" class="news-more">Ler matéria completa <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
         </div>
       </div>
-      <div class="news-card reveal">
-        <div class="news-img ni2"><span>🎤</span><span class="news-cat">Programa</span></div>
-        <div class="news-body">
-          <div class="news-date">25 de março de 2026</div>
-          <div class="news-title">Encontro especial de Páscoa será transmitido ao vivo</div>
-          <div class="news-exc">Prepare seu coração para um momento único de adoração nesta Páscoa, com transmissão ao vivo e palavra especial.</div>
-          <a href="#" class="news-more">Ler mais <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
+      <div class="news-sidebar">
+        <div class="news-card-sm">
+          <div class="news-sm-thumb nt1">🎤</div>
+          <div class="news-sm-body">
+            <div class="news-sm-cat">Programa</div>
+            <div class="news-sm-title">Encontro especial de Páscoa transmitido ao vivo com palavra especial</div>
+            <div class="news-sm-date">25 de março de 2026</div>
+          </div>
         </div>
-      </div>
-      <div class="news-card reveal">
-        <div class="news-img ni3"><span>📻</span><span class="news-cat">Rádio</span></div>
-        <div class="news-body">
-          <div class="news-date">20 de março de 2026</div>
-          <div class="news-title">Programa completa 5 anos levando adoração ao ar</div>
-          <div class="news-exc">Cinco anos de fé e adoração. O Encontro de Adoradores celebra uma trajetória de transformação na vida dos ouvintes.</div>
-          <a href="#" class="news-more">Ler mais <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
+        <div class="news-card-sm">
+          <div class="news-sm-thumb nt2">📻</div>
+          <div class="news-sm-body">
+            <div class="news-sm-cat">Rádio</div>
+            <div class="news-sm-title">Programa completa 5 anos levando adoração ao ar em todo o Brasil</div>
+            <div class="news-sm-date">20 de março de 2026</div>
+          </div>
+        </div>
+        <div class="news-card-sm">
+          <div class="news-sm-thumb nt3">🙏</div>
+          <div class="news-sm-body">
+            <div class="news-sm-cat">Comunidade</div>
+            <div class="news-sm-title">Projeto de oração da comunidade já impactou mais de 10 mil vidas</div>
+            <div class="news-sm-date">15 de março de 2026</div>
+          </div>
+        </div>
+        <div class="news-card-sm">
+          <div class="news-sm-thumb nt1">🎵</div>
+          <div class="news-sm-body">
+            <div class="news-sm-cat">Música</div>
+            <div class="news-sm-title">Novo EP do programa disponível em todas as plataformas digitais</div>
+            <div class="news-sm-date">10 de março de 2026</div>
+          </div>
         </div>
       </div>
     </div>
@@ -511,18 +673,18 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
 <section class="sobre" id="sobre">
   <div class="wrap">
     <div class="sobre-inner">
-      <div class="sobre-text reveal">
+      <div class="sobre-text reveal-left">
         <div class="eyebrow">Quem somos</div>
         <h2 class="sec-title">Sobre o Programa</h2>
         <p>O <strong>Encontro de Adoradores</strong> é um programa de rádio gospel dedicado a criar um espaço sagrado de adoração, fé e encontro com Deus. Com Anderson Gustavo à frente, cada episódio é uma experiência de renovação espiritual.</p>
         <p>Há mais de 5 anos no ar, o programa tem sido um canal de bênçãos para milhares de ouvintes — levando música gospel de qualidade, mensagens inspiradoras e momentos de oração ao coração das famílias brasileiras.</p>
-        <div class="stats">
-          <div class="stat"><div class="stat-n">5+</div><div class="stat-l">Anos no ar</div></div>
-          <div class="stat"><div class="stat-n">248</div><div class="stat-l">Episódios</div></div>
-          <div class="stat"><div class="stat-n">50k</div><div class="stat-l">Ouvintes</div></div>
+        <div class="sobre-stats">
+          <div class="s-stat"><div class="s-stat-n">5<span>+</span></div><div class="s-stat-l">Anos no ar</div></div>
+          <div class="s-stat"><div class="s-stat-n">248</div><div class="s-stat-l">Episódios</div></div>
+          <div class="s-stat"><div class="s-stat-n">50<span>k</span></div><div class="s-stat-l">Ouvintes</div></div>
         </div>
       </div>
-      <div class="sobre-vis reveal">
+      <div class="sobre-vis reveal-right">
         <div class="mic-circle">
           <svg viewBox="0 0 180 180" fill="none">
             <line x1="14" y1="70" x2="14" y2="88"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
@@ -547,38 +709,76 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
 <!-- ══════════ CONTATO ══════════ -->
 <section class="contato" id="contato">
   <div class="wrap">
-    <div class="sec-hdr reveal">
+    <div class="sec-hdr reveal center" style="margin-bottom:48px;">
       <div class="eyebrow">Fale conosco</div>
       <h2 class="sec-title">Entre em Contato</h2>
       <p class="sec-desc">Envie sua mensagem, pedido de oração ou participação no programa.</p>
     </div>
-    <form class="form-wrap reveal" onsubmit="submitForm(event)">
-      <div class="f-row">
-        <div><label>Nome</label><input type="text" placeholder="Seu nome completo"></div>
-        <div><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+    <div class="contato-inner reveal">
+      <div class="contato-info">
+        <h3>Informações</h3>
+        <p>Ficamos felizes em receber sua mensagem, pedido de oração ou sugestão. Responderemos em breve com muito carinho.</p>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+          <div class="info-text"><strong>E-mail</strong><span>contato@encontrodeadoradores.com.br</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg></div>
+          <div class="info-text"><strong>WhatsApp</strong><span>Envie sua mensagem de áudio ou texto</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+          <div class="info-text"><strong>Pedido de Oração</strong><span>Envie seu pedido e oraremos por você</span></div>
+        </div>
       </div>
-      <div class="f-group">
-        <label>Assunto</label>
-        <input type="text" placeholder="Pedido de oração, participação...">
-      </div>
-      <div class="f-group">
-        <label>Mensagem</label>
-        <textarea placeholder="Sua mensagem..."></textarea>
-      </div>
-      <button type="submit" class="btn-pri" style="width:100%;justify-content:center;font-size:15px;padding:15px;" id="submitBtn">
-        Enviar Mensagem
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
-      </button>
-    </form>
+      <form class="form-wrap" onsubmit="submitForm(event)">
+        <div class="f-row">
+          <div><label>Nome</label><input type="text" placeholder="Seu nome completo"></div>
+          <div><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+        </div>
+        <div class="f-group">
+          <label>Assunto</label>
+          <select>
+            <option value="">Selecione o assunto</option>
+            <option>Pedido de Oração</option>
+            <option>Participação no Programa</option>
+            <option>Sugestão de Música</option>
+            <option>Parceria e Publicidade</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="f-group">
+          <label>Mensagem</label>
+          <textarea placeholder="Escreva sua mensagem aqui..."></textarea>
+        </div>
+        <button type="submit" class="btn-pri" style="width:100%;justify-content:center;font-size:14px;padding:14px;" id="submitBtn">
+          Enviar Mensagem
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
+        </button>
+      </form>
+    </div>
   </div>
 </section>
+
+<!-- ══════════ FOOTER SOCIAL BAR ══════════ -->
+<div class="ft-social-bar">
+  <div class="ft-social-bar-inner">
+    <p>Siga-nos nas redes sociais!</p>
+    <div class="ft-soc">
+      <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="#" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+      <a href="#" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ FOOTER ══════════ -->
 <footer>
   <div class="ft-grid">
     <div class="ft-brand">
       <div class="ft-brand-logo">
-        <svg width="34" height="34" viewBox="0 0 80 80" fill="none">
+        <svg width="30" height="30" viewBox="0 0 80 80" fill="none">
           <line x1="8" y1="25" x2="8" y2="37" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
           <line x1="14" y1="20" x2="14" y2="42" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
           <line x1="72" y1="25" x2="72" y2="37" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
@@ -598,33 +798,24 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
       </div>
       <p class="ft-desc">Um programa de adoração, fé e encontro com Deus. Transformando vidas pela música gospel e pela Palavra.</p>
       <div class="ft-soc">
-        <a href="#" title="YouTube">
-          <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg>
-        </a>
-        <a href="#" title="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
-        </a>
-        <a href="#" title="Facebook">
-          <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-        </a>
-        <a href="#" title="WhatsApp">
-          <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg>
-        </a>
+        <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+        <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+        <a href="#" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+        <a href="#" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
       </div>
     </div>
-
     <div class="ft-col">
       <h4>Navegação</h4>
       <ul>
         <li><a href="#">Home</a></li>
         <li><a href="#podcasts">Podcasts</a></li>
+        <li><a href="#top10">Top Gospel</a></li>
         <li><a href="#programacao">Programação</a></li>
         <li><a href="#noticias">Notícias</a></li>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
     </div>
-
     <div class="ft-col">
       <h4>Podcasts</h4>
       <ul>
@@ -635,7 +826,6 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
         <li><a href="#">Deezer</a></li>
       </ul>
     </div>
-
     <div class="ft-col">
       <h4>Contato</h4>
       <ul>
@@ -648,12 +838,12 @@ footer { background:#080808; color:rgba(255,255,255,.65); padding:56px 24px 24px
   </div>
   <div class="ft-bottom">
     <span>© 2026 Encontro de Adoradores — com Anderson Gustavo. Todos os direitos reservados.</span>
-    <span>Feito com fé e dedicação</span>
+    <span>Feito com fé e dedicação ♪</span>
   </div>
 </footer>
 
 <script>
-// ── SCHEDULE DATA ──
+// ── SCHEDULE ──
 const sched = {
   seg:[
     {t:'06:00',n:'Manhã de Adoração',p:'Equipe EA',f:false},
@@ -700,10 +890,10 @@ const sched = {
 };
 
 function renderSched(day) {
-  const el = document.getElementById('schedList');
-  el.innerHTML = sched[day].map(i => `
+  document.getElementById('schedList').innerHTML = sched[day].map(i => `
     <div class="sched-item${i.f?' feat':''}">
       <span class="sched-time">${i.t}</span>
+      <div class="sched-dot"></div>
       <div class="sched-prog">
         <div class="sched-name">${i.n}</div>
         <div class="sched-pres">${i.p}</div>
@@ -711,7 +901,6 @@ function renderSched(day) {
       ${i.f ? '<span class="sched-badge">PROGRAMA</span>' : ''}
     </div>`).join('');
 }
-
 function switchDay(btn, day) {
   document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -723,12 +912,10 @@ renderSched('seg');
 let playing = false;
 function togglePlay() {
   playing = !playing;
-  const btn = document.getElementById('playBtn');
-  const wf  = document.getElementById('waveform');
-  btn.innerHTML = playing
-    ? '<svg viewBox="0 0 24 24" fill="#080808" width="16" height="16"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="#080808" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>';
-  wf.classList.toggle('paused', !playing);
+  document.getElementById('playBtn').innerHTML = playing
+    ? '<svg viewBox="0 0 24 24" fill="#080808" width="14" height="14"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="#080808" width="14" height="14"><path d="M8 5v14l11-7z"/></svg>';
+  document.getElementById('waveform').classList.toggle('paused', !playing);
 }
 
 // ── MENU ──
@@ -739,8 +926,44 @@ function toggleMenu() {
 // ── SCROLL REVEAL ──
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+// ── COUNTER ANIMATION ──
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.target);
+    const suffix = el.innerHTML.replace(/^\d+/, '');
+    let cur = 0;
+    const step = Math.ceil(target / 40);
+    const timer = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.innerHTML = cur + suffix;
+      if (cur >= target) clearInterval(timer);
+    }, 40);
+    counterObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.observe(el));
+
+// ── HERO PARTICLES ──
+(function() {
+  const wrap = document.getElementById('heroParticles');
+  const notes = ['♪','♫','♬','♩'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('span');
+    el.className = 'note';
+    el.textContent = notes[i % notes.length];
+    el.style.left = (Math.random() * 100) + '%';
+    el.style.bottom = '-30px';
+    el.style.fontSize = (14 + Math.random() * 14) + 'px';
+    el.style.animationDuration = (12 + Math.random() * 16) + 's';
+    el.style.animationDelay = (Math.random() * 14) + 's';
+    wrap.appendChild(el);
+  }
+})();
 
 // ── FORM ──
 function submitForm(e) {
