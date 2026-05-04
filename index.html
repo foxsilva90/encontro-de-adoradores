@@ -31,10 +31,10 @@ html{scroll-behavior:smooth;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);padding-top:134px;}
 
 /* ── TOPBAR ── */
-.topbar{background:#0a0a0a;height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;border-bottom:1px solid var(--border);}
+.topbar{background:var(--blue-dark);height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;border-bottom:1px solid rgba(255,255,255,.1);}
 .topbar-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
 .topbar-soc{display:flex;gap:12px;}
-.topbar-soc a{color:var(--tm);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
+.topbar-soc a{color:rgba(255,255,255,.6);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
 .topbar-soc a:hover{color:var(--orange);}
 .topbar-soc svg{width:14px;height:14px;fill:currentColor;}
 .topbar-right{display:flex;align-items:center;gap:16px;}
@@ -42,7 +42,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
 .topbar-wa svg{width:13px;height:13px;fill:currentColor;}
 .ticker-wrap{flex:1;overflow:hidden;margin:0 20px;height:36px;display:flex;align-items:center;}
 .ticker{display:flex;gap:48px;animation:tick 32s linear infinite;white-space:nowrap;}
-.ticker span{font-size:11px;color:var(--tm);display:flex;align-items:center;gap:8px;}
+.ticker span{font-size:11px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:8px;}
 .ticker span b{color:var(--orange);font-weight:700;}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
