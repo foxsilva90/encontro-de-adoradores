@@ -111,12 +111,8 @@ nav a.cta:hover{background:var(--orange-dk);}
 .btn-sec{background:transparent;color:var(--tp);font-family:'Raleway',sans-serif;font-weight:600;font-size:13px;padding:12px 28px;border-radius:var(--pill);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:.25s;border:1px solid rgba(255,255,255,.3);}
 .btn-sec:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);}
 .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;}
-.hero-mic-wrap{animation:float 4s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-.hero-rings{position:absolute;inset:-40px;border-radius:50%;border:1px solid rgba(245,163,36,.06);animation:expand 4s ease-in-out infinite;}
-.hero-rings::before{content:'';position:absolute;inset:30px;border-radius:50%;border:1px solid rgba(245,163,36,.08);}
-.hero-rings::after{content:'';position:absolute;inset:70px;border-radius:50%;border:1px solid rgba(245,163,36,.1);}
-@keyframes expand{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.hero-yt-wrap{width:100%;max-width:520px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.7);border:1px solid var(--border);position:relative;aspect-ratio:16/9;}
+.hero-yt-wrap iframe{width:100%;height:100%;display:block;border:none;}
 
 /* ── STATS BAR ── */
 .stats-bar{background:var(--blue);padding:32px 24px;}
@@ -305,7 +301,8 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 @media(max-width:900px){
   body{padding-top:122px;}
   .hero-inner{grid-template-columns:1fr;text-align:center;}
-  .hero-visual{display:none;}
+  .hero-visual{display:flex;}
+  .hero-yt-wrap{max-width:100%;}
   .hero-btns{justify-content:center;}
   .hero-desc{margin:0 auto 32px;}
   .news-layout{grid-template-columns:1fr;}
@@ -454,24 +451,13 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-rings"></div>
-      <div class="hero-mic-wrap">
-        <svg width="210" height="210" viewBox="0 0 220 220" fill="none">
-          <circle cx="110" cy="88" r="68" stroke="rgba(245,163,36,.07)" stroke-width="1.5"/>
-          <circle cx="110" cy="88" r="84" stroke="rgba(245,163,36,.04)" stroke-width="1.5"/>
-          <line x1="20"  y1="78" x2="20"  y2="98"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-          <line x1="34"  y1="66" x2="34"  y2="110" stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-          <line x1="200" y1="78" x2="200" y2="98"  stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-          <line x1="186" y1="66" x2="186" y2="110" stroke="#F5A324" stroke-width="4" stroke-linecap="round" opacity=".6"/>
-          <rect x="73" y="18" width="74" height="100" rx="37" fill="white" opacity=".95"/>
-          <line x1="85" y1="52"  x2="135" y2="52"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-          <line x1="85" y1="66"  x2="135" y2="66"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-          <line x1="85" y1="80"  x2="135" y2="80"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-          <line x1="85" y1="94"  x2="135" y2="94"  stroke="#1A4F8A" stroke-width="4" stroke-linecap="round"/>
-          <line x1="110" y1="118" x2="110" y2="152" stroke="white" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="110" cy="170" r="24" fill="#F5A324"/>
-          <text x="110" y="178" text-anchor="middle" font-size="24" fill="#080808" font-family="serif">♪</text>
-        </svg>
+      <div class="hero-yt-wrap">
+        <iframe
+          src="https://www.youtube.com/embed?listType=playlist&list=UU1gNqoDSkmbhE4cO4BIl6tw&rel=0&modestbranding=1"
+          title="Adoracast — Podcasts no YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
       </div>
     </div>
   </div>
