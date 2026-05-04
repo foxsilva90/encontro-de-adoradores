@@ -144,10 +144,11 @@ section{padding:64px 24px;}
 
 /* ── PODCASTS ── */
 .podcasts{background:var(--bg);}
-.pod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+.pod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
 .pod-card{background:var(--s1);border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:.3s;cursor:pointer;border:1px solid var(--border);}
 .pod-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.6);background:var(--s2);border-color:rgba(245,163,36,.3);}
-.pod-thumb{height:160px;position:relative;display:flex;align-items:center;justify-content:center;font-size:50px;overflow:hidden;}
+.pod-thumb{height:180px;position:relative;display:flex;align-items:center;justify-content:center;font-size:50px;overflow:hidden;background:#000;}
+.pod-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 .pt1{background:linear-gradient(145deg,#1A4F8A,#0D2A4A)}
 .pt2{background:linear-gradient(145deg,#0D2A4A,#153E70)}
 .pt3{background:linear-gradient(145deg,#F5A324,#D4881A)}
@@ -485,61 +486,45 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <h2 class="sec-title">Últimos Podcasts</h2>
         <p class="sec-desc">Reviva os melhores momentos do programa.</p>
       </div>
-      <a href="#" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos</a>
+      <a href="https://www.youtube.com/playlist?list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos</a>
     </div>
     <div class="pod-grid">
 
-      <div class="pod-card reveal">
-        <div class="pod-thumb pt1">🎙️
-          <span class="pod-ep">EP 248</span>
+      <a class="pod-card reveal" href="https://www.youtube.com/watch?v=0VXUfbjc93Y" target="_blank" style="text-decoration:none;">
+        <div class="pod-thumb">
+          <img src="https://img.youtube.com/vi/0VXUfbjc93Y/hqdefault.jpg" alt="AdoraCast #003" loading="lazy">
+          <span class="pod-ep">EP 003</span>
           <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
-          <div class="pod-date">28 de março de 2026</div>
-          <div class="pod-title">O Poder da Adoração Genuína</div>
-          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 47 min</span></div>
-          <div class="pod-bar"><div class="pod-bar-fill" style="width:72%"></div></div>
+          <div class="pod-title">Entrevista com Cristina Melreal</div>
+          <div class="pod-date" style="margin-top:6px;">AdoraCast #003</div>
         </div>
-      </div>
+      </a>
 
-      <div class="pod-card reveal">
-        <div class="pod-thumb pt2">🎵
-          <span class="pod-ep">EP 247</span>
+      <a class="pod-card reveal" href="https://www.youtube.com/watch?v=eGstAwa_3RM" target="_blank" style="text-decoration:none;">
+        <div class="pod-thumb">
+          <img src="https://img.youtube.com/vi/eGstAwa_3RM/hqdefault.jpg" alt="AdoraCast #002" loading="lazy">
+          <span class="pod-ep">EP 002</span>
           <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
-          <div class="pod-date">21 de março de 2026</div>
-          <div class="pod-title">Quando a Música Encontra a Fé</div>
-          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 52 min</span></div>
-          <div class="pod-bar"><div class="pod-bar-fill" style="width:45%"></div></div>
+          <div class="pod-title">Superação — A História da Dra. Ângela Rissi</div>
+          <div class="pod-date" style="margin-top:6px;">AdoraCast #002</div>
         </div>
-      </div>
+      </a>
 
-      <div class="pod-card reveal">
-        <div class="pod-thumb pt3">✝️
-          <span class="pod-ep">EP 246</span>
+      <a class="pod-card reveal" href="https://www.youtube.com/watch?v=XjoMMluWL4Q" target="_blank" style="text-decoration:none;">
+        <div class="pod-thumb">
+          <img src="https://img.youtube.com/vi/XjoMMluWL4Q/hqdefault.jpg" alt="AdoraCast #001" loading="lazy">
+          <span class="pod-ep">EP 001</span>
           <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
         <div class="pod-info">
-          <div class="pod-date">14 de março de 2026</div>
-          <div class="pod-title">Louvando em Meio à Tempestade</div>
-          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 38 min</span></div>
-          <div class="pod-bar"><div class="pod-bar-fill" style="width:100%"></div></div>
+          <div class="pod-title">Entre a Fé e a Razão — Testemunho de Cura</div>
+          <div class="pod-date" style="margin-top:6px;">AdoraCast #001 · Pr. Denilson Lopes</div>
         </div>
-      </div>
-
-      <div class="pod-card reveal">
-        <div class="pod-thumb pt4">🙏
-          <span class="pod-ep">EP 245</span>
-          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-        </div>
-        <div class="pod-info">
-          <div class="pod-date">07 de março de 2026</div>
-          <div class="pod-title">Adoradores de Espírito e Verdade</div>
-          <div class="pod-footer"><span class="pod-dur"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 5v6l4.5 2.7-.8 1.2-5.2-3V7h1.5z"/></svg> 44 min</span></div>
-          <div class="pod-bar"><div class="pod-bar-fill" style="width:20%"></div></div>
-        </div>
-      </div>
+      </a>
 
     </div>
   </div>
