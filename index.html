@@ -113,6 +113,12 @@ nav a.cta:hover{background:var(--orange-dk);}
 .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;}
 .hero-yt-wrap{width:100%;max-width:520px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.7);border:1px solid var(--border);position:relative;aspect-ratio:16/9;}
 .hero-yt-wrap iframe{width:100%;height:100%;display:block;border:none;}
+.yt-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:opacity .3s;z-index:2;}
+.yt-overlay.hidden{opacity:0;pointer-events:none;}
+.yt-overlay-btn{width:64px;height:64px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(245,163,36,.5);transition:.2s;}
+.yt-overlay-btn svg{width:22px;height:22px;fill:#080808;margin-left:4px;}
+.yt-overlay-btn:hover{transform:scale(1.1);}
+.yt-overlay-label{font-family:'Raleway',sans-serif;font-weight:700;font-size:12px;color:#fff;letter-spacing:1px;text-transform:uppercase;}
 
 /* ── STATS BAR ── */
 .stats-bar{background:var(--blue);padding:32px 24px;}
@@ -452,12 +458,18 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     </div>
     <div class="hero-visual">
       <div class="hero-yt-wrap">
-        <iframe
-          src="https://www.youtube.com/embed?listType=playlist&list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD&rel=0&modestbranding=1"
+        <iframe id="yt-player"
+          src="https://www.youtube.com/embed?listType=playlist&list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD&rel=0&modestbranding=1&loop=1&enablejsapi=1"
           title="Adoracast — Podcasts no YouTube"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen>
         </iframe>
+        <div class="yt-overlay" id="yt-overlay" onclick="startPlayer()">
+          <div class="yt-overlay-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="yt-overlay-label">Ouvir Agora</span>
+        </div>
       </div>
     </div>
   </div>
@@ -966,6 +978,13 @@ function submitForm(e) {
     btn.style.background = '';
     e.target.reset();
   }, 3000);
+}
+
+function startPlayer() {
+  const iframe = document.getElementById('yt-player');
+  const overlay = document.getElementById('yt-overlay');
+  iframe.src = 'https://www.youtube.com/embed?listType=playlist&list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD&rel=0&modestbranding=1&loop=1&autoplay=1&enablejsapi=1';
+  overlay.classList.add('hidden');
 }
 </script>
 </body>
