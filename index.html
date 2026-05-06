@@ -28,7 +28,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);padding-top:134px;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);padding-top:164px;}
 
 /* ── TOPBAR ── */
 .topbar{background:var(--blue-dark);height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;border-bottom:1px solid rgba(255,255,255,.1);}
@@ -50,8 +50,24 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
 #player-bar{
   position:fixed;top:36px;left:0;right:0;z-index:1001;
   background:var(--s1);border-bottom:2px solid var(--orange);
-  height:50px;display:flex;align-items:center;padding:0 20px;gap:14px;
+  height:80px;display:flex;align-items:stretch;padding:0;
 }
+#player-live-info{display:none;}
+#player-spotify-area{display:flex;width:280px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.08);overflow:hidden;}
+#player-spotify-area iframe{width:280px;height:80px;border:none;display:block;flex-shrink:0;opacity:0;transition:opacity .4s ease;}
+#player-spotify-area iframe.loaded{opacity:1;}
+#player-center{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 24px;}
+#player-center-row{display:flex;align-items:center;gap:10px;}
+#player-center .p-radio-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:15px;color:var(--tp);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
+#player-center .p-radio-sub{font-size:10px;color:var(--ts);letter-spacing:3px;text-transform:uppercase;}
+#player-clock-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:0 22px;border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;min-width:120px;}
+#player-clock{font-family:'Raleway',sans-serif;font-size:22px;font-weight:700;color:var(--orange);letter-spacing:2px;font-variant-numeric:tabular-nums;}
+#player-clock-date{font-size:10px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+#player-prog-area{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 20px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;max-width:200px;}
+#player-prog-label{font-size:9px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;}
+#player-prog-name{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+#player-prog-pres{font-size:10px;color:var(--orange);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.p-socials-wrap{display:flex;align-items:center;padding:0 20px;flex-shrink:0;}
 .live-badge{background:#DC2626;color:#fff;font-family:'Raleway',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 9px;border-radius:3px;animation:pulse-live 1.4s ease-in-out infinite;flex-shrink:0;}
 @keyframes pulse-live{0%,100%{opacity:1}50%{opacity:.4}}
 .play-btn{width:36px;height:36px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;}
@@ -75,13 +91,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
 .vol-wrap svg{width:14px;height:14px;fill:var(--ts);flex-shrink:0;}
 .vol-slider{-webkit-appearance:none;width:70px;height:3px;background:var(--s3);border-radius:2px;outline:none;cursor:pointer;}
 .vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--orange);cursor:pointer;}
+/* ── VIDEO MODAL ── */
+#video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;align-items:center;justify-content:center;padding:20px;}
+#video-modal.open{display:flex;}
+.vm-inner{position:relative;width:100%;max-width:960px;aspect-ratio:16/9;}
+.vm-close{position:absolute;top:-42px;right:0;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;line-height:1;padding:4px 8px;opacity:.8;transition:opacity .2s;}
+.vm-close:hover{opacity:1;}
+#vm-iframe{width:100%;height:100%;border:none;border-radius:10px;display:block;}
+
 .p-socials{display:flex;gap:10px;}
 .p-socials a{color:var(--ts);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
 .p-socials a:hover{color:var(--orange);}
 .p-socials svg{width:16px;height:16px;fill:currentColor;}
 
 /* ── HEADER ── */
-header{position:fixed;top:86px;left:0;right:0;z-index:1000;background:var(--blue);height:48px;display:flex;align-items:center;box-shadow:0 2px 20px rgba(0,0,0,.5);}
+header{position:fixed;top:116px;left:0;right:0;z-index:1000;background:var(--blue);height:48px;display:flex;align-items:center;box-shadow:0 2px 20px rgba(0,0,0,.5);}
 .hdr{max-width:1200px;margin:0 auto;width:100%;padding:0 24px;display:flex;align-items:center;justify-content:space-between;}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 nav{display:flex;align-items:center;gap:1px;}
@@ -111,8 +135,8 @@ nav a.cta:hover{background:var(--orange-dk);}
 .btn-sec{background:transparent;color:var(--tp);font-family:'Raleway',sans-serif;font-weight:600;font-size:13px;padding:12px 28px;border-radius:var(--pill);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:.25s;border:1px solid rgba(255,255,255,.3);}
 .btn-sec:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);}
 .hero-visual{display:flex;align-items:center;justify-content:center;position:relative;}
-.hero-yt-wrap{width:100%;max-width:520px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.7);border:1px solid var(--border);position:relative;aspect-ratio:16/9;}
-.hero-yt-wrap iframe{width:100%;height:100%;display:block;border:none;}
+.hero-yt-wrap{width:100%;max-width:520px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.7);border:1px solid var(--border);}
+.hero-yt-wrap iframe{width:100%;height:352px;display:block;border:none;}
 .yt-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:opacity .3s;z-index:2;}
 .yt-overlay.hidden{opacity:0;pointer-events:none;}
 .yt-overlay-btn{width:64px;height:64px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(245,163,36,.5);transition:.2s;}
@@ -183,6 +207,10 @@ section{padding:64px 24px;}
 .top10-item:hover .top10-play{background:var(--orange);}
 .top10-play svg{width:10px;height:10px;fill:var(--ts);margin-left:2px;}
 .top10-item:hover .top10-play svg{fill:#080808;}
+.top10-item.playing{border-color:var(--orange);background:var(--s2);}
+.top10-item.playing .top10-num{color:var(--orange);}
+.spotify-embed-wrap{margin-top:24px;border-radius:12px;overflow:hidden;display:none;}
+.spotify-embed-wrap.active{display:block;}
 
 /* ── PROGRAMAÇÃO ── */
 .prog{background:var(--s1);}
@@ -190,6 +218,10 @@ section{padding:64px 24px;}
 .day-btn{font-family:'Raleway',sans-serif;font-size:12.5px;font-weight:600;padding:8px 18px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--ts);cursor:pointer;transition:.2s;}
 .day-btn:hover{border-color:var(--orange);color:var(--tp);}
 .day-btn.active{background:var(--orange);border-color:var(--orange);color:var(--dark);font-weight:700;}
+.period-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.period-btn{font-family:'Raleway',sans-serif;font-size:11px;font-weight:600;padding:5px 14px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--ts);cursor:pointer;transition:.2s;letter-spacing:.5px;text-transform:uppercase;}
+.period-btn:hover{border-color:var(--orange);color:var(--tp);}
+.period-btn.active{background:rgba(245,163,36,.12);border-color:var(--orange);color:var(--orange);font-weight:700;}
 .sched-list{display:grid;gap:8px;}
 .sched-item{display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:6px;background:var(--s2);border:1px solid var(--border);transition:.2s;}
 .sched-item:hover{border-color:rgba(245,163,36,.2);background:var(--s3);}
@@ -201,6 +233,24 @@ section{padding:64px 24px;}
 .sched-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;color:var(--tp);}
 .sched-pres{font-size:12px;color:var(--ts);margin-top:2px;}
 .sched-badge{background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:var(--pill);white-space:nowrap;}
+.sched-play-btn{width:32px;height:32px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;}
+.sched-play-btn:hover{background:var(--orange-dk);transform:scale(1.1);}
+.sched-play-btn svg{width:11px;height:11px;fill:#080808;margin-left:2px;}
+#video-modal.spotify .vm-inner{aspect-ratio:unset;height:232px;max-width:620px;}
+
+/* ── ANUNCIE ── */
+.anuncie{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 60%,#040d18 100%);padding:80px 0;position:relative;overflow:hidden;}
+.anuncie::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,163,36,.1) 0%,transparent 65%);pointer-events:none;}
+.anuncie-inner{position:relative;z-index:1;}
+.anuncie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;}
+.anuncie-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:32px 28px;text-align:center;transition:.3s;cursor:pointer;}
+.anuncie-card:hover{border-color:rgba(245,163,36,.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}
+.anuncie-icon{width:56px;height:56px;border-radius:50%;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+.anuncie-icon svg{width:24px;height:24px;fill:var(--orange);}
+.anuncie-card-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:16px;color:var(--tp);margin-bottom:10px;}
+.anuncie-card-desc{font-size:13px;color:var(--ts);line-height:1.7;}
+.anuncie-cta{text-align:center;margin-top:48px;}
+.anuncie-cta p{font-size:15px;color:var(--ts);margin-bottom:20px;}
 
 /* ── NOTÍCIAS ── */
 .noticias{background:var(--bg);}
@@ -313,6 +363,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .hero-btns{justify-content:center;}
   .hero-desc{margin:0 auto 32px;}
   .news-layout{grid-template-columns:1fr;}
+  .anuncie-grid{grid-template-columns:1fr;}
   .sobre-inner{grid-template-columns:1fr;}
   .sobre-vis{display:none;}
   .contato-inner{grid-template-columns:1fr;}
@@ -321,7 +372,13 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 @media(max-width:768px){
   .topbar{display:none;}
   body{padding-top:98px;}
-  #player-bar{top:0;}
+  #player-bar{top:0;height:50px;padding:0 14px;gap:10px;}
+  #player-spotify-area,#player-clock-area,#player-prog-area{display:none;}
+  #player-center{display:flex;flex:1;padding:0;}
+  #player-center .p-radio-name{font-size:12px;letter-spacing:.5px;}
+  #player-center .p-radio-sub{display:none;}
+  #player-center-row .waveform{display:none;}
+  .p-socials-wrap{padding:0;}
   header{top:50px;}
   .vol-wrap,.p-socials{display:none;}
   nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0a0a0a;border:1px solid var(--border);flex-direction:column;padding:10px;gap:3px;box-shadow:0 8px 20px rgba(0,0,0,.5);}
@@ -334,16 +391,56 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .f-row{grid-template-columns:1fr;}
   .ft-grid{grid-template-columns:1fr 1fr;}
   .ft-grid > .ft-brand{grid-column:1/-1;}
+  .day-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .day-tabs::-webkit-scrollbar{display:none;}
+  .day-btn{flex-shrink:0;}
 }
 @media(max-width:520px){
   .pod-grid{grid-template-columns:1fr;}
   .ft-grid{grid-template-columns:1fr;}
   .stats-bar-inner{grid-template-columns:1fr 1fr;}
   .stat-item::after{display:none;}
+  .period-btn{flex:1;text-align:center;padding:5px 6px;font-size:10px;letter-spacing:0;}
+  .sched-item{padding:10px 12px;gap:8px;}
+  .sched-time{min-width:46px;font-size:12px;}
+  .sched-dot{display:none;}
+  .sched-name{font-size:13px;}
+  .sched-badge{font-size:8px;padding:2px 6px;letter-spacing:.5px;}
+  .sched-play-btn{width:28px;height:28px;}
+  .sched-play-btn svg{width:10px;height:10px;}
 }
+
+/* ── ENTRADA OVERLAY ── */
+#entrada-overlay{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0D2A4A 0%,#121212 60%,#1a0a00 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .6s ease;}
+#entrada-overlay.fade-out{opacity:0;pointer-events:none;}
+.entrada-logo{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(28px,6vw,52px);color:#fff;text-align:center;letter-spacing:2px;line-height:1.2;}
+.entrada-logo span{color:var(--orange);}
+.entrada-sub{font-size:13px;color:rgba(255,255,255,.45);letter-spacing:3px;text-transform:uppercase;}
+.entrada-btn{display:flex;align-items:center;gap:12px;background:var(--orange);color:#080808;font-family:'Raleway',sans-serif;font-weight:800;font-size:15px;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:50px;padding:15px 34px;cursor:pointer;transition:.2s;box-shadow:0 4px 24px rgba(245,163,36,.35);}
+.entrada-btn:hover{background:var(--orange-dk);transform:scale(1.04);}
+.entrada-btn svg{width:16px;height:16px;fill:#080808;}
+.entrada-waves{display:flex;gap:4px;align-items:center;height:24px;}
+.entrada-waves span{display:block;width:3px;border-radius:2px;background:rgba(255,255,255,.25);animation:ewave 1.2s ease-in-out infinite;}
+.entrada-waves span:nth-child(1){height:8px;}
+.entrada-waves span:nth-child(2){height:16px;animation-delay:.15s;}
+.entrada-waves span:nth-child(3){height:24px;animation-delay:.3s;}
+.entrada-waves span:nth-child(4){height:14px;animation-delay:.45s;}
+.entrada-waves span:nth-child(5){height:20px;animation-delay:.6s;}
+@keyframes ewave{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
 </style>
 </head>
 <body>
+
+<!-- ══════════ ENTRADA OVERLAY ══════════ -->
+<div id="entrada-overlay">
+  <div class="entrada-waves"><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="entrada-logo">Encontro de<br><span>Adoradores</span></div>
+  <div class="entrada-sub">Rádio Gospel Online</div>
+  <button class="entrada-btn" onclick="entrarNoSite()">
+    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    Entrar e Ouvir
+  </button>
+</div>
 
 <!-- ══════════ TOPBAR ══════════ -->
 <div class="topbar">
@@ -376,25 +473,34 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 
 <!-- ══════════ PLAYER BAR ══════════ -->
 <div id="player-bar">
-  <span class="live-badge">AO VIVO</span>
-  <button class="play-btn" id="playBtn" onclick="togglePlay()">
-    <svg viewBox="0 0 24 24" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
-  </button>
-  <div class="player-info">
-    <div class="player-name">Encontro de Adoradores</div>
-    <div class="player-sub">com Anderson Gustavo</div>
+  <div id="player-spotify-area">
+    <iframe id="spotify-popup-frame" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
   </div>
-  <div class="waveform paused" id="waveform">
-    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  <div id="player-center">
+    <div id="player-center-row">
+      <span class="live-badge">AO VIVO</span>
+      <div class="waveform">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="p-radio-name">Encontro de Adoradores</div>
+    <div class="p-radio-sub">Rádio Gospel Online</div>
   </div>
-  <div class="vol-wrap">
-    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-    <input type="range" class="vol-slider" min="0" max="100" value="80" id="volSlider">
+  <div id="player-clock-area">
+    <div id="player-clock">00:00:00</div>
+    <div id="player-clock-date">Carregando...</div>
   </div>
-  <div class="p-socials">
-    <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
-    <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
-    <a href="#" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+  <div id="player-prog-area">
+    <div id="player-prog-label">Programa Atual</div>
+    <div id="player-prog-name">—</div>
+    <div id="player-prog-pres">—</div>
+  </div>
+  <div class="p-socials-wrap">
+    <div class="p-socials">
+      <a href="#" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="#" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="#" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+    </div>
   </div>
 </div>
 
@@ -430,7 +536,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <a href="#podcasts">Podcasts</a>
       <a href="#top10">Top Gospel</a>
       <a href="#programacao">Programação</a>
-      <a href="#noticias">Notícias</a>
+      <a href="#anuncie">Anuncie</a>
       <a href="#sobre">Sobre</a>
       <a href="#contato" class="cta">Contato</a>
     </nav>
@@ -459,23 +565,36 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     </div>
     <div class="hero-visual">
       <div class="hero-yt-wrap">
-        <iframe id="yt-player"
-          src="https://www.youtube.com/embed?listType=playlist&list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD&rel=0&modestbranding=1&loop=1&enablejsapi=1"
-          title="Adoracast — Podcasts no YouTube"
+        <iframe id="hero-yt-frame" src=""
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
+          allowfullscreen loading="lazy">
         </iframe>
-        <div class="yt-overlay" id="yt-overlay" onclick="startPlayer()">
-          <div class="yt-overlay-btn">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-          <span class="yt-overlay-label">Ouvir Agora</span>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ══════════ STATS BAR ══════════ -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">5+</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Anos no ar</div>
+    </div>
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">248</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Episódios</div>
+    </div>
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">50k+</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Ouvintes</div>
+    </div>
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">7x</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Por semana</div>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ PODCASTS ══════════ -->
 <section class="podcasts" id="podcasts">
@@ -486,11 +605,11 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <h2 class="sec-title">Últimos Podcasts</h2>
         <p class="sec-desc">Reviva os melhores momentos do programa.</p>
       </div>
-      <a href="https://www.youtube.com/playlist?list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos</a>
+      <a href="https://www.youtube.com/@adoracastoficial" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
     </div>
     <div class="pod-grid">
 
-      <a class="pod-card reveal" href="https://www.youtube.com/watch?v=0VXUfbjc93Y" target="_blank" style="text-decoration:none;">
+      <div class="pod-card reveal" onclick="openVideo('0VXUfbjc93Y')" style="cursor:pointer;">
         <div class="pod-thumb">
           <img src="https://img.youtube.com/vi/0VXUfbjc93Y/hqdefault.jpg" alt="AdoraCast #003" loading="lazy">
           <span class="pod-ep">EP 003</span>
@@ -500,9 +619,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           <div class="pod-title">Entrevista com Cristina Melreal</div>
           <div class="pod-date" style="margin-top:6px;">AdoraCast #003</div>
         </div>
-      </a>
+      </div>
 
-      <a class="pod-card reveal" href="https://www.youtube.com/watch?v=eGstAwa_3RM" target="_blank" style="text-decoration:none;">
+      <div class="pod-card reveal" onclick="openVideo('eGstAwa_3RM')" style="cursor:pointer;">
         <div class="pod-thumb">
           <img src="https://img.youtube.com/vi/eGstAwa_3RM/hqdefault.jpg" alt="AdoraCast #002" loading="lazy">
           <span class="pod-ep">EP 002</span>
@@ -512,9 +631,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           <div class="pod-title">Superação — A História da Dra. Ângela Rissi</div>
           <div class="pod-date" style="margin-top:6px;">AdoraCast #002</div>
         </div>
-      </a>
+      </div>
 
-      <a class="pod-card reveal" href="https://www.youtube.com/watch?v=XjoMMluWL4Q" target="_blank" style="text-decoration:none;">
+      <div class="pod-card reveal" onclick="openVideo('XjoMMluWL4Q')" style="cursor:pointer;">
         <div class="pod-thumb">
           <img src="https://img.youtube.com/vi/XjoMMluWL4Q/hqdefault.jpg" alt="AdoraCast #001" loading="lazy">
           <span class="pod-ep">EP 001</span>
@@ -524,7 +643,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           <div class="pod-title">Entre a Fé e a Razão — Testemunho de Cura</div>
           <div class="pod-date" style="margin-top:6px;">AdoraCast #001 · Pr. Denilson Lopes</div>
         </div>
-      </a>
+      </div>
 
     </div>
   </div>
@@ -538,19 +657,22 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <div class="eyebrow">As mais tocadas</div>
         <h2 class="sec-title">Top 10 Gospel da Semana</h2>
       </div>
-      <span style="font-size:12px;color:var(--tm);font-family:'Raleway',sans-serif;">Semana de 21 a 27 de abril de 2026</span>
+      <span id="week-label" style="font-size:12px;color:var(--tm);font-family:'Raleway',sans-serif;"></span>
     </div>
     <div class="top10-grid reveal">
-      <div class="top10-item top3"><span class="top10-num">1</span><div class="top10-info"><div class="top10-song">Quem É Esse?</div><div class="top10-artist">Julliany Souza</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item top3"><span class="top10-num">2</span><div class="top10-info"><div class="top10-song">Se Eu Não Te Ouvir ao Vivo</div><div class="top10-artist">Sarah Farias</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item top3"><span class="top10-num">3</span><div class="top10-info"><div class="top10-song">Um Novo Dia</div><div class="top10-artist">Get Worship</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">4</span><div class="top10-info"><div class="top10-song">Desconheço Outro Senhor ao Vivo</div><div class="top10-artist">Midian Lima</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">5</span><div class="top10-info"><div class="top10-song">Testemunho de Pedro ao Vivo</div><div class="top10-artist">Gisele Nascimento</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">6</span><div class="top10-info"><div class="top10-song">Graças a Deus ao Vivo</div><div class="top10-artist">Eula Cris</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">7</span><div class="top10-info"><div class="top10-song">Eis que Estou à Porta</div><div class="top10-artist">Fernandinho</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">8</span><div class="top10-info"><div class="top10-song">Ainda Tem Promessa ao Vivo</div><div class="top10-artist">Samuel Messias</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">9</span><div class="top10-info"><div class="top10-song">Este É o Mover ao Vivo</div><div class="top10-artist">Marine Friesen</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item"><span class="top10-num">10</span><div class="top10-info"><div class="top10-song">Foi o Senhor</div><div class="top10-artist">Kellen Byanca</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'19Xy8BoE21tNtz91Qh2fpt')"><span class="top10-num">1</span><div class="top10-info"><div class="top10-song">Se eu Somente Te Tocar</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'3ghzHm4lHHhA9WO9Yiu5nY')"><span class="top10-num">2</span><div class="top10-info"><div class="top10-song">Deus de Moisés</div><div class="top10-artist">Bruna Karla</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'6eVwr0VQPICNNQx3gqoqYI')"><span class="top10-num">3</span><div class="top10-info"><div class="top10-song">Que Jesus Seja o Nome</div><div class="top10-artist">Aline Freire</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'6uAt2yexEpQLPIWJuY9kL6')"><span class="top10-num">4</span><div class="top10-info"><div class="top10-song">Quem Poderá? (Ao Vivo)</div><div class="top10-artist">Valesca Mayssa</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'0X3vkwKZwCBP2XCLSvPf1b')"><span class="top10-num">5</span><div class="top10-info"><div class="top10-song">Espírito Santo (Inhabit)</div><div class="top10-artist">Thalles Roberto</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'0jJXmVGbODa8dZqg3fgMdY')"><span class="top10-num">6</span><div class="top10-info"><div class="top10-song">Filho Pródigo (Ao Vivo)</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5yB0FK61teDTe4xpKaqSBm')"><span class="top10-num">7</span><div class="top10-info"><div class="top10-song">Oh Vem Me Avivar</div><div class="top10-artist">Ana Nóbrega</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5y07NTJg6NkDLW3fkrxDW5')"><span class="top10-num">8</span><div class="top10-info"><div class="top10-song">Sou Grato Por Seu Amor</div><div class="top10-artist">Get Worship</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'1EzlXvFPrQ8d7Ar4L9kOSx')"><span class="top10-num">9</span><div class="top10-info"><div class="top10-song">Fiel é Deus</div><div class="top10-artist">Isaias Saad</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5gH9bIF0s0kSVBGbuCbSN1')"><span class="top10-num">10</span><div class="top10-info"><div class="top10-song">Deus Provedor</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+    </div>
+    <div class="spotify-embed-wrap" id="spotify-embed-wrap">
+      <iframe id="spotify-iframe" src="" width="100%" height="80" frameborder="0" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -571,66 +693,50 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <button class="day-btn" onclick="switchDay(this,'sab')">Sábado</button>
       <button class="day-btn" onclick="switchDay(this,'dom')">Domingo</button>
     </div>
+    <div class="period-tabs reveal">
+      <button class="period-btn" onclick="switchPeriod(this,'madrugada')">Madrugada</button>
+      <button class="period-btn" onclick="switchPeriod(this,'manha')">Manhã</button>
+      <button class="period-btn" onclick="switchPeriod(this,'tarde')">Tarde</button>
+      <button class="period-btn" onclick="switchPeriod(this,'noite')">Noite</button>
+    </div>
     <div class="sched-list" id="schedList"></div>
   </div>
 </section>
 
-<!-- ══════════ NOTÍCIAS ══════════ -->
-<section class="noticias" id="noticias">
-  <div class="wrap">
-    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-      <div>
-        <div class="eyebrow">Fique por dentro</div>
-        <h2 class="sec-title">Últimas Notícias</h2>
-      </div>
-      <a href="#" class="news-more" style="margin:0;">Ver todas <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
+<!-- ══════════ ANUNCIE ══════════ -->
+<section class="anuncie" id="anuncie">
+  <div class="wrap anuncie-inner">
+    <div class="sec-hdr reveal" style="text-align:center;">
+      <div class="eyebrow">Oportunidades</div>
+      <h2 class="sec-title">Anuncie no Programa</h2>
+      <p style="color:var(--ts);font-size:15px;max-width:540px;margin:12px auto 0;line-height:1.7;">Quer divulgar sua marca, negócio ou ministério? Ou ter um espaço especial na programação? Fale com a gente.</p>
     </div>
-    <div class="news-layout reveal">
-      <div class="news-featured">
-        <div class="news-featured-img">🎶
-          <span class="news-feat-cat">Gospel</span>
+    <div class="anuncie-grid reveal">
+      <div class="anuncie-card">
+        <div class="anuncie-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
         </div>
-        <div class="news-feat-body">
-          <div class="news-feat-date">29 de março de 2026</div>
-          <div class="news-feat-title">Anderson Gustavo lança nova temporada com músicos especiais e formato renovado</div>
-          <div class="news-feat-exc">O programa inicia sua nova temporada com convidados especiais e um formato renovado de adoração ao vivo. Cada semana um artista diferente se junta a Anderson para um encontro único de fé.</div>
-          <a href="#" class="news-more">Ler matéria completa <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
-        </div>
+        <div class="anuncie-card-title">Patrocínio do Programa</div>
+        <div class="anuncie-card-desc">Sua marca associada ao Encontro de Adoradores. Menção ao vivo, inserção no site e nas redes sociais do programa.</div>
       </div>
-      <div class="news-sidebar">
-        <div class="news-card-sm">
-          <div class="news-sm-thumb nt1">🎤</div>
-          <div class="news-sm-body">
-            <div class="news-sm-cat">Programa</div>
-            <div class="news-sm-title">Encontro especial de Páscoa transmitido ao vivo com palavra especial</div>
-            <div class="news-sm-date">25 de março de 2026</div>
-          </div>
+      <div class="anuncie-card">
+        <div class="anuncie-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
         </div>
-        <div class="news-card-sm">
-          <div class="news-sm-thumb nt2">📻</div>
-          <div class="news-sm-body">
-            <div class="news-sm-cat">Rádio</div>
-            <div class="news-sm-title">Programa completa 5 anos levando adoração ao ar em todo o Brasil</div>
-            <div class="news-sm-date">20 de março de 2026</div>
-          </div>
-        </div>
-        <div class="news-card-sm">
-          <div class="news-sm-thumb nt3">🙏</div>
-          <div class="news-sm-body">
-            <div class="news-sm-cat">Comunidade</div>
-            <div class="news-sm-title">Projeto de oração da comunidade já impactou mais de 10 mil vidas</div>
-            <div class="news-sm-date">15 de março de 2026</div>
-          </div>
-        </div>
-        <div class="news-card-sm">
-          <div class="news-sm-thumb nt1">🎵</div>
-          <div class="news-sm-body">
-            <div class="news-sm-cat">Música</div>
-            <div class="news-sm-title">Novo EP do programa disponível em todas as plataformas digitais</div>
-            <div class="news-sm-date">10 de março de 2026</div>
-          </div>
-        </div>
+        <div class="anuncie-card-title">Espaço na Programação</div>
+        <div class="anuncie-card-desc">Bloco dedicado ao seu ministério, evento ou mensagem dentro da grade semanal do programa ao vivo.</div>
       </div>
+      <div class="anuncie-card">
+        <div class="anuncie-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+        </div>
+        <div class="anuncie-card-title">Divulgação de Eventos</div>
+        <div class="anuncie-card-desc">Divulgue seu evento gospel, culto, conferência ou lançamento musical para milhares de ouvintes fiéis.</div>
+      </div>
+    </div>
+    <div class="anuncie-cta reveal">
+      <p>Entre em contato e receba nossa tabela de valores e formatos disponíveis.</p>
+      <a href="#contato" class="btn-primary">Quero anunciar</a>
     </div>
   </div>
 </section>
@@ -777,7 +883,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <li><a href="#podcasts">Podcasts</a></li>
         <li><a href="#top10">Top Gospel</a></li>
         <li><a href="#programacao">Programação</a></li>
-        <li><a href="#noticias">Notícias</a></li>
+        <li><a href="#anuncie">Anuncie</a></li>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#contato">Contato</a></li>
       </ul>
@@ -810,53 +916,54 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 
 <script>
 // ── SCHEDULE ──
-const sched = {
-  seg:[
-    {t:'06:00',n:'Manhã de Adoração',p:'Equipe EA',f:false},
-    {t:'08:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-    {t:'10:00',n:'Louvores da Manhã',p:'Equipe EA',f:false},
-    {t:'12:00',n:'Pausa Gospel',p:'Equipe EA',f:false},
-    {t:'18:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-    {t:'20:00',n:'Noite de Adoração',p:'Equipe EA',f:false},
-  ],
-  ter:[
-    {t:'06:00',n:'Manhã de Adoração',p:'Equipe EA',f:false},
-    {t:'08:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-    {t:'12:00',n:'Pausa Gospel',p:'Equipe EA',f:false},
-    {t:'18:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-  ],
-  qua:[
-    {t:'06:00',n:'Manhã de Adoração',p:'Equipe EA',f:false},
-    {t:'08:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-    {t:'12:00',n:'Especial de Quarta',p:'Equipe EA',f:false},
-    {t:'19:00',n:'Culto em Adoração',p:'Anderson Gustavo',f:true},
-  ],
-  qui:[
-    {t:'06:00',n:'Manhã de Adoração',p:'Equipe EA',f:false},
-    {t:'08:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-    {t:'18:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-  ],
-  sex:[
-    {t:'06:00',n:'Manhã de Adoração',p:'Equipe EA',f:false},
-    {t:'08:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-    {t:'12:00',n:'Top Gospel da Semana',p:'Equipe EA',f:false},
-    {t:'18:00',n:'Sexta de Louvor',p:'Anderson Gustavo',f:true},
-    {t:'21:00',n:'Noite de Fé',p:'Equipe EA',f:false},
-  ],
-  sab:[
-    {t:'08:00',n:'Sábado de Adoração',p:'Anderson Gustavo',f:true},
-    {t:'10:00',n:'Louvores do Sábado',p:'Equipe EA',f:false},
-    {t:'15:00',n:'Encontro Especial',p:'Anderson Gustavo',f:true},
-  ],
-  dom:[
-    {t:'07:00',n:'Domingo com Adoração',p:'Anderson Gustavo',f:true},
-    {t:'10:00',n:'Louvor Dominical',p:'Equipe EA',f:false},
-    {t:'19:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true},
-  ],
-};
+var _ds=[
+  {t:'00:00',n:'Vozes da Adoração',p:'Equipe EA',f:false},
+  {t:'01:00',n:'Clamor da Meia-Noite',p:'Equipe EA',f:false},
+  {t:'02:00',n:'Instrumental com Deus',p:'Equipe EA',f:false},
+  {t:'03:00',n:'Madrugada Profética',p:'Equipe EA',f:false},
+  {t:'04:00',n:'Despertar da Fé',p:'Equipe EA',f:false},
+  {t:'05:00',n:'Alvorada com Cristo',p:'Equipe EA',f:false},
+  {t:'06:00',n:'Bom Dia Reino',p:'Equipe EA',f:false},
+  {t:'08:00',n:'Café com Esperança',p:'Equipe EA',f:false},
+  {t:'09:00',n:'Mulheres de Fé',p:'Equipe EA',f:false},
+  {t:'10:00',n:'Conexão Gospel',p:'Equipe EA',f:false},
+  {t:'11:00',n:'Palavra que Alimenta',p:'Equipe EA',f:false},
+  {t:'12:00',n:'Hora da Vitória',p:'Equipe EA',f:false},
+  {t:'13:00',n:'Top Louvor Brasil',p:'Equipe EA',f:false},
+  {t:'14:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true,s:'7MJj4d0ZfHNVsoJFE9FYAf'},
+  {t:'15:00',n:'Família no Altar',p:'Equipe EA',f:false},
+  {t:'16:00',n:'Som da Esperança',p:'Equipe EA',f:false},
+  {t:'17:00',n:'Conversa com o Pastor',p:'Equipe EA',f:false},
+  {t:'18:00',n:'Jornal Gospel News',p:'Equipe EA',f:false},
+  {t:'19:00',n:'Adoração Total',p:'Equipe EA',f:false},
+  {t:'20:00',n:'Impacto Jovem',p:'Equipe EA',f:false},
+  {t:'21:00',n:'Noite de Milagres',p:'Equipe EA',f:false},
+  {t:'22:00',n:'Acústico Gospel Live',p:'Equipe EA',f:false},
+  {t:'23:00',n:'Descansando em Deus',p:'Equipe EA',f:false},
+];
+const sched={seg:_ds,ter:_ds,qua:_ds,qui:_ds,sex:_ds,sab:_ds,dom:_ds};
 
-function renderSched(day) {
-  document.getElementById('schedList').innerHTML = sched[day].map(i => `
+var DAYS_MAP = ['dom','seg','ter','qua','qui','sex','sab'];
+var currentDay = 'seg';
+var currentPeriod = 'tarde';
+
+function getPeriodForHour(h) {
+  if (h >= 0 && h <= 4) return 'madrugada';
+  if (h >= 5 && h <= 11) return 'manha';
+  if (h >= 12 && h <= 17) return 'tarde';
+  return 'noite';
+}
+
+function renderSched(day, period) {
+  var slots = sched[day].filter(function(i) {
+    var h = parseInt(i.t.split(':')[0]);
+    if (period === 'madrugada') return h >= 0 && h <= 4;
+    if (period === 'manha') return h >= 5 && h <= 11;
+    if (period === 'tarde') return h >= 12 && h <= 17;
+    if (period === 'noite') return h >= 18 && h <= 23;
+    return true;
+  });
+  document.getElementById('schedList').innerHTML = slots.map(i => `
     <div class="sched-item${i.f?' feat':''}">
       <span class="sched-time">${i.t}</span>
       <div class="sched-dot"></div>
@@ -864,25 +971,88 @@ function renderSched(day) {
         <div class="sched-name">${i.n}</div>
         <div class="sched-pres">${i.p}</div>
       </div>
-      ${i.f ? '<span class="sched-badge">PROGRAMA</span>' : ''}
+      ${i.f ? `<span class="sched-badge">PROGRAMA</span><button class="sched-play-btn" onclick="openSpotify('${i.s||''}')" title="Ouvir programa"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>` : ''}
     </div>`).join('');
 }
 function switchDay(btn, day) {
+  currentDay = day;
   document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderSched(day);
+  renderSched(currentDay, currentPeriod);
 }
-renderSched('seg');
+function switchPeriod(btn, period) {
+  currentPeriod = period;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSched(currentDay, currentPeriod);
+}
+(function initSched() {
+  var now = new Date();
+  currentDay = DAYS_MAP[now.getDay()];
+  currentPeriod = getPeriodForHour(now.getHours());
+  document.querySelectorAll('.day-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('onclick').indexOf("'"+currentDay+"'") > -1);
+  });
+  document.querySelectorAll('.period-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('onclick').indexOf("'"+currentPeriod+"'") > -1);
+  });
+  renderSched(currentDay, currentPeriod);
+})();
 
 // ── PLAYER ──
-let playing = false;
-function togglePlay() {
-  playing = !playing;
-  document.getElementById('playBtn').innerHTML = playing
-    ? '<svg viewBox="0 0 24 24" fill="#080808" width="14" height="14"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="#080808" width="14" height="14"><path d="M8 5v14l11-7z"/></svg>';
-  document.getElementById('waveform').classList.toggle('paused', !playing);
+var PAUSA_ARTIST = '5bl6PmAUm5h5q3RdFNCBbU';
+function getCurrentProgram() {
+  var now = new Date();
+  var day = DAYS_MAP[now.getDay()];
+  var hm = now.getHours() * 100 + now.getMinutes();
+  var slots = sched[day];
+  var current = slots[0];
+  for (var i = 0; i < slots.length; i++) {
+    var parts = slots[i].t.split(':');
+    var slotHm = parseInt(parts[0]) * 100 + parseInt(parts[1]);
+    if (hm >= slotHm) current = slots[i]; else break;
+  }
+  return current;
 }
+
+function togglePlay() {
+  document.getElementById('player-bar').scrollIntoView({behavior:'smooth'});
+}
+
+// load Spotify player on page init
+var spFrame = document.getElementById('spotify-popup-frame');
+spFrame.addEventListener('load', function(){ spFrame.classList.add('loaded'); });
+
+function entrarNoSite() {
+  var overlay = document.getElementById('entrada-overlay');
+  overlay.classList.add('fade-out');
+  setTimeout(function(){ overlay.style.display='none'; }, 650);
+  spFrame.src = 'https://open.spotify.com/embed/artist/' + PAUSA_ARTIST + '?utm_source=generator&theme=0&autoplay=1';
+  var heroFrame = document.getElementById('hero-yt-frame');
+  if (heroFrame) heroFrame.src = 'https://www.youtube.com/embed/0EnEXK3ZihY?rel=0&modestbranding=1&autoplay=1';
+}
+
+// ── CLOCK + PROGRAM BAR ──
+var DAYS_PT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+var MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+function updateBarClock() {
+  var now = new Date();
+  var clockEl = document.getElementById('player-clock');
+  var dateEl = document.getElementById('player-clock-date');
+  var progNameEl = document.getElementById('player-prog-name');
+  var progPresEl = document.getElementById('player-prog-pres');
+  if (clockEl) {
+    clockEl.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+  }
+  if (dateEl) {
+    dateEl.textContent = DAYS_PT[now.getDay()] + ' · ' + String(now.getDate()).padStart(2,'0') + ' ' + MONTHS_PT[now.getMonth()];
+  }
+  var prog = getCurrentProgram();
+  if (progNameEl) progNameEl.textContent = prog.n;
+  if (progPresEl) progPresEl.textContent = prog.p;
+}
+updateBarClock();
+setInterval(updateBarClock, 1000);
 
 // ── MENU ──
 function toggleMenu() {
@@ -944,12 +1114,65 @@ function submitForm(e) {
   }, 3000);
 }
 
-function startPlayer() {
-  const iframe = document.getElementById('yt-player');
-  const overlay = document.getElementById('yt-overlay');
-  iframe.src = 'https://www.youtube.com/embed?listType=playlist&list=PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD&rel=0&modestbranding=1&loop=1&autoplay=1&enablejsapi=1';
-  overlay.classList.add('hidden');
+(function(){
+  var months=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var today=new Date();
+  var dow=today.getDay();
+  var end=new Date(today); end.setDate(today.getDate()-dow);
+  var start=new Date(end); start.setDate(end.getDate()-6);
+  var sd=String(start.getDate()).padStart(2,'0');
+  var ed=String(end.getDate()).padStart(2,'0');
+  var sm=months[start.getMonth()];
+  var em=months[end.getMonth()];
+  var y=end.getFullYear();
+  var label=start.getMonth()===end.getMonth()
+    ? sd+' a '+ed+' de '+em+' de '+y
+    : sd+' de '+sm+' a '+ed+' de '+em+' de '+y;
+  var el=document.getElementById('week-label');
+  if(el) el.textContent='Semana de '+label;
+})();
+function playTrack(el, trackId) {
+  document.querySelectorAll('.top10-item').forEach(function(i){ i.classList.remove('playing'); });
+  el.classList.add('playing');
+  const wrap = document.getElementById('spotify-embed-wrap');
+  const iframe = document.getElementById('spotify-iframe');
+  iframe.src = 'https://open.spotify.com/embed/track/' + trackId + '?utm_source=generator&theme=0&autoplay=1';
+  wrap.classList.add('active');
+  wrap.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+
+function openVideo(id) {
+  document.getElementById('vm-iframe').src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+  var m = document.getElementById('video-modal');
+  m.classList.add('open');
+  m.classList.remove('spotify');
+  document.body.style.overflow = 'hidden';
+}
+function openSpotify(id) {
+  var src = id
+    ? 'https://open.spotify.com/embed/episode/' + id + '?utm_source=generator&theme=0'
+    : 'https://open.spotify.com/embed/show/3ujfpuVt8NpdBiQxsmL2DR?utm_source=generator&theme=0';
+  document.getElementById('vm-iframe').src = src;
+  var m = document.getElementById('video-modal');
+  m.classList.add('open','spotify');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo(e) {
+  if (e && e.type === 'click' && e.target !== document.getElementById('video-modal') && !e.target.closest('.vm-close')) return;
+  document.getElementById('vm-iframe').src = '';
+  document.getElementById('video-modal').classList.remove('open','spotify');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideo(); });
 </script>
+
+<!-- VIDEO MODAL -->
+<div id="video-modal" onclick="closeVideo(event)">
+  <div class="vm-inner">
+    <button class="vm-close" onclick="closeVideo()">✕</button>
+    <iframe id="vm-iframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+  </div>
+</div>
+
 </body>
 </html>
