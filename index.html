@@ -826,12 +826,12 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <input type="hidden" name="subject" value="Nova mensagem — Encontro de Adoradores">
         <input type="hidden" name="from_name" value="Site Encontro de Adoradores">
         <div class="f-row">
-          <div><label>Nome</label><input id="f-nome" type="text" placeholder="Seu nome completo" required></div>
-          <div><label>E-mail</label><input id="f-email" type="email" placeholder="seu@email.com" required></div>
+          <div><label>Nome</label><input id="f-nome" name="Nome" type="text" placeholder="Seu nome completo" required></div>
+          <div><label>E-mail</label><input id="f-email" name="Email" type="email" placeholder="seu@email.com" required></div>
         </div>
         <div class="f-group">
           <label>Assunto</label>
-          <select id="f-assunto" required>
+          <select id="f-assunto" name="Assunto" required>
             <option value="">Selecione o assunto</option>
             <option>Pedido de Oração</option>
             <option>Participação no Programa</option>
@@ -842,7 +842,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         </div>
         <div class="f-group">
           <label>Mensagem</label>
-          <textarea id="f-msg" placeholder="Escreva sua mensagem aqui..." required></textarea>
+          <textarea id="f-msg" name="Mensagem" placeholder="Escreva sua mensagem aqui..." required></textarea>
         </div>
         <button type="submit" class="btn-pri" style="width:100%;justify-content:center;font-size:14px;padding:14px;" id="submitBtn">
           Enviar Mensagem
