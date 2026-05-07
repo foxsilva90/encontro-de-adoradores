@@ -821,14 +821,14 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           <div class="info-text"><strong>Pedido de Oração</strong><span>Envie seu pedido e oraremos por você</span></div>
         </div>
       </div>
-      <form class="form-wrap" onsubmit="submitForm(event)">
+      <form class="form-wrap" onsubmit="submitForm(event)" id="contactForm" novalidate>
         <div class="f-row">
-          <div><label>Nome</label><input type="text" placeholder="Seu nome completo"></div>
-          <div><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+          <div><label>Nome</label><input id="f-nome" type="text" placeholder="Seu nome completo" required></div>
+          <div><label>E-mail</label><input id="f-email" type="email" placeholder="seu@email.com" required></div>
         </div>
         <div class="f-group">
           <label>Assunto</label>
-          <select>
+          <select id="f-assunto" required>
             <option value="">Selecione o assunto</option>
             <option>Pedido de Oração</option>
             <option>Participação no Programa</option>
@@ -839,7 +839,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         </div>
         <div class="f-group">
           <label>Mensagem</label>
-          <textarea placeholder="Escreva sua mensagem aqui..."></textarea>
+          <textarea id="f-msg" placeholder="Escreva sua mensagem aqui..." required></textarea>
         </div>
         <button type="submit" class="btn-pri" style="width:100%;justify-content:center;font-size:14px;padding:14px;" id="submitBtn">
           Enviar Mensagem
@@ -1122,6 +1122,30 @@ document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.obser
 // ── FORM ──
 function submitForm(e) {
   e.preventDefault();
+  const fields = [
+    document.getElementById('f-nome'),
+    document.getElementById('f-email'),
+    document.getElementById('f-assunto'),
+    document.getElementById('f-msg')
+  ];
+  let valid = true;
+  fields.forEach(f => {
+    const empty = !f.value.trim() || (f.tagName === 'SELECT' && f.value === '');
+    const emailInvalid = f.type === 'email' && f.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value.trim());
+    if (empty || emailInvalid) {
+      f.style.borderColor = '#ef4444';
+      f.style.boxShadow = '0 0 0 3px rgba(239,68,68,.15)';
+      valid = false;
+    } else {
+      f.style.borderColor = '';
+      f.style.boxShadow = '';
+    }
+    f.addEventListener('input', function() {
+      this.style.borderColor = '';
+      this.style.boxShadow = '';
+    }, { once: true });
+  });
+  if (!valid) return;
   const btn = document.getElementById('submitBtn');
   btn.innerHTML = '✓ Mensagem enviada! Deus abençoe!';
   btn.style.background = '#16A34A';
@@ -1129,6 +1153,7 @@ function submitForm(e) {
     btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
     btn.style.background = '';
     e.target.reset();
+    fields.forEach(f => { f.style.borderColor = ''; f.style.boxShadow = ''; });
   }, 3000);
 }
 
