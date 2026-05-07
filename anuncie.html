@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anuncie no Encontro de Adoradores — Alcance Milhares de Ouvintes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0e0e0e;
+  --s1:        #161616;
+  --s2:        #1e1e1e;
+  --s3:        #272727;
+  --s4:        #333;
+  --tp:        #ffffff;
+  --ts:        #b3b3b3;
+  --tm:        #555;
+  --border:    rgba(255,255,255,.07);
+  --blue:      #1A4F8A;
+  --blue-dk:   #0D2A4A;
+  --blue-lt:   #2563B0;
+  --orange:    #F5A324;
+  --orange-dk: #D4881A;
+  --dark:      #080808;
+  --pill:      9999px;
+  --radius:    12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);}
+
+/* ── NAV ── */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(14,14,14,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 24px;}
+.topnav-inner{max-width:1160px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:36px;height:36px;border-radius:8px;background:var(--orange);display:flex;align-items:center;justify-content:center;}
+.nav-logo-icon svg{width:18px;height:18px;fill:var(--dark);}
+.nav-logo-text{font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;color:var(--tp);line-height:1.2;}
+.nav-logo-sub{font-size:10px;color:var(--orange);font-weight:600;letter-spacing:.5px;}
+.nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--ts);font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;text-decoration:none;transition:color .2s;letter-spacing:.5px;}
+.nav-back:hover{color:var(--orange);}
+.nav-back svg{width:14px;height:14px;fill:currentColor;}
+.nav-cta{background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-weight:800;font-size:12px;padding:9px 22px;border-radius:var(--pill);text-decoration:none;letter-spacing:.5px;transition:.2s;}
+.nav-cta:hover{background:var(--orange-dk);}
+
+/* ── HERO ── */
+.hero{padding:140px 24px 80px;background:linear-gradient(160deg,#040d18 0%,#0d2240 45%,#040d18 100%);position:relative;overflow:hidden;text-align:center;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(245,163,36,.13) 0%,transparent 65%);pointer-events:none;}
+.hero-noise{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;}
+.hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.25);color:var(--orange);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:6px 16px;border-radius:var(--pill);margin-bottom:28px;}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--orange);display:block;}
+.hero h1{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(32px,5vw,60px);line-height:1.05;margin-bottom:20px;letter-spacing:-1px;}
+.hero h1 em{color:var(--orange);font-style:normal;}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--ts);line-height:1.75;max-width:580px;margin:0 auto 40px;}
+.hero-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-pri{background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;padding:14px 32px;border-radius:var(--pill);text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.25s;letter-spacing:.5px;text-transform:uppercase;box-shadow:0 4px 28px rgba(245,163,36,.35);}
+.btn-pri:hover{background:var(--orange-dk);transform:translateY(-2px);box-shadow:0 8px 36px rgba(245,163,36,.45);}
+.btn-pri svg{width:15px;height:15px;fill:var(--dark);}
+.btn-sec{background:transparent;color:var(--tp);font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;padding:14px 32px;border-radius:var(--pill);text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:.25s;border:1px solid rgba(255,255,255,.25);letter-spacing:.5px;}
+.btn-sec:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5);}
+
+/* ── STATS ── */
+.stats{background:var(--blue-dk);padding:48px 24px;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);}
+.stats-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.stat{text-align:center;padding:20px 16px;position:relative;}
+.stat:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.1);}
+.stat-n{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(28px,3vw,42px);color:var(--tp);line-height:1;margin-bottom:6px;}
+.stat-n span{color:var(--orange);}
+.stat-l{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.5px;font-weight:600;text-transform:uppercase;}
+
+/* ── SECTION BASE ── */
+section{padding:80px 24px;}
+.wrap{max-width:1160px;margin:0 auto;}
+.sec-hdr{margin-bottom:56px;text-align:center;}
+.eyebrow{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.eyebrow::before,.eyebrow::after{content:'';width:24px;height:2px;background:var(--orange);display:block;border-radius:2px;}
+.sec-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:clamp(24px,3.5vw,36px);color:var(--tp);line-height:1.15;margin-bottom:12px;}
+.sec-desc{font-size:15px;color:var(--ts);line-height:1.75;max-width:560px;margin:0 auto;}
+
+/* ── PACKAGES ── */
+.packages{background:var(--bg);}
+.pkg-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:48px;}
+.pkg-toggle span{font-family:'Raleway',sans-serif;font-size:13px;font-weight:600;color:var(--ts);}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;}
+.pkg-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:36px 28px;display:flex;flex-direction:column;gap:0;transition:.3s;position:relative;}
+.pkg-card:hover{border-color:rgba(245,163,36,.2);transform:translateY(-4px);box-shadow:0 20px 56px rgba(0,0,0,.5);}
+.pkg-card.featured{background:linear-gradient(160deg,rgba(26,79,138,.25) 0%,rgba(13,42,74,.3) 100%);border-color:var(--orange);box-shadow:0 8px 40px rgba(245,163,36,.15);}
+.pkg-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 16px;border-radius:var(--pill);white-space:nowrap;}
+.pkg-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:20px;color:var(--tp);margin-bottom:8px;}
+.pkg-tagline{font-size:13px;color:var(--ts);line-height:1.6;margin-bottom:28px;min-height:42px;}
+.pkg-price{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.pkg-price-label{font-size:11px;color:var(--tm);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.pkg-price-val{font-family:'Raleway',sans-serif;font-weight:900;font-size:28px;color:var(--tp);}
+.pkg-price-val span{font-size:14px;font-weight:600;color:var(--ts);}
+.pkg-features{list-style:none;display:flex;flex-direction:column;gap:12px;flex:1;margin-bottom:32px;}
+.pkg-features li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ts);line-height:1.5;}
+.pkg-features li::before{content:'✓';color:var(--orange);font-weight:800;font-size:12px;flex-shrink:0;margin-top:1px;}
+.pkg-features li.muted::before{content:'—';color:var(--tm);}
+.pkg-features li.muted{color:var(--tm);}
+.pkg-cta{display:block;text-align:center;font-family:'Raleway',sans-serif;font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;padding:13px 20px;border-radius:var(--pill);text-decoration:none;transition:.25s;}
+.pkg-cta.outline{border:1px solid rgba(255,255,255,.2);color:var(--tp);}
+.pkg-cta.outline:hover{border-color:var(--orange);color:var(--orange);background:rgba(245,163,36,.06);}
+.pkg-cta.solid{background:var(--orange);color:var(--dark);box-shadow:0 4px 20px rgba(245,163,36,.3);}
+.pkg-cta.solid:hover{background:var(--orange-dk);transform:translateY(-1px);box-shadow:0 6px 28px rgba(245,163,36,.4);}
+
+/* ── COMPARISON TABLE ── */
+.comparison{background:var(--s1);}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);border:1px solid var(--border);}
+.cmp-table{width:100%;border-collapse:collapse;min-width:640px;}
+.cmp-table thead tr{background:var(--s2);}
+.cmp-table th{padding:16px 20px;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ts);text-align:center;border-bottom:1px solid var(--border);}
+.cmp-table th:first-child{text-align:left;color:var(--tp);}
+.cmp-table th.featured-col{color:var(--orange);}
+.cmp-table td{padding:14px 20px;font-size:13.5px;color:var(--ts);text-align:center;border-bottom:1px solid rgba(255,255,255,.04);}
+.cmp-table td:first-child{text-align:left;color:var(--tp);font-weight:600;}
+.cmp-table tr:last-child td{border-bottom:none;}
+.cmp-table tbody tr:hover{background:rgba(255,255,255,.02);}
+.cmp-table .group-row td{background:rgba(245,163,36,.05);color:var(--orange);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;}
+.cmp-yes{color:#4ade80;font-size:15px;}
+.cmp-no{color:var(--tm);}
+.cmp-val{font-family:'Raleway',sans-serif;font-weight:700;color:var(--tp);font-size:13px;}
+
+/* ── WHY SECTION ── */
+.why{background:var(--bg);}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.why-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:32px 24px;transition:.3s;}
+.why-card:hover{border-color:rgba(245,163,36,.25);transform:translateY(-3px);}
+.why-icon{width:52px;height:52px;border-radius:10px;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.2);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.why-icon svg{width:22px;height:22px;fill:var(--orange);}
+.why-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:16px;color:var(--tp);margin-bottom:10px;}
+.why-desc{font-size:13.5px;color:var(--ts);line-height:1.75;}
+
+/* ── TESTIMONIALS ── */
+.proof{background:var(--s1);}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.proof-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;}
+.proof-quote{font-size:14px;color:var(--ts);line-height:1.8;margin-bottom:20px;font-style:italic;}
+.proof-quote::before{content:'"';color:var(--orange);font-size:28px;font-family:'Raleway',sans-serif;font-weight:900;line-height:0;vertical-align:-10px;margin-right:2px;}
+.proof-author{display:flex;align-items:center;gap:12px;}
+.proof-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--orange));display:flex;align-items:center;justify-content:center;font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;color:#fff;flex-shrink:0;}
+.proof-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--tp);}
+.proof-role{font-size:11px;color:var(--tm);}
+
+/* ── FAQ ── */
+.faq{background:var(--bg);}
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:0;}
+details{border-bottom:1px solid var(--border);}
+details:first-child{border-top:1px solid var(--border);}
+summary{padding:20px 4px;font-family:'Raleway',sans-serif;font-weight:700;font-size:15px;color:var(--tp);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:color .2s;}
+summary:hover{color:var(--orange);}
+summary::after{content:'+';font-size:22px;font-weight:300;color:var(--orange);flex-shrink:0;transition:transform .25s;}
+details[open] summary::after{transform:rotate(45deg);}
+details[open] summary{color:var(--orange);}
+.faq-body{padding:0 4px 20px;font-size:14px;color:var(--ts);line-height:1.8;}
+
+/* ── CTA FINAL ── */
+.cta-final{background:linear-gradient(150deg,#040d18 0%,#0d2a4a 50%,#040d18 100%);padding:100px 24px;position:relative;overflow:hidden;text-align:center;}
+.cta-final::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(245,163,36,.12) 0%,transparent 60%);pointer-events:none;}
+.cta-final-inner{max-width:680px;margin:0 auto;position:relative;z-index:1;}
+.cta-final h2{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(28px,4vw,46px);line-height:1.1;margin-bottom:16px;}
+.cta-final h2 em{color:var(--orange);font-style:normal;}
+.cta-final p{font-size:16px;color:var(--ts);line-height:1.75;margin-bottom:40px;}
+
+/* ── CONTACT FORM ── */
+.contact-form-wrap{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:40px;max-width:600px;margin:0 auto;text-align:left;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.f-group{margin-bottom:16px;}
+label{display:block;font-family:'Raleway',sans-serif;font-weight:700;font-size:11px;color:var(--ts);margin-bottom:7px;letter-spacing:1px;text-transform:uppercase;}
+input,textarea,select{width:100%;padding:12px 16px;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;background:var(--s2);color:var(--tp);}
+input::placeholder,textarea::placeholder{color:var(--tm);}
+select option{background:var(--s2);}
+input:focus,textarea:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(245,163,36,.1);}
+textarea{min-height:110px;resize:vertical;}
+.form-submit{width:100%;background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;letter-spacing:.5px;text-transform:uppercase;padding:14px 24px;border:none;border-radius:var(--pill);cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 24px rgba(245,163,36,.3);}
+.form-submit:hover{background:var(--orange-dk);transform:translateY(-1px);}
+.form-submit svg{width:15px;height:15px;fill:var(--dark);}
+.form-note{text-align:center;margin-top:16px;font-size:12px;color:var(--tm);}
+.form-note a{color:var(--orange);text-decoration:none;}
+
+/* ── FOOTER ── */
+.foot{background:#000;padding:28px 24px;text-align:center;border-top:1px solid var(--border);}
+.foot p{font-size:12px;color:var(--tm);}
+.foot a{color:var(--orange);text-decoration:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .pkg-grid{grid-template-columns:1fr;}
+  .pkg-card.featured{order:-1;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .proof-grid{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .hero{padding:100px 24px 60px;}
+  .stats-inner{grid-template-columns:1fr 1fr;}
+  .stat::after{display:none;}
+  .why-grid{grid-template-columns:1fr;}
+  .f-row{grid-template-columns:1fr;}
+  .contact-form-wrap{padding:24px 20px;}
+  .nav-back{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      </div>
+      <div>
+        <div class="nav-logo-text">Encontro de Adoradores</div>
+        <div class="nav-logo-sub">com Anderson Gustavo</div>
+      </div>
+    </a>
+    <a href="index.html" class="nav-back">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Voltar ao site
+    </a>
+    <a href="#contato" class="nav-cta">Falar com a Equipe</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span>Mídia Gospel · Alcance Real<span></span></div>
+    <h1>Sua mensagem para quem<br><em>realmente ouve</em></h1>
+    <p class="hero-sub">Anuncie no Encontro de Adoradores e conecte sua marca, ministério ou evento a uma audiência fiel, engajada e apaixonada por adoração.</p>
+    <div class="hero-cta-row">
+      <a href="#pacotes" class="btn-pri">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        Ver Pacotes
+      </a>
+      <a href="#contato" class="btn-sec">Falar com a Equipe</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-n">50<span>k+</span></div>
+      <div class="stat-l">Ouvintes Mensais</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">3<span>+</span></div>
+      <div class="stat-l">Anos no Ar</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">7</div>
+      <div class="stat-l">Dias por Semana</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">98<span>%</span></div>
+      <div class="stat-l">Audiência Engajada</div>
+    </div>
+  </div>
+</div>
+
+<!-- PACOTES -->
+<section class="packages" id="pacotes">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Pacotes</div>
+      <h2 class="sec-title">Escolha o formato ideal</h2>
+      <p class="sec-desc">Desde menções pontuais até patrocínios completos — há uma opção para cada objetivo e investimento.</p>
+    </div>
+    <div class="pkg-grid">
+
+      <!-- Básico -->
+      <div class="pkg-card">
+        <div class="pkg-name">Menção Gospel</div>
+        <div class="pkg-tagline">Ideal para igrejas e negócios que querem dar os primeiros passos na mídia gospel.</div>
+        <div class="pkg-price">
+          <div class="pkg-price-label">A partir de</div>
+          <div class="pkg-price-val">Sob Consulta <span>/ mês</span></div>
+        </div>
+        <ul class="pkg-features">
+          <li>Menção ao vivo no programa (1× por semana)</li>
+          <li>Post dedicado nas redes sociais (1× por mês)</li>
+          <li>Logo no site por 30 dias</li>
+          <li>Certificado de parceria</li>
+          <li class="muted">Bloco publicitário no programa</li>
+          <li class="muted">Inserção no podcast</li>
+          <li class="muted">Relatório de alcance</li>
+        </ul>
+        <a href="#contato" class="pkg-cta outline">Solicitar Proposta</a>
+      </div>
+
+      <!-- Destaque -->
+      <div class="pkg-card featured">
+        <div class="pkg-badge">Mais Popular</div>
+        <div class="pkg-name">Parceiro do Programa</div>
+        <div class="pkg-tagline">Para marcas e ministérios que querem presença contínua e reconhecimento de audiência.</div>
+        <div class="pkg-price">
+          <div class="pkg-price-label">A partir de</div>
+          <div class="pkg-price-val">Sob Consulta <span>/ mês</span></div>
+        </div>
+        <ul class="pkg-features">
+          <li>Menção ao vivo (3× por semana)</li>
+          <li>Bloco publicitário de 2 min no programa</li>
+          <li>Posts semanais nas redes sociais</li>
+          <li>Banner em destaque no site</li>
+          <li>Inserção nos episódios do podcast</li>
+          <li>Relatório de alcance mensal</li>
+          <li class="muted">Vinheta personalizada</li>
+        </ul>
+        <a href="#contato" class="pkg-cta solid">Solicitar Proposta</a>
+      </div>
+
+      <!-- Premium -->
+      <div class="pkg-card">
+        <div class="pkg-name">Patrocínio Master</div>
+        <div class="pkg-tagline">Patrocínio completo do programa — máxima visibilidade e associação direta à marca EA.</div>
+        <div class="pkg-price">
+          <div class="pkg-price-label">A partir de</div>
+          <div class="pkg-price-val">Sob Consulta <span>/ mês</span></div>
+        </div>
+        <ul class="pkg-features">
+          <li>Patrocínio completo do programa</li>
+          <li>Menção ao vivo diária</li>
+          <li>Bloco publicitário de 5 min</li>
+          <li>Posts diários nas redes sociais</li>
+          <li>Destaque máximo no site + podcast</li>
+          <li>Vinheta personalizada exclusiva</li>
+          <li>Relatório detalhado de alcance</li>
+        </ul>
+        <a href="#contato" class="pkg-cta outline">Solicitar Proposta</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVO -->
+<section class="comparison" id="comparativo">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Comparativo</div>
+      <h2 class="sec-title">O que cada pacote inclui</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Recurso</th>
+            <th>Menção Gospel</th>
+            <th class="featured-col">Parceiro ⭐</th>
+            <th>Master</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="group-row"><td colspan="4">Presença no Programa</td></tr>
+          <tr>
+            <td>Menção ao vivo</td>
+            <td><span class="cmp-val">1×/semana</span></td>
+            <td><span class="cmp-val">3×/semana</span></td>
+            <td><span class="cmp-val">Diária</span></td>
+          </tr>
+          <tr>
+            <td>Bloco publicitário</td>
+            <td><span class="cmp-no">—</span></td>
+            <td><span class="cmp-val">2 min</span></td>
+            <td><span class="cmp-val">5 min</span></td>
+          </tr>
+          <tr>
+            <td>Vinheta personalizada</td>
+            <td><span class="cmp-no">—</span></td>
+            <td><span class="cmp-no">—</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+          </tr>
+          <tr class="group-row"><td colspan="4">Digital & Redes Sociais</td></tr>
+          <tr>
+            <td>Post nas redes sociais</td>
+            <td><span class="cmp-val">1×/mês</span></td>
+            <td><span class="cmp-val">Semanal</span></td>
+            <td><span class="cmp-val">Diário</span></td>
+          </tr>
+          <tr>
+            <td>Logo no site</td>
+            <td><span class="cmp-yes">✓</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Banner em destaque</td>
+            <td><span class="cmp-no">—</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+          </tr>
+          <tr class="group-row"><td colspan="4">Podcast & Relatórios</td></tr>
+          <tr>
+            <td>Inserção no podcast</td>
+            <td><span class="cmp-no">—</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Relatório de alcance</td>
+            <td><span class="cmp-no">—</span></td>
+            <td><span class="cmp-val">Mensal</span></td>
+            <td><span class="cmp-val">Detalhado</span></td>
+          </tr>
+          <tr>
+            <td>Certificado de parceria</td>
+            <td><span class="cmp-yes">✓</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+            <td><span class="cmp-yes">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE ANUNCIAR -->
+<section class="why">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Vantagens</div>
+      <h2 class="sec-title">Por que anunciar conosco?</h2>
+      <p class="sec-desc">Uma audiência que confia, engajada e pronta para ouvir a sua mensagem.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <div class="why-title">Audiência Fiel e Qualificada</div>
+        <div class="why-desc">Nossa base de ouvintes é composta por cristãos engajados, com alto índice de confiança e lealdade ao programa — consumidores receptivos a mensagens autênticas.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+        </div>
+        <div class="why-title">Alcance Multi-Plataforma</div>
+        <div class="why-desc">Presença simultânea no programa ao vivo, podcast no Spotify, redes sociais e site — sua mensagem chega ao ouvinte em todos os pontos de contato.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5z"/></svg>
+        </div>
+        <div class="why-title">Credibilidade e Confiança</div>
+        <div class="why-desc">Associar sua marca ao Encontro de Adoradores significa ser referendado por um programa de fé com mais de 3 anos de história e credibilidade no meio gospel.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+        </div>
+        <div class="why-title">Resultados Mensuráveis</div>
+        <div class="why-desc">Nos pacotes Parceiro e Master, você recebe relatórios de alcance com dados de audiência, visualizações e engajamento para acompanhar o retorno do investimento.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        </div>
+        <div class="why-title">Transmissão 24/7</div>
+        <div class="why-desc">O programa está no ar sete dias por semana, 24 horas por dia. Sua mensagem alcança ouvintes de madrugada, pela manhã, à tarde e à noite — sem parar.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+        </div>
+        <div class="why-title">Atendimento Personalizado</div>
+        <div class="why-desc">Nossa equipe trabalha junto com você para criar a mensagem certa, no formato ideal, para o seu público. Sem templates genéricos — comunicação que gera conexão real.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="proof">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Depoimentos</div>
+      <h2 class="sec-title">Quem já anunciou aprovou</h2>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-quote">Anunciar no Encontro de Adoradores foi uma das melhores decisões para o nosso evento. O retorno em inscrições superou todas as expectativas.</div>
+        <div class="proof-author">
+          <div class="proof-avatar">MR</div>
+          <div>
+            <div class="proof-name">Pr. Marcos Rocha</div>
+            <div class="proof-role">Igreja Palavra Viva</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-quote">A audiência fiel do programa gerou um engajamento genuíno com a nossa livraria. Em 30 dias percebemos aumento real nas vendas dos títulos mencionados.</div>
+        <div class="proof-author">
+          <div class="proof-avatar">LC</div>
+          <div>
+            <div class="proof-name">Lúcia Carvalho</div>
+            <div class="proof-role">Livraria Palavra Fiel</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-quote">Nossa conferência atingiu lotação máxima em 2 semanas. Com certeza a divulgação no Encontro de Adoradores foi decisiva para alcançar tantas pessoas.</div>
+        <div class="proof-author">
+          <div class="proof-avatar">JS</div>
+          <div>
+            <div class="proof-name">João Silva</div>
+            <div class="proof-role">Ministério Adoração Viva</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="wrap">
+    <div class="sec-hdr">
+      <div class="eyebrow">Dúvidas</div>
+      <h2 class="sec-title">Perguntas frequentes</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Qual o prazo mínimo de contrato?</summary>
+        <div class="faq-body">Trabalhamos com pacotes mensais, sem fidelidade obrigatória. Porém, para anunciantes que fecham contratos de 3 ou 6 meses, oferecemos condições diferenciadas. Entre em contato para saber mais.</div>
+      </details>
+      <details>
+        <summary>Como funciona a criação do conteúdo publicitário?</summary>
+        <div class="faq-body">Nossa equipe trabalha junto com você para criar a mensagem ideal. Para menções ao vivo, desenvolvemos um roteiro aprovado por você. Para vinhetas e posts, produzimos o material com aprovação prévia antes de ir ao ar.</div>
+      </details>
+      <details>
+        <summary>Vocês atendem empresas fora do segmento gospel?</summary>
+        <div class="faq-body">Sim! Negócios de qualquer segmento são bem-vindos, desde que o produto ou serviço seja compatível com os valores da nossa audiência cristã. Avaliamos cada caso individualmente.</div>
+      </details>
+      <details>
+        <summary>Em quanto tempo meu anúncio começa a ir ao ar?</summary>
+        <div class="faq-body">Após a assinatura do contrato e aprovação dos materiais, o prazo padrão para início é de 5 a 7 dias úteis. Em casos urgentes (lançamentos ou eventos), entre em contato para avaliarmos prazos especiais.</div>
+      </details>
+      <details>
+        <summary>Como recebo o relatório de alcance?</summary>
+        <div class="faq-body">Os relatórios são enviados por e-mail ao final de cada mês, com dados de audiência ao vivo, streams do podcast, visualizações no site e engajamento nas redes sociais referentes ao período de veiculação do seu anúncio.</div>
+      </details>
+      <details>
+        <summary>Posso anunciar um evento único, fora de um pacote mensal?</summary>
+        <div class="faq-body">Sim. Temos condições especiais para divulgação pontual de eventos, conferências e lançamentos. Entre em contato informando a data do evento para montarmos um plano personalizado.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL + FORMULÁRIO -->
+<section class="cta-final" id="contato">
+  <div class="cta-final-inner">
+    <div class="eyebrow" style="justify-content:center;margin-bottom:20px;">Fale Conosco</div>
+    <h2>Pronto para <em>alcançar</em><br>sua audiência?</h2>
+    <p>Preencha o formulário e nossa equipe entra em contato em até 24 horas com uma proposta personalizada para o seu objetivo.</p>
+    <div class="contact-form-wrap">
+      <div class="f-row">
+        <div class="f-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Seu nome completo">
+        </div>
+        <div class="f-group">
+          <label for="telefone">WhatsApp</label>
+          <input type="tel" id="telefone" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+      <div class="f-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com">
+      </div>
+      <div class="f-group">
+        <label for="empresa">Igreja / Empresa / Ministério</label>
+        <input type="text" id="empresa" placeholder="Nome da organização">
+      </div>
+      <div class="f-group">
+        <label for="pacote">Pacote de Interesse</label>
+        <select id="pacote">
+          <option value="">Selecione um pacote...</option>
+          <option>Menção Gospel</option>
+          <option>Parceiro do Programa</option>
+          <option>Patrocínio Master</option>
+          <option>Divulgação de Evento</option>
+          <option>Ainda não sei — quero orientação</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label for="mensagem">Mensagem (opcional)</label>
+        <textarea id="mensagem" placeholder="Conte um pouco sobre seu objetivo com o anúncio..."></textarea>
+      </div>
+      <a href="https://wa.me/55?text=Olá!%20Tenho%20interesse%20em%20anunciar%20no%20Encontro%20de%20Adoradores." target="_blank" class="form-submit">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.522 5.847L.057 23.882l6.196-1.443A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-1.952 0-3.771-.526-5.332-1.441l-.382-.227-3.676.857.894-3.575-.249-.393A9.787 9.787 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+        Enviar pelo WhatsApp
+      </a>
+      <p class="form-note">Prefere e-mail? Escreva para <a href="mailto:contato@encontrodeadoradores.com">contato@encontrodeadoradores.com</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <p>© 2025 Encontro de Adoradores · <a href="index.html">Voltar ao site</a></p>
+</footer>
+
+</body>
+</html>
