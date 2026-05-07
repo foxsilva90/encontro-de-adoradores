@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termos de Serviço — Encontro de Adoradores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#121212;--s1:#181818;--s2:#1f1f1f;--s3:#282828;--s4:#333333;
+  --tp:#ffffff;--ts:#b3b3b3;--tm:#535353;--border:rgba(255,255,255,.08);
+  --blue:#1A4F8A;--blue-dark:#0D2A4A;--blue-light:#2563B0;
+  --orange:#F5A324;--orange-dk:#D4881A;--dark:#080808;--pill:9999px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);padding-top:84px;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--blue-dark);height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;border-bottom:1px solid rgba(255,255,255,.1);}
+.topbar-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.topbar-soc{display:flex;gap:12px;}
+.topbar-soc a{color:rgba(255,255,255,.6);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
+.topbar-soc a:hover{color:var(--orange);}
+.topbar-soc svg{width:14px;height:14px;fill:currentColor;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-wa{display:flex;align-items:center;gap:6px;color:var(--orange);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.5px;}
+.topbar-wa svg{width:13px;height:13px;fill:currentColor;}
+
+/* ── HEADER ── */
+header{position:fixed;top:36px;left:0;right:0;z-index:1000;background:var(--blue);height:48px;display:flex;align-items:center;box-shadow:0 2px 20px rgba(0,0,0,.5);}
+.hdr{max-width:1200px;margin:0 auto;width:100%;padding:0 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-text{display:flex;flex-direction:column;}
+.logo-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:13px;color:#fff;letter-spacing:.3px;line-height:1.1;}
+.logo-sub{font-family:'Raleway',sans-serif;font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.5px;}
+nav{display:flex;align-items:center;gap:1px;}
+nav a{font-family:'Raleway',sans-serif;font-weight:600;font-size:12.5px;color:rgba(255,255,255,.75);text-decoration:none;padding:7px 12px;border-radius:var(--pill);transition:.2s;letter-spacing:.3px;}
+nav a:hover{color:#fff;background:rgba(255,255,255,.12);}
+nav a.cta{background:var(--orange);color:var(--dark);font-weight:700;border-radius:var(--pill);}
+nav a.cta:hover{background:var(--orange-dk);}
+
+/* ── PAGE ── */
+.page-hero{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 60%,#040d18 100%);padding:56px 24px 48px;}
+.page-hero-inner{max-width:760px;margin:0 auto;}
+.eyebrow{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:24px;height:2px;background:var(--orange);display:block;border-radius:2px;}
+.page-hero h1{font-family:'Raleway',sans-serif;font-weight:800;font-size:clamp(26px,4vw,40px);color:var(--tp);line-height:1.1;margin-bottom:10px;}
+.page-hero p{font-size:14px;color:var(--ts);}
+
+.content{max-width:760px;margin:0 auto;padding:52px 24px 72px;}
+.content h2{font-family:'Raleway',sans-serif;font-weight:700;font-size:18px;color:var(--tp);margin:36px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.content h2:first-child{margin-top:0;}
+.content p{font-size:14.5px;color:var(--ts);line-height:1.8;margin-bottom:14px;}
+.content ul{margin:0 0 14px 20px;}
+.content ul li{font-size:14.5px;color:var(--ts);line-height:1.8;margin-bottom:6px;}
+.content a{color:var(--orange);text-decoration:none;}
+.content a:hover{text-decoration:underline;}
+.update-tag{display:inline-block;background:rgba(245,163,36,.12);border:1px solid rgba(245,163,36,.25);color:var(--orange);font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:var(--pill);margin-bottom:28px;font-family:'Raleway',sans-serif;}
+
+/* ── FOOTER ── */
+footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
+.ft-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+.ft-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ft-bname{font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;color:var(--tp);}
+.ft-bsub{font-size:11px;color:var(--ts);}
+.ft-desc{font-size:13px;line-height:1.75;margin-bottom:18px;max-width:240px;color:var(--ts);}
+.ft-soc{display:flex;gap:8px;}
+.ft-soc a{width:32px;height:32px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;color:var(--ts);text-decoration:none;transition:.2s;}
+.ft-soc a:hover{background:var(--orange);color:var(--dark);}
+.ft-soc svg{width:14px;height:14px;fill:currentColor;}
+.ft-col h4{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--tp);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ft-col ul{list-style:none;}
+.ft-col ul li{margin-bottom:8px;}
+.ft-col ul li a{font-size:12.5px;color:var(--ts);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px;}
+.ft-col ul li a::before{content:'›';color:var(--orange);font-size:14px;}
+.ft-col ul li a:hover{color:var(--orange);}
+.ft-bottom{max-width:1200px;margin:0 auto;padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--tm);flex-wrap:wrap;gap:8px;}
+
+@media(max-width:768px){
+  nav{display:none;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+  .ft-grid>.ft-brand{grid-column:1/-1;}
+}
+@media(max-width:480px){
+  .ft-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-soc">
+      <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="https://web.facebook.com/groups/531845303692096" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+      <a href="https://wa.me/5521988057754" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+    </div>
+    <div class="topbar-right">
+      <a href="https://wa.me/5521988057754" target="_blank" class="topbar-wa">
+        <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg>
+        (21) 98805-7754
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+        <line x1="8" y1="25" x2="8" y2="37" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+        <line x1="14" y1="20" x2="14" y2="42" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+        <line x1="72" y1="25" x2="72" y2="37" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+        <line x1="66" y1="20" x2="66" y2="42" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+        <rect x="26" y="8" width="28" height="38" rx="14" fill="white"/>
+        <line x1="31" y1="20" x2="49" y2="20" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="31" y1="27" x2="49" y2="27" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="31" y1="34" x2="49" y2="34" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="40" y1="46" x2="40" y2="58" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="40" cy="65" r="9" fill="#F5A324"/>
+        <text x="40" y="69" text-anchor="middle" font-size="11" fill="#080808" font-family="serif">♪</text>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-name">Encontro de Adoradores</span>
+        <span class="logo-sub">com Anderson Gustavo</span>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#podcasts">Podcasts</a>
+      <a href="index.html#programacao">Programação</a>
+      <a href="index.html#contato" class="cta">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="eyebrow">Legal</div>
+    <h1>Termos de Serviço</h1>
+    <p>Ao acessar e utilizar este site, você concorda com os termos descritos abaixo.</p>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+  <span class="update-tag">Última atualização: maio de 2026</span>
+
+  <h2>1. Aceitação dos Termos</h2>
+  <p>Ao acessar o site <strong>Encontro de Adoradores</strong> (encontrodeadoradores.com.br), você declara ter lido, compreendido e concordado integralmente com estes Termos de Serviço. Caso não concorde, pedimos que não utilize o site.</p>
+
+  <h2>2. Sobre o Programa</h2>
+  <p>O Encontro de Adoradores é um programa de rádio gospel apresentado por Anderson Gustavo, com foco em adoração, fé e edificação cristã. O conteúdo disponibilizado — incluindo áudios, textos, imagens e podcasts — tem finalidade exclusivamente religiosa, educacional e informativa.</p>
+
+  <h2>3. Uso Permitido</h2>
+  <p>Você pode utilizar o site para:</p>
+  <ul>
+    <li>Acessar e ouvir os episódios do programa;</li>
+    <li>Entrar em contato com a equipe por meio do formulário;</li>
+    <li>Compartilhar links do conteúdo nas redes sociais.</li>
+  </ul>
+  <p>É vedado:</p>
+  <ul>
+    <li>Reproduzir, distribuir ou comercializar o conteúdo sem autorização expressa;</li>
+    <li>Utilizar o site para fins ilícitos, ofensivos ou que violem direitos de terceiros;</li>
+    <li>Tentar acessar áreas restritas ou comprometer a segurança do site.</li>
+  </ul>
+
+  <h2>4. Propriedade Intelectual</h2>
+  <p>Todo o conteúdo publicado neste site — incluindo nome, marca, logotipo, textos, áudios e design — é de propriedade do Encontro de Adoradores e protegido pelas leis de propriedade intelectual brasileiras. A reprodução não autorizada é proibida.</p>
+
+  <h2>5. Links para Terceiros</h2>
+  <p>O site pode conter links para plataformas externas (YouTube, Spotify, WhatsApp, redes sociais). Não nos responsabilizamos pelo conteúdo, políticas ou práticas dessas plataformas. O acesso é de responsabilidade do usuário.</p>
+
+  <h2>6. Disponibilidade do Serviço</h2>
+  <p>Envidamos esforços para manter o site disponível continuamente, mas não garantimos disponibilidade ininterrupta. O site pode ficar fora do ar temporariamente para manutenção, atualizações ou por razões técnicas fora do nosso controle.</p>
+
+  <h2>7. Limitação de Responsabilidade</h2>
+  <p>O Encontro de Adoradores não se responsabiliza por danos diretos ou indiretos decorrentes do uso ou da impossibilidade de uso do site, incluindo perda de dados ou interrupção de acesso.</p>
+
+  <h2>8. Modificações nos Termos</h2>
+  <p>Reservamos o direito de atualizar estes Termos a qualquer momento. Alterações significativas serão sinalizadas pela data de "Última atualização" no início desta página. O uso continuado do site após as alterações implica aceitação dos novos termos.</p>
+
+  <h2>9. Fale Conosco</h2>
+  <p>Dúvidas ou solicitações relacionadas a estes Termos podem ser enviadas para: <a href="mailto:encontrodeadoradoresof@gmail.com">encontrodeadoradoresof@gmail.com</a> ou via <a href="https://wa.me/5521988057754" target="_blank">WhatsApp (21) 98805-7754</a>.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="ft-brand-logo">
+        <svg width="30" height="30" viewBox="0 0 80 80" fill="none">
+          <line x1="8" y1="25" x2="8" y2="37" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+          <line x1="14" y1="20" x2="14" y2="42" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+          <line x1="72" y1="25" x2="72" y2="37" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+          <line x1="66" y1="20" x2="66" y2="42" stroke="#F5A324" stroke-width="3" stroke-linecap="round"/>
+          <rect x="26" y="8" width="28" height="38" rx="14" fill="white"/>
+          <line x1="31" y1="20" x2="49" y2="20" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="31" y1="27" x2="49" y2="27" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="31" y1="34" x2="49" y2="34" stroke="#1A4F8A" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="40" y1="46" x2="40" y2="58" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="40" cy="65" r="9" fill="#F5A324"/>
+          <text x="40" y="69" text-anchor="middle" font-size="11" fill="#080808" font-family="serif">♪</text>
+        </svg>
+        <div>
+          <div class="ft-bname">Encontro de Adoradores</div>
+          <div class="ft-bsub">com Anderson Gustavo</div>
+        </div>
+      </div>
+      <p class="ft-desc">Um programa de adoração, fé e encontro com Deus. Transformando vidas pela música gospel e pela Palavra.</p>
+      <div class="ft-soc">
+        <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+        <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+        <a href="https://web.facebook.com/groups/531845303692096" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+        <a href="https://wa.me/5521988057754" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#podcasts">Podcasts</a></li>
+        <li><a href="index.html#top10">Top Gospel</a></li>
+        <li><a href="index.html#programacao">Programação</a></li>
+        <li><a href="anuncie.html">Anuncie</a></li>
+        <li><a href="index.html#sobre">Sobre</a></li>
+        <li><a href="index.html#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="termos.html">Termos de Serviço</a></li>
+        <li><a href="privacidade.html">Política de Privacidade</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="mailto:encontrodeadoradoresof@gmail.com">encontrodeadoradoresof@gmail.com</a></li>
+        <li><a href="https://wa.me/5521988057754" target="_blank">WhatsApp</a></li>
+        <li><a href="index.html#contato">Pedido de Oração</a></li>
+        <li><a href="index.html#contato">Participe do Programa</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2026 Encontro de Adoradores — com Anderson Gustavo. Todos os direitos reservados.</span>
+    <span>Feito com fé e dedicação ♪</span>
+  </div>
+</footer>
+
+</body>
+</html>
