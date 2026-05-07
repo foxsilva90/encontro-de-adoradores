@@ -822,6 +822,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         </div>
       </div>
       <form class="form-wrap" onsubmit="submitForm(event)" id="contactForm" novalidate>
+        <input type="hidden" name="access_key" value="5c85e58d-8b0f-4054-b910-c78a413568d4">
+        <input type="hidden" name="subject" value="Nova mensagem — Encontro de Adoradores">
+        <input type="hidden" name="from_name" value="Site Encontro de Adoradores">
         <div class="f-row">
           <div><label>Nome</label><input id="f-nome" type="text" placeholder="Seu nome completo" required></div>
           <div><label>E-mail</label><input id="f-email" type="email" placeholder="seu@email.com" required></div>
@@ -1147,14 +1150,41 @@ function submitForm(e) {
   });
   if (!valid) return;
   const btn = document.getElementById('submitBtn');
-  btn.innerHTML = '✓ Mensagem enviada! Deus abençoe!';
-  btn.style.background = '#16A34A';
-  setTimeout(() => {
-    btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
-    btn.style.background = '';
-    e.target.reset();
-    fields.forEach(f => { f.style.borderColor = ''; f.style.boxShadow = ''; });
-  }, 3000);
+  btn.innerHTML = 'Enviando...';
+  btn.disabled = true;
+  const formData = new FormData(e.target);
+  fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        btn.innerHTML = '✓ Mensagem enviada! Deus abençoe!';
+        btn.style.background = '#16A34A';
+        setTimeout(() => {
+          btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
+          btn.style.background = '';
+          btn.disabled = false;
+          e.target.reset();
+          fields.forEach(f => { f.style.borderColor = ''; f.style.boxShadow = ''; });
+        }, 3000);
+      } else {
+        btn.innerHTML = '✗ Erro ao enviar. Tente novamente.';
+        btn.style.background = '#ef4444';
+        setTimeout(() => {
+          btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }
+    })
+    .catch(() => {
+      btn.innerHTML = '✗ Sem conexão. Tente novamente.';
+      btn.style.background = '#ef4444';
+      setTimeout(() => {
+        btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    });
 }
 
 (function(){
