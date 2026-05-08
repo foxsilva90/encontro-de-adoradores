@@ -213,6 +213,9 @@ section{padding:64px 24px;}
 .clip-card:hover .clip-play-btn{transform:scale(1);}
 .clip-play-btn svg{width:22px;height:22px;fill:#080808;margin-left:3px;}
 .clip-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.72);color:var(--orange);font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;padding:3px 8px;border-radius:var(--pill);letter-spacing:1.5px;text-transform:uppercase;backdrop-filter:blur(4px);}
+.clip-title{font-family:'Raleway',sans-serif;font-weight:600;font-size:12.5px;color:var(--tp);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 2px 0;max-height:0;opacity:0;transition:max-height .3s ease,opacity .3s ease;}
+.clip-card:hover .clip-title{max-height:36px;opacity:1;}
+@media(max-width:768px){.clip-title{max-height:36px;opacity:1;}}
 
 /* ── TOP 10 ── */
 .top10{background:#0a0a0a;}
@@ -1446,6 +1449,22 @@ function closeVideo(e) {
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideo(); });
+
+// ── CLIP TITLES via oEmbed ──
+(function(){
+  document.querySelectorAll('.clip-card').forEach(function(card){
+    var m = (card.getAttribute('onclick')||'').match(/openVideo\('([^']+)'\)/);
+    if (!m) return;
+    var vid = m[1];
+    var titleEl = document.createElement('div');
+    titleEl.className = 'clip-title';
+    card.appendChild(titleEl);
+    fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+vid+'&format=json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){ titleEl.textContent = d.title; })
+      .catch(function(){});
+  });
+})();
 </script>
 
 <!-- VIDEO MODAL -->
