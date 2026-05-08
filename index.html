@@ -195,6 +195,25 @@ section{padding:64px 24px;}
 .pod-bar{height:3px;background:var(--s3);border-radius:2px;margin-top:8px;overflow:hidden;}
 .pod-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--orange));border-radius:2px;transition:width .3s;}
 
+/* ── CLIPES ── */
+.clipes{background:var(--s1);}
+.clipes-scroll{display:flex;gap:16px;overflow-x:auto;padding:4px 0 18px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--orange) var(--s3);}
+.clipes-scroll::-webkit-scrollbar{height:4px;}
+.clipes-scroll::-webkit-scrollbar-track{background:var(--s3);border-radius:2px;}
+.clipes-scroll::-webkit-scrollbar-thumb{background:var(--orange);border-radius:2px;}
+.clip-card{flex-shrink:0;width:272px;cursor:pointer;scroll-snap-align:start;transition:transform .3s ease,opacity .3s ease;}
+.clipes-scroll:has(.clip-card:hover) .clip-card:not(:hover){opacity:.38;transform:scale(.96);}
+.clip-thumb{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;transition:border-color .3s ease,box-shadow .3s ease;}
+.clip-card:hover .clip-thumb{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange),0 14px 44px rgba(245,163,36,.28);}
+.clip-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;}
+.clip-card:hover .clip-thumb img{transform:scale(1.07);}
+.clip-overlay{position:absolute;inset:0;background:rgba(0,0,0,.48);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;}
+.clip-card:hover .clip-overlay{opacity:1;}
+.clip-play-btn{width:58px;height:58px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;transform:scale(.6);transition:transform .3s ease;box-shadow:0 6px 24px rgba(0,0,0,.5);}
+.clip-card:hover .clip-play-btn{transform:scale(1);}
+.clip-play-btn svg{width:22px;height:22px;fill:#080808;margin-left:3px;}
+.clip-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.72);color:var(--orange);font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;padding:3px 8px;border-radius:var(--pill);letter-spacing:1.5px;text-transform:uppercase;backdrop-filter:blur(4px);}
+
 /* ── TOP 10 ── */
 .top10{background:#0a0a0a;}
 .top10-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -537,6 +556,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <nav id="mainNav">
       <a href="#" class="active">Home</a>
       <a href="#podcasts">Podcasts</a>
+      <a href="#clipes">Clipes</a>
       <a href="#top10">Top Gospel</a>
       <a href="#programacao">Programação</a>
       <a href="#anuncie">Anuncie</a>
@@ -653,6 +673,159 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           </div>
           <div class="pod-title">Entre a Fé e a Razão — Testemunho de Cura</div>
           <div class="pod-date" style="margin-top:6px;">AdoraCast #001 · Pr. Denilson Lopes</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CLIPES MUSICAIS ══════════ -->
+<section class="clipes" id="clipes">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+      <div>
+        <div class="eyebrow">Música que transforma</div>
+        <h2 class="sec-title">Clipes Musicais</h2>
+        <p class="sec-desc">Os melhores momentos em clipes direto no YouTube.</p>
+      </div>
+      <a href="https://www.youtube.com/@AndersonGustavo/" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
+    </div>
+    <div class="clipes-scroll reveal">
+
+      <div class="clip-card" onclick="openVideo('vZdi0ilPC10')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/vZdi0ilPC10/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('s2IWlph65Hk')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/s2IWlph65Hk/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('nX_nsuS4nxM')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/nX_nsuS4nxM/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('86h1kAykF1s')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/86h1kAykF1s/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('Mp1FamEgKVQ')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/Mp1FamEgKVQ/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('Ml_39Kaum98')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/Ml_39Kaum98/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('slbVyf6XtcM')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/slbVyf6XtcM/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('ZLy-XNSxE1U')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/ZLy-XNSxE1U/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('LdF4JseNaHg')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/LdF4JseNaHg/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('1_9iRlgZjP4')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/1_9iRlgZjP4/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('LLMEjMHBLLs')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/LLMEjMHBLLs/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('0rw52JnCueI')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/0rw52JnCueI/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('yJZ6gLF41T4')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/yJZ6gLF41T4/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('rUDwAGm7tSw')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/rUDwAGm7tSw/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('7lEt0hdvfeU')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/7lEt0hdvfeU/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('yxHSzbsrE0c')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/yxHSzbsrE0c/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('AYMyOWF-mfg')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/AYMyOWF-mfg/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
       </div>
 
@@ -917,6 +1090,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <ul>
         <li><a href="#">Home</a></li>
         <li><a href="#podcasts">Podcasts</a></li>
+        <li><a href="#clipes">Clipes</a></li>
         <li><a href="#top10">Top Gospel</a></li>
         <li><a href="#programacao">Programação</a></li>
         <li><a href="#anuncie">Anuncie</a></li>
