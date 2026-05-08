@@ -216,6 +216,13 @@ section{padding:64px 24px;}
 .clip-title{font-family:'Raleway',sans-serif;font-weight:600;font-size:12.5px;color:var(--tp);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 2px 0;max-height:0;opacity:0;transition:max-height .3s ease,opacity .3s ease;}
 .clip-card:hover .clip-title{max-height:36px;opacity:1;}
 @media(max-width:768px){.clip-title{max-height:36px;opacity:1;}}
+.clipes-scroll-wrap{position:relative;}
+.clip-arrow{position:absolute;top:calc(50% - 18px);transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(10,10,10,.8);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(6px);padding:0;}
+.clip-arrow:hover{background:var(--orange);border-color:var(--orange);color:#080808;}
+.clip-arrow.clip-arr-left{left:-12px;}
+.clip-arrow.clip-arr-right{right:-12px;}
+@media(max-width:900px){.clip-arrow{display:none;}}
+@media(min-width:769px){.clipes-scroll{scrollbar-width:none;cursor:grab;}.clipes-scroll::-webkit-scrollbar{display:none;}.clipes-scroll.dragging{cursor:grabbing;}}
 
 /* ── TOP 10 ── */
 .top10{background:#0a0a0a;}
@@ -694,7 +701,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       </div>
       <a href="https://www.youtube.com/@AndersonGustavo/" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
     </div>
-    <div class="clipes-scroll reveal">
+    <div class="clipes-scroll-wrap">
+    <button class="clip-arrow clip-arr-left" onclick="clipScroll(-1)">&#8249;</button>
+    <div class="clipes-scroll reveal" id="clipesScroll">
 
       <div class="clip-card" onclick="openVideo('vZdi0ilPC10')">
         <div class="clip-thumb">
@@ -832,6 +841,8 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         </div>
       </div>
 
+    </div>
+    <button class="clip-arrow clip-arr-right" onclick="clipScroll(1)">&#8250;</button>
     </div>
   </div>
 </section>
@@ -1449,6 +1460,48 @@ function closeVideo(e) {
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideo(); });
+
+// ── CLIPES: setas, arrastar, auto-scroll ──
+(function(){
+  var scroll = document.getElementById('clipesScroll');
+  if (!scroll) return;
+  var CARD_W = 288;
+  var autoTimer, paused = false;
+
+  // setas
+  window.clipScroll = function(dir) {
+    scroll.scrollBy({ left: dir * CARD_W, behavior: 'smooth' });
+  };
+
+  // arrastar com mouse
+  var isDrag = false, dragX, dragLeft;
+  scroll.addEventListener('mousedown', function(e) {
+    isDrag = true; dragX = e.pageX; dragLeft = scroll.scrollLeft;
+    scroll.classList.add('dragging');
+  });
+  document.addEventListener('mouseup', function() {
+    isDrag = false; scroll.classList.remove('dragging');
+  });
+  scroll.addEventListener('mousemove', function(e) {
+    if (!isDrag) return;
+    e.preventDefault();
+    scroll.scrollLeft = dragLeft - (e.pageX - dragX);
+  });
+
+  // auto-scroll a cada 3.5s, pausa no hover
+  function tick() {
+    if (paused) return;
+    var max = scroll.scrollWidth - scroll.clientWidth;
+    if (scroll.scrollLeft >= max - 4) {
+      scroll.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      scroll.scrollBy({ left: CARD_W, behavior: 'smooth' });
+    }
+  }
+  autoTimer = setInterval(tick, 3500);
+  scroll.addEventListener('mouseenter', function() { paused = true; });
+  scroll.addEventListener('mouseleave', function() { paused = false; });
+})();
 
 // ── CLIP TITLES via oEmbed ──
 (function(){
