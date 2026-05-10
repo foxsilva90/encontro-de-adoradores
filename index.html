@@ -660,56 +660,36 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       </div>
       <a href="https://www.youtube.com/@adoracastoficial" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
     </div>
-    <div class="pod-grid" id="pod-grid">
+    <div class="clipes-scroll-wrap">
+    <button class="clip-arrow clip-arr-left" onclick="podScroll(-1)">&#8249;</button>
+    <div class="clipes-scroll reveal" id="podcastsScroll">
 
-      <div class="pod-card reveal" onclick="openVideo('0VXUfbjc93Y')" style="cursor:pointer;">
-        <div class="pod-thumb">
-          <img src="https://img.youtube.com/vi/0VXUfbjc93Y/hqdefault.jpg" alt="AdoraCast #003" loading="lazy">
-          <span class="pod-ep">EP 003</span>
-          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-        </div>
-        <div class="pod-info">
-          <div class="pod-brand">
-            <img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">
-            <span class="pod-brand-name">AdoraCast</span>
-          </div>
-          <div class="pod-title">Entrevista com Cristina Melreal</div>
-          <div class="pod-date" style="margin-top:6px;">AdoraCast #003</div>
+      <div class="clip-card" onclick="openVideo('0VXUfbjc93Y')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/0VXUfbjc93Y/hqdefault.jpg" loading="lazy" alt="AdoraCast #003">
+          <span class="clip-badge">EP 003</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
       </div>
 
-      <div class="pod-card reveal" onclick="openVideo('eGstAwa_3RM')" style="cursor:pointer;">
-        <div class="pod-thumb">
-          <img src="https://img.youtube.com/vi/eGstAwa_3RM/hqdefault.jpg" alt="AdoraCast #002" loading="lazy">
-          <span class="pod-ep">EP 002</span>
-          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-        </div>
-        <div class="pod-info">
-          <div class="pod-brand">
-            <img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">
-            <span class="pod-brand-name">AdoraCast</span>
-          </div>
-          <div class="pod-title">Superação — A História da Dra. Ângela Rissi</div>
-          <div class="pod-date" style="margin-top:6px;">AdoraCast #002</div>
+      <div class="clip-card" onclick="openVideo('eGstAwa_3RM')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/eGstAwa_3RM/hqdefault.jpg" loading="lazy" alt="AdoraCast #002">
+          <span class="clip-badge">EP 002</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
       </div>
 
-      <div class="pod-card reveal" onclick="openVideo('XjoMMluWL4Q')" style="cursor:pointer;">
-        <div class="pod-thumb">
-          <img src="https://img.youtube.com/vi/XjoMMluWL4Q/hqdefault.jpg" alt="AdoraCast #001" loading="lazy">
-          <span class="pod-ep">EP 001</span>
-          <div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-        </div>
-        <div class="pod-info">
-          <div class="pod-brand">
-            <img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">
-            <span class="pod-brand-name">AdoraCast</span>
-          </div>
-          <div class="pod-title">Entre a Fé e a Razão — Testemunho de Cura</div>
-          <div class="pod-date" style="margin-top:6px;">AdoraCast #001 · Pr. Denilson Lopes</div>
+      <div class="clip-card" onclick="openVideo('XjoMMluWL4Q')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/XjoMMluWL4Q/hqdefault.jpg" loading="lazy" alt="AdoraCast #001">
+          <span class="clip-badge">EP 001</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
         </div>
       </div>
 
+    </div>
+    <button class="clip-arrow clip-arr-right" onclick="podScroll(1)">&#8250;</button>
     </div>
   </div>
 </section>
@@ -1418,7 +1398,7 @@ document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.obser
 function loadPodcasts() {
   var PLAYLIST_ID = 'PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD';
   var API_KEY = 'AIzaSyB0SNeMDV_cgSonAFQcFXYbLN2i-G6DI0Q';
-  var grid = document.getElementById('pod-grid');
+  var grid = document.getElementById('podcastsScroll');
   if (!grid) return;
   var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=6&playlistId=' + PLAYLIST_ID + '&key=' + API_KEY;
   fetch(url)
@@ -1435,29 +1415,17 @@ function loadPodcasts() {
           var tn = s.thumbnails || {};
           var thumb = (tn.high || tn.medium || tn.default || {}).url || ('https://img.youtube.com/vi/' + vid + '/hqdefault.jpg');
           var epMatch = title.match(/#(\d+)/);
-          var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '';
-          var epText = epMatch ? 'AdoraCast #' + epMatch[1] : 'AdoraCast';
+          var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '▶ Podcast';
           html +=
-            '<div class="pod-card reveal" onclick="openVideo(\'' + vid + '\')" style="cursor:pointer;">' +
-            '<div class="pod-thumb">' +
+            '<div class="clip-card" onclick="openVideo(\'' + vid + '\')">' +
+            '<div class="clip-thumb">' +
             '<img src="' + thumb + '" alt="' + title.replace(/"/g,'&quot;') + '" loading="lazy">' +
-            (epLabel ? '<span class="pod-ep">' + epLabel + '</span>' : '') +
-            '<div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
-            '</div>' +
-            '<div class="pod-info">' +
-            '<div class="pod-brand">' +
-            '<img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">' +
-            '<span class="pod-brand-name">AdoraCast</span>' +
-            '</div>' +
-            '<div class="pod-title">' + title + '</div>' +
-            '<div class="pod-date" style="margin-top:6px;">' + epText + '</div>' +
+            '<span class="clip-badge">' + epLabel + '</span>' +
+            '<div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
             '</div></div>';
         } catch(e) {}
       });
-      if (html) {
-        grid.innerHTML = html;
-        grid.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
-      }
+      if (html) grid.innerHTML = html;
     })
     .catch(function() {});
 }
@@ -1644,6 +1612,29 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   autoTimer = setInterval(tick, 3500);
   scroll.addEventListener('mouseenter', function() { paused = true; });
   scroll.addEventListener('mouseleave', function() { paused = false; });
+})();
+
+// ── PODCASTS: setas e arrastar ──
+(function(){
+  var scroll = document.getElementById('podcastsScroll');
+  if (!scroll) return;
+  var CARD_W = 288;
+  window.podScroll = function(dir) {
+    scroll.scrollBy({ left: dir * CARD_W, behavior: 'smooth' });
+  };
+  var isDrag = false, dragX, dragLeft;
+  scroll.addEventListener('mousedown', function(e) {
+    isDrag = true; dragX = e.pageX; dragLeft = scroll.scrollLeft;
+    scroll.classList.add('dragging');
+  });
+  document.addEventListener('mouseup', function() {
+    isDrag = false; scroll.classList.remove('dragging');
+  });
+  scroll.addEventListener('mousemove', function(e) {
+    if (!isDrag) return;
+    e.preventDefault();
+    scroll.scrollLeft = dragLeft - (e.pageX - dragX);
+  });
 })();
 
 // ── CLIP TITLES via oEmbed ──
