@@ -660,7 +660,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       </div>
       <a href="https://www.youtube.com/@adoracastoficial" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
     </div>
-    <div class="pod-grid">
+    <div class="pod-grid" id="pod-grid">
 
       <div class="pod-card reveal" onclick="openVideo('0VXUfbjc93Y')" style="cursor:pointer;">
         <div class="pod-thumb">
@@ -1415,6 +1415,46 @@ document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.obser
 })();
 
 // ── PHONE MASK ──
+function loadPodcasts() {
+  var PLAYLIST_ID = 'PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD';
+  var API_KEY = 'AIzaSyB0SNeMDV_cgSonAFQcFXYbLN2i-G6DI0Q';
+  var grid = document.getElementById('pod-grid');
+  if (!grid) return;
+  var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=6&playlistId=' + PLAYLIST_ID + '&key=' + API_KEY;
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.items || !data.items.length) return;
+      grid.innerHTML = '';
+      data.items.forEach(function(item) {
+        var s = item.snippet;
+        var vid = s.resourceId.videoId;
+        var title = s.title;
+        var thumb = (s.thumbnails.high || s.thumbnails.medium || s.thumbnails.default).url;
+        var epMatch = title.match(/#(\d+)/);
+        var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '';
+        var epText = epMatch ? 'AdoraCast #' + epMatch[1] : 'AdoraCast';
+        grid.innerHTML +=
+          '<div class="pod-card reveal" onclick="openVideo(\'' + vid + '\')" style="cursor:pointer;">' +
+          '<div class="pod-thumb">' +
+          '<img src="' + thumb + '" alt="' + title.replace(/"/g,'&quot;') + '" loading="lazy">' +
+          (epLabel ? '<span class="pod-ep">' + epLabel + '</span>' : '') +
+          '<div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
+          '</div>' +
+          '<div class="pod-info">' +
+          '<div class="pod-brand">' +
+          '<img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">' +
+          '<span class="pod-brand-name">AdoraCast</span>' +
+          '</div>' +
+          '<div class="pod-title">' + title + '</div>' +
+          '<div class="pod-date" style="margin-top:6px;">' + epText + '</div>' +
+          '</div></div>';
+      });
+    })
+    .catch(function() {});
+}
+loadPodcasts();
+
 document.addEventListener('DOMContentLoaded', function() {
   var tel = document.getElementById('f-tel');
   var ddi = document.getElementById('f-ddi');
