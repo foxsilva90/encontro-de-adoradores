@@ -1454,7 +1454,10 @@ function loadPodcasts() {
             '</div></div>';
         } catch(e) {}
       });
-      if (html) grid.innerHTML = html;
+      if (html) {
+        grid.innerHTML = html;
+        grid.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+      }
     })
     .catch(function() {});
 }
