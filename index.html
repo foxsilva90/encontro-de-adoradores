@@ -89,10 +89,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
 .waveform span:nth-child(7){height:9px;animation-delay:.6s}
 .waveform.paused span{animation-play-state:paused;height:4px!important;transition:height .3s;}
 @keyframes wv{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
-.vol-wrap{display:flex;align-items:center;gap:8px;}
-.vol-wrap svg{width:14px;height:14px;fill:var(--ts);flex-shrink:0;}
-.vol-slider{-webkit-appearance:none;width:70px;height:3px;background:var(--s3);border-radius:2px;outline:none;cursor:pointer;}
-.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--orange);cursor:pointer;}
+.vol-btn-wrap{position:relative;display:flex;align-items:center;margin-right:6px;}
+.vol-btn{background:none;border:none;cursor:pointer;padding:5px;display:flex;align-items:center;color:var(--ts);transition:color .2s;border-radius:4px;}
+.vol-btn:hover{color:var(--tp);}
+.vol-btn svg{width:17px;height:17px;fill:currentColor;}
+.vol-popup{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+.vol-btn-wrap:hover .vol-popup,.vol-btn-wrap:focus-within .vol-popup{opacity:1;pointer-events:auto;}
+.vol-slider{-webkit-appearance:none;width:90px;height:3px;background:var(--s4);border-radius:2px;outline:none;cursor:pointer;display:block;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--orange);cursor:pointer;}
 /* ── VIDEO MODAL ── */
 #video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;align-items:center;justify-content:center;padding:20px;}
 #video-modal.open{display:flex;}
@@ -414,7 +418,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   #player-center-row .waveform{display:none;}
   .p-socials-wrap{padding:0;}
   header{top:50px;}
-  .vol-wrap,.p-socials{display:none;}
+  .vol-btn-wrap,.p-socials{display:none;}
   nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0a0a0a;border:1px solid var(--border);flex-direction:column;padding:10px;gap:3px;box-shadow:0 8px 20px rgba(0,0,0,.5);}
   nav.open{display:flex;}
   nav a{width:100%;text-align:center;border-radius:6px;}
@@ -523,10 +527,6 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <div class="waveform paused" id="radioWaveform">
         <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
       </div>
-      <div class="vol-wrap">
-        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-        <input type="range" class="vol-slider" id="radioVol" min="0" max="1" step="0.05" value="0.8" oninput="setRadioVol(this.value)">
-      </div>
     </div>
     <div class="p-radio-name">Encontro de Adoradores</div>
     <div class="p-radio-sub">Rádio Gospel Online</div>
@@ -541,6 +541,14 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div id="player-prog-pres">—</div>
   </div>
   <div class="p-socials-wrap">
+    <div class="vol-btn-wrap">
+      <button class="vol-btn" id="volBtn" onclick="toggleMute()" title="Volume">
+        <svg viewBox="0 0 24 24" id="volIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+      </button>
+      <div class="vol-popup">
+        <input type="range" class="vol-slider" id="radioVol" min="0" max="1" step="0.05" value="0.8" oninput="setRadioVol(this.value)">
+      </div>
+    </div>
     <div class="p-socials">
       <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
       <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
@@ -1292,8 +1300,27 @@ function toggleRadio() {
     wave.classList.remove('paused');
   }
 }
+var _mutedVol = 0.8;
+var _VOL_ON = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
+var _VOL_OFF = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
 function setRadioVol(v) {
-  document.getElementById('radioAudio').volume = parseFloat(v);
+  var audio = document.getElementById('radioAudio');
+  audio.volume = parseFloat(v);
+  document.getElementById('volIcon').innerHTML = parseFloat(v) === 0 ? _VOL_OFF : _VOL_ON;
+}
+function toggleMute() {
+  var audio = document.getElementById('radioAudio');
+  var slider = document.getElementById('radioVol');
+  if (audio.volume > 0) {
+    _mutedVol = audio.volume;
+    audio.volume = 0;
+    slider.value = 0;
+    document.getElementById('volIcon').innerHTML = _VOL_OFF;
+  } else {
+    audio.volume = _mutedVol;
+    slider.value = _mutedVol;
+    document.getElementById('volIcon').innerHTML = _VOL_ON;
+  }
 }
 function togglePlay() {
   toggleRadio();
