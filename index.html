@@ -417,7 +417,8 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   #player-center-row .waveform{display:none;}
   .p-socials-wrap{padding:0;}
   header{top:50px;}
-  .vol-ctrl,.p-socials{display:none;}
+  .vol-ctrl{display:flex;padding:0;border:none;gap:6px;}
+  .vol-ico-btn,.vol-slider,.p-socials{display:none;}
   nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0a0a0a;border:1px solid var(--border);flex-direction:column;padding:10px;gap:3px;box-shadow:0 8px 20px rgba(0,0,0,.5);}
   nav.open{display:flex;}
   nav a{width:100%;text-align:center;border-radius:6px;}
@@ -519,9 +520,6 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   </div>
   <div id="player-center">
     <div id="player-center-row">
-      <button class="play-btn" id="radioPlayBtn" onclick="toggleRadio()" title="Ouvir rádio ao vivo">
-        <svg viewBox="0 0 24 24" id="radioPlayIcon"><path d="M8 5v14l11-7z"/></svg>
-      </button>
       <span class="live-badge">AO VIVO</span>
       <div class="waveform paused" id="radioWaveform">
         <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
@@ -531,6 +529,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div class="p-radio-sub">Rádio Gospel Online</div>
   </div>
   <div class="vol-ctrl">
+    <button class="play-btn" id="radioPlayBtn" onclick="toggleRadio()" title="Ouvir rádio ao vivo">
+      <svg viewBox="0 0 24 24" id="radioPlayIcon"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <button class="vol-ico-btn" id="volBtn" onclick="toggleMute()" title="Mudo/Som">
       <svg viewBox="0 0 24 24" id="volIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
     </button>
