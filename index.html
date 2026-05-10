@@ -1273,7 +1273,11 @@ function getNextProgram() {
   return sched[DAYS_MAP[(now.getDay() + 1) % 7]][0];
 }
 
+function pauseRadioForMedia() {
+  if (radioPlaying) toggleRadio();
+}
 function loadHeroVideo() {
+  pauseRadioForMedia();
   document.getElementById('heroYtFacade').style.display = 'none';
   var f = document.getElementById('hero-yt-frame');
   f.style.display = 'block';
@@ -1511,6 +1515,7 @@ function submitForm(e) {
   if(el) el.textContent='Semana de '+label;
 })();
 function playTrack(el, trackId) {
+  pauseRadioForMedia();
   document.querySelectorAll('.top10-item').forEach(function(i){ i.classList.remove('playing'); });
   el.classList.add('playing');
   const wrap = document.getElementById('spotify-embed-wrap');
@@ -1521,6 +1526,7 @@ function playTrack(el, trackId) {
 }
 
 function openVideo(id) {
+  pauseRadioForMedia();
   document.getElementById('vm-iframe').src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
   var m = document.getElementById('video-modal');
   m.classList.add('open');
@@ -1528,6 +1534,7 @@ function openVideo(id) {
   document.body.style.overflow = 'hidden';
 }
 function openSpotify(id) {
+  pauseRadioForMedia();
   var src = id
     ? 'https://open.spotify.com/embed/episode/' + id + '?utm_source=generator&theme=0'
     : 'https://open.spotify.com/embed/show/3ujfpuVt8NpdBiQxsmL2DR?utm_source=generator&theme=0';
