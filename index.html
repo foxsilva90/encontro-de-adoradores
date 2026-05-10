@@ -1422,7 +1422,9 @@ function loadPodcasts() {
             '<img src="' + thumb + '" alt="' + title.replace(/"/g,'&quot;') + '" loading="lazy">' +
             '<span class="clip-badge">' + epLabel + '</span>' +
             '<div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
-            '</div></div>';
+            '</div>' +
+            '<div class="clip-title">' + title + '</div>' +
+            '</div>';
         } catch(e) {}
       });
       if (html) grid.innerHTML = html;
