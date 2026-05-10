@@ -89,14 +89,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
 .waveform span:nth-child(7){height:9px;animation-delay:.6s}
 .waveform.paused span{animation-play-state:paused;height:4px!important;transition:height .3s;}
 @keyframes wv{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
-.vol-btn-wrap{position:relative;display:flex;align-items:center;margin-right:6px;}
-.vol-btn{background:none;border:none;cursor:pointer;padding:5px;display:flex;align-items:center;color:var(--ts);transition:color .2s;border-radius:4px;}
-.vol-btn:hover{color:var(--tp);}
-.vol-btn svg{width:17px;height:17px;fill:currentColor;}
-.vol-popup{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.4);z-index:1010;}
-.vol-btn-wrap.open .vol-popup{opacity:1;pointer-events:auto;}
-.vol-slider{-webkit-appearance:none;width:90px;height:3px;background:var(--s4);border-radius:2px;outline:none;cursor:pointer;display:block;}
-.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--orange);cursor:pointer;}
+.vol-ctrl{display:flex;align-items:center;gap:8px;padding:0 18px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.vol-ico-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;color:var(--ts);transition:color .2s;flex-shrink:0;}
+.vol-ico-btn:hover{color:var(--tp);}
+.vol-ico-btn svg{width:17px;height:17px;fill:currentColor;}
+.vol-slider{-webkit-appearance:none;width:80px;height:3px;background:var(--s4);border-radius:2px;outline:none;cursor:pointer;flex-shrink:0;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--orange);cursor:pointer;box-shadow:0 0 6px rgba(245,163,36,.5);}
+.vol-slider::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--orange);cursor:pointer;border:none;}
 /* ── VIDEO MODAL ── */
 #video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;align-items:center;justify-content:center;padding:20px;}
 #video-modal.open{display:flex;}
@@ -418,7 +417,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   #player-center-row .waveform{display:none;}
   .p-socials-wrap{padding:0;}
   header{top:50px;}
-  .vol-btn-wrap,.p-socials{display:none;}
+  .vol-ctrl,.p-socials{display:none;}
   nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0a0a0a;border:1px solid var(--border);flex-direction:column;padding:10px;gap:3px;box-shadow:0 8px 20px rgba(0,0,0,.5);}
   nav.open{display:flex;}
   nav a{width:100%;text-align:center;border-radius:6px;}
@@ -531,13 +530,11 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div class="p-radio-name">Encontro de Adoradores</div>
     <div class="p-radio-sub">Rádio Gospel Online</div>
   </div>
-  <div class="vol-btn-wrap">
-    <button class="vol-btn" id="volBtn" onclick="toggleVolPopup(event)" title="Volume">
+  <div class="vol-ctrl">
+    <button class="vol-ico-btn" id="volBtn" onclick="toggleMute()" title="Mudo/Som">
       <svg viewBox="0 0 24 24" id="volIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
     </button>
-    <div class="vol-popup">
-      <input type="range" class="vol-slider" id="radioVol" min="0" max="1" step="0.05" value="0.8" oninput="setRadioVol(this.value)">
-    </div>
+    <input type="range" class="vol-slider" id="radioVol" min="0" max="1" step="0.05" value="0.8" oninput="setRadioVol(this.value)">
   </div>
   <div id="player-clock-area">
     <div id="player-clock">00:00:00</div>
@@ -1312,13 +1309,20 @@ function setRadioVol(v) {
   audio.volume = parseFloat(v);
   document.getElementById('volIcon').innerHTML = parseFloat(v) === 0 ? _VOL_OFF : _VOL_ON;
 }
-function toggleVolPopup(e) {
-  e.stopPropagation();
-  document.querySelector('.vol-btn-wrap').classList.toggle('open');
+function toggleMute() {
+  var audio = document.getElementById('radioAudio');
+  var slider = document.getElementById('radioVol');
+  if (audio.volume > 0) {
+    _mutedVol = audio.volume;
+    audio.volume = 0;
+    slider.value = 0;
+    document.getElementById('volIcon').innerHTML = _VOL_OFF;
+  } else {
+    audio.volume = _mutedVol;
+    slider.value = _mutedVol;
+    document.getElementById('volIcon').innerHTML = _VOL_ON;
+  }
 }
-document.addEventListener('click', function() {
-  document.querySelector('.vol-btn-wrap').classList.remove('open');
-});
 function togglePlay() {
   toggleRadio();
 }
