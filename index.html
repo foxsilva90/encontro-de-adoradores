@@ -1292,7 +1292,7 @@ function toggleRadio() {
     icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
     wave.classList.add('paused');
   } else {
-    audio.src = 'https://radio.encontrodeadoradores.com/radio.mp3';
+    audio.src = 'https://radio.encontrodeadoradores.com/listen/encontro_de_adoradores/radio.mp3';
     audio.volume = parseFloat(document.getElementById('radioVol').value);
     audio.play();
     radioPlaying = true;
@@ -1323,7 +1323,10 @@ function togglePlay() {
 function entrarNoSite() {
   var overlay = document.getElementById('entrada-overlay');
   overlay.classList.add('fade-out');
-  setTimeout(function(){ overlay.style.display='none'; }, 650);
+  setTimeout(function(){
+    overlay.style.display='none';
+    if (!radioPlaying) toggleRadio();
+  }, 650);
 }
 
 // ── CLOCK + PROGRAM BAR ──
