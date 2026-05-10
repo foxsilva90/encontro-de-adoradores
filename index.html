@@ -53,9 +53,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
   height:80px;display:flex;align-items:stretch;padding:0;
 }
 #player-live-info{display:none;}
-#player-spotify-area{display:flex;width:280px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.08);overflow:hidden;}
-#player-spotify-area iframe{width:280px;height:80px;border:none;display:block;flex-shrink:0;opacity:0;transition:opacity .4s ease;}
-#player-spotify-area iframe.loaded{opacity:1;}
+#player-next-prog{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;padding:0 20px;width:220px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.08);}
+.pnp-label{font-size:9px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;}
+.pnp-time{font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;color:var(--orange);}
+.pnp-name{font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.pnp-pres{font-size:10px;color:var(--ts);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
 #player-center{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 24px;}
 #player-center-row{display:flex;align-items:center;gap:10px;}
 #player-center .p-radio-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:15px;color:var(--tp);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
@@ -405,7 +407,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .topbar{display:none;}
   body{padding-top:98px;}
   #player-bar{top:0;height:50px;padding:0 14px;gap:10px;}
-  #player-spotify-area,#player-clock-area,#player-prog-area{display:none;}
+  #player-next-prog,#player-clock-area,#player-prog-area{display:none;}
   #player-center{display:flex;flex:1;padding:0;}
   #player-center .p-radio-name{font-size:12px;letter-spacing:.5px;}
   #player-center .p-radio-sub{display:none;}
@@ -506,8 +508,11 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 <!-- ══════════ PLAYER BAR ══════════ -->
 <div id="player-bar">
   <audio id="radioAudio" preload="none"></audio>
-  <div id="player-spotify-area">
-    <iframe id="spotify-popup-frame" src="https://open.spotify.com/embed/show/3ujfpuVt8NpdBiQxsmL2DR?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+  <div id="player-next-prog">
+    <div class="pnp-label">Próximo Programa</div>
+    <div id="next-prog-time" class="pnp-time">—</div>
+    <div id="next-prog-name" class="pnp-name">—</div>
+    <div id="next-prog-pres" class="pnp-pres">—</div>
   </div>
   <div id="player-center">
     <div id="player-center-row">
@@ -1248,6 +1253,17 @@ function getCurrentProgram() {
   }
   return current;
 }
+function getNextProgram() {
+  var now = new Date();
+  var day = DAYS_MAP[now.getDay()];
+  var hm = now.getHours() * 100 + now.getMinutes();
+  var slots = sched[day];
+  for (var i = 0; i < slots.length; i++) {
+    var slotHm = parseInt(slots[i].t.split(':')[0]) * 100 + parseInt(slots[i].t.split(':')[1]);
+    if (slotHm > hm) return slots[i];
+  }
+  return sched[DAYS_MAP[(now.getDay() + 1) % 7]][0];
+}
 
 function loadHeroVideo() {
   document.getElementById('heroYtFacade').style.display = 'none';
@@ -1283,9 +1299,6 @@ function togglePlay() {
   toggleRadio();
 }
 
-// load Spotify player on page init
-var spFrame = document.getElementById('spotify-popup-frame');
-spFrame.addEventListener('load', function(){ spFrame.classList.add('loaded'); });
 
 function entrarNoSite() {
   var overlay = document.getElementById('entrada-overlay');
@@ -1311,6 +1324,13 @@ function updateBarClock() {
   var prog = getCurrentProgram();
   if (progNameEl) progNameEl.textContent = prog.n;
   if (progPresEl) progPresEl.textContent = prog.p;
+  var next = getNextProgram();
+  var nextNameEl = document.getElementById('next-prog-name');
+  var nextPresEl = document.getElementById('next-prog-pres');
+  var nextTimeEl = document.getElementById('next-prog-time');
+  if (nextNameEl) nextNameEl.textContent = next.n;
+  if (nextPresEl) nextPresEl.textContent = next.p;
+  if (nextTimeEl) nextTimeEl.textContent = next.t;
 }
 updateBarClock();
 setInterval(updateBarClock, 1000);
