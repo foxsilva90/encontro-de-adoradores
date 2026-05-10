@@ -1425,31 +1425,36 @@ function loadPodcasts() {
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (!data.items || !data.items.length) return;
-      grid.innerHTML = '';
+      var html = '';
       data.items.forEach(function(item) {
-        var s = item.snippet;
-        var vid = s.resourceId.videoId;
-        var title = s.title;
-        var thumb = (s.thumbnails.high || s.thumbnails.medium || s.thumbnails.default).url;
-        var epMatch = title.match(/#(\d+)/);
-        var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '';
-        var epText = epMatch ? 'AdoraCast #' + epMatch[1] : 'AdoraCast';
-        grid.innerHTML +=
-          '<div class="pod-card reveal" onclick="openVideo(\'' + vid + '\')" style="cursor:pointer;">' +
-          '<div class="pod-thumb">' +
-          '<img src="' + thumb + '" alt="' + title.replace(/"/g,'&quot;') + '" loading="lazy">' +
-          (epLabel ? '<span class="pod-ep">' + epLabel + '</span>' : '') +
-          '<div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
-          '</div>' +
-          '<div class="pod-info">' +
-          '<div class="pod-brand">' +
-          '<img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">' +
-          '<span class="pod-brand-name">AdoraCast</span>' +
-          '</div>' +
-          '<div class="pod-title">' + title + '</div>' +
-          '<div class="pod-date" style="margin-top:6px;">' + epText + '</div>' +
-          '</div></div>';
+        try {
+          var s = item.snippet;
+          var vid = s.resourceId && s.resourceId.videoId;
+          if (!vid || s.title === 'Private video' || s.title === 'Deleted video') return;
+          var title = s.title;
+          var tn = s.thumbnails || {};
+          var thumb = (tn.high || tn.medium || tn.default || {}).url || ('https://img.youtube.com/vi/' + vid + '/hqdefault.jpg');
+          var epMatch = title.match(/#(\d+)/);
+          var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '';
+          var epText = epMatch ? 'AdoraCast #' + epMatch[1] : 'AdoraCast';
+          html +=
+            '<div class="pod-card reveal" onclick="openVideo(\'' + vid + '\')" style="cursor:pointer;">' +
+            '<div class="pod-thumb">' +
+            '<img src="' + thumb + '" alt="' + title.replace(/"/g,'&quot;') + '" loading="lazy">' +
+            (epLabel ? '<span class="pod-ep">' + epLabel + '</span>' : '') +
+            '<div class="pod-thumb-overlay"><div class="pod-thumb-overlay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
+            '</div>' +
+            '<div class="pod-info">' +
+            '<div class="pod-brand">' +
+            '<img src="https://yt3.googleusercontent.com/ZGpcRU4VeC3PqwrEc_T198_jB3T_rgP3xN3apeoSlBpDEy7Bovgu7HYh0hTwM_BllYZ7m3GKKTw=s88-c-k-c0x00ffffff-no-rj" alt="AdoraCast" class="pod-brand-logo">' +
+            '<span class="pod-brand-name">AdoraCast</span>' +
+            '</div>' +
+            '<div class="pod-title">' + title + '</div>' +
+            '<div class="pod-date" style="margin-top:6px;">' + epText + '</div>' +
+            '</div></div>';
+        } catch(e) {}
       });
+      if (html) grid.innerHTML = html;
     })
     .catch(function() {});
 }
