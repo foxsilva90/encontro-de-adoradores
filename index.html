@@ -1201,7 +1201,7 @@ function renderSched(day, period) {
         <div class="sched-name">${i.n}</div>
         <div class="sched-pres">${i.p}</div>
       </div>
-      ${i.f ? `<span class="sched-badge">PROGRAMA</span><button class="sched-play-btn" onclick="openSpotify('${i.s||''}')" title="Ouvir programa"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>` : ''}
+      ${i.f ? `<span class="sched-badge">PROGRAMA</span>` : ''}
     </div>`).join('');
 }
 function switchDay(btn, day) {
