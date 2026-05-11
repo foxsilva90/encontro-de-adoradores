@@ -1327,7 +1327,12 @@ function togglePlay() {
       .then(function(d) {
         var np = d && d.now_playing && d.now_playing.song;
         if (!np) return;
-        var title = (np.title || '—').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+        var rawTitle = (np.title || '—');
+        rawTitle = rawTitle.replace(/\.mp3.*/gi, '');
+        rawTitle = rawTitle.replace(/\s*[\(\[].*?[\)\]]\s*/g, '');
+        rawTitle = rawTitle.replace(/\s*[-–|].*$/, '');
+        rawTitle = rawTitle.trim();
+        var title = rawTitle.split(' ').map(function(w){ return w ? w.charAt(0).toUpperCase() + w.slice(1) : ''; }).join(' ');
         var artist = np.artist || '';
         document.getElementById('player-prog-name').textContent = title;
         document.getElementById('player-prog-pres').textContent = artist;
