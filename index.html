@@ -1319,24 +1319,6 @@ function togglePlay() {
   toggleRadio();
 }
 
-(function updateCurrProg() {
-  function run() {
-    var now = new Date();
-    var h = now.getHours();
-    var day = DAYS_MAP[now.getDay()];
-    var slots = sched[day];
-    var curr = null;
-    for (var i = slots.length - 1; i >= 0; i--) {
-      if (parseInt(slots[i].t) <= h) { curr = slots[i]; break; }
-    }
-    if (curr) {
-      document.getElementById('curr-prog-name').textContent = curr.n;
-      document.getElementById('curr-prog-pres').textContent = curr.p;
-    }
-  }
-  run();
-  setInterval(run, 60000);
-})();
 
 (function pollNowPlaying() {
   function update() {
@@ -1373,8 +1355,8 @@ function updateBarClock() {
   var now = new Date();
   var clockEl = document.getElementById('player-clock');
   var dateEl = document.getElementById('player-clock-date');
-  var progNameEl = document.getElementById('player-prog-name');
-  var progPresEl = document.getElementById('player-prog-pres');
+  var progNameEl = document.getElementById('curr-prog-name');
+  var progPresEl = document.getElementById('curr-prog-pres');
   if (clockEl) {
     clockEl.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
   }
