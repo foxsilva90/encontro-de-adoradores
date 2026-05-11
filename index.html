@@ -66,6 +66,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);paddin
 #player-clock{font-family:'Raleway',sans-serif;font-size:22px;font-weight:700;color:var(--orange);letter-spacing:2px;font-variant-numeric:tabular-nums;}
 #player-clock-date{font-size:10px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
 #player-prog-area{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 20px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;max-width:200px;}
+#player-curr-prog{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 20px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;max-width:200px;}
 #player-prog-label{font-size:9px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;}
 #player-prog-name{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
 #player-prog-pres{font-size:10px;color:var(--orange);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
@@ -410,7 +411,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .topbar{display:none;}
   body{padding-top:98px;}
   #player-bar{top:0;height:50px;padding:0 14px;gap:10px;}
-  #player-next-prog,#player-clock-area,#player-prog-area{display:none;}
+  #player-next-prog,#player-clock-area,#player-prog-area,#player-curr-prog{display:none;}
   #player-center{display:flex;flex:1;padding:0;}
   #player-center .p-radio-name{font-size:12px;letter-spacing:.5px;}
   #player-center .p-radio-sub{display:none;}
@@ -545,6 +546,11 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   <div id="player-clock-area">
     <div id="player-clock">00:00:00</div>
     <div id="player-clock-date">Carregando...</div>
+  </div>
+  <div id="player-curr-prog">
+    <div class="pnp-label">Programa Atual</div>
+    <div id="curr-prog-name" class="pnp-name">—</div>
+    <div id="curr-prog-pres" class="pnp-pres">—</div>
   </div>
   <div class="p-socials-wrap">
     <div class="p-socials">
@@ -1312,6 +1318,25 @@ function toggleMute() {
 function togglePlay() {
   toggleRadio();
 }
+
+(function updateCurrProg() {
+  function run() {
+    var now = new Date();
+    var h = now.getHours();
+    var day = DAYS_MAP[now.getDay()];
+    var slots = sched[day];
+    var curr = null;
+    for (var i = slots.length - 1; i >= 0; i--) {
+      if (parseInt(slots[i].t) <= h) { curr = slots[i]; break; }
+    }
+    if (curr) {
+      document.getElementById('curr-prog-name').textContent = curr.n;
+      document.getElementById('curr-prog-pres').textContent = curr.p;
+    }
+  }
+  run();
+  setInterval(run, 60000);
+})();
 
 (function pollNowPlaying() {
   function update() {
