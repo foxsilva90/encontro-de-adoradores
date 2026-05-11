@@ -542,7 +542,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div id="player-clock-date">Carregando...</div>
   </div>
   <div id="player-prog-area">
-    <div id="player-prog-label">Programa Atual</div>
+    <div id="player-prog-label">Tocando Agora</div>
     <div id="player-prog-name">—</div>
     <div id="player-prog-pres">—</div>
   </div>
@@ -1312,6 +1312,24 @@ function toggleMute() {
 function togglePlay() {
   toggleRadio();
 }
+
+(function pollNowPlaying() {
+  function update() {
+    fetch('https://radio.encontrodeadoradores.com/api/nowplaying/encontro_de_adoradores')
+      .then(function(r){ return r.json(); })
+      .then(function(d) {
+        var np = d && d.now_playing && d.now_playing.song;
+        if (!np) return;
+        var title = np.title || '—';
+        var artist = np.artist || '';
+        document.getElementById('player-prog-name').textContent = title;
+        document.getElementById('player-prog-pres').textContent = artist;
+      })
+      .catch(function(){});
+  }
+  update();
+  setInterval(update, 20000);
+})();
 
 
 function entrarNoSite() {
