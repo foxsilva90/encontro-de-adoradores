@@ -513,10 +513,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 <div id="player-bar">
   <audio id="radioAudio" preload="none"></audio>
   <div id="player-next-prog">
-    <div class="pnp-label">Próximo Programa</div>
-    <div id="next-prog-time" class="pnp-time">—</div>
-    <div id="next-prog-name" class="pnp-name">—</div>
-    <div id="next-prog-pres" class="pnp-pres">—</div>
+    <div class="pnp-label">Tocando Agora</div>
+    <div id="now-song-name" class="pnp-name" style="color:var(--orange);">—</div>
+    <div id="now-song-artist" class="pnp-pres">—</div>
   </div>
   <div id="player-center">
     <div id="player-center-row">
@@ -542,7 +541,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div id="player-clock-date">Carregando...</div>
   </div>
   <div id="player-prog-area">
-    <div id="player-prog-label">Tocando Agora</div>
+    <div id="player-prog-label">Programa Atual</div>
     <div id="player-prog-name">—</div>
     <div id="player-prog-pres">—</div>
   </div>
@@ -1322,8 +1321,8 @@ function togglePlay() {
         if (!np) return;
         var title = np.title || '—';
         var artist = np.artist || '';
-        document.getElementById('player-prog-name').textContent = title;
-        document.getElementById('player-prog-pres').textContent = artist;
+        document.getElementById('now-song-name').textContent = title;
+        document.getElementById('now-song-artist').textContent = artist;
       })
       .catch(function(){});
   }
