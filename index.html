@@ -1151,14 +1151,14 @@ var _ds=[
   {t:'06:00',n:'Bom Dia Reino',p:'Equipe EA',f:false},
   {t:'08:00',n:'Café com Esperança',p:'Equipe EA',f:false},
   {t:'09:00',n:'Mulheres de Fé',p:'Equipe EA',f:false},
-  {t:'10:00',n:'Conexão Gospel',p:'Equipe EA',f:false},
+  {t:'10:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true,s:'7MJj4d0ZfHNVsoJFE9FYAf'},
   {t:'11:00',n:'Palavra que Alimenta',p:'Equipe EA',f:false},
   {t:'12:00',n:'Hora da Vitória',p:'Equipe EA',f:false},
   {t:'13:00',n:'Top Louvor Brasil',p:'Equipe EA',f:false},
   {t:'14:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true,s:'7MJj4d0ZfHNVsoJFE9FYAf'},
   {t:'15:00',n:'Família no Altar',p:'Equipe EA',f:false},
   {t:'16:00',n:'Som da Esperança',p:'Equipe EA',f:false},
-  {t:'17:00',n:'Conversa com o Pastor',p:'Equipe EA',f:false},
+  {t:'17:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true,s:'7MJj4d0ZfHNVsoJFE9FYAf'},
   {t:'18:00',n:'Jornal Gospel News',p:'Equipe EA',f:false},
   {t:'19:00',n:'Adoração Total',p:'Equipe EA',f:false},
   {t:'20:00',n:'Impacto Jovem',p:'Equipe EA',f:false},
@@ -1166,7 +1166,12 @@ var _ds=[
   {t:'22:00',n:'Acústico Gospel Live',p:'Equipe EA',f:false},
   {t:'23:00',n:'Descansando em Deus',p:'Equipe EA',f:false},
 ];
-const sched={seg:_ds,ter:_ds,qua:_ds,qui:_ds,sex:_ds,sab:_ds,dom:_ds};
+var _dsWknd=_ds.map(function(i){
+  if(i.t==='10:00') return {t:'10:00',n:'Conexão Gospel',p:'Equipe EA',f:false};
+  if(i.t==='17:00') return {t:'17:00',n:'Conversa com o Pastor',p:'Equipe EA',f:false};
+  return i;
+});
+const sched={seg:_ds,ter:_ds,qua:_ds,qui:_ds,sex:_ds,sab:_dsWknd,dom:_dsWknd};
 
 var DAYS_MAP = ['dom','seg','ter','qua','qui','sex','sab'];
 var currentDay = 'seg';
