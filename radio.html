@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encontro de Adoradores — com Anderson Gustavo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #121212;
+  --s1:       #181818;
+  --s2:       #1f1f1f;
+  --s3:       #282828;
+  --s4:       #333333;
+  --tp:       #ffffff;
+  --ts:       #b3b3b3;
+  --tm:       #535353;
+  --border:   rgba(255,255,255,.08);
+  --blue:     #1A4F8A;
+  --blue-dark:#0D2A4A;
+  --blue-light:#2563B0;
+  --orange:   #F5A324;
+  --orange-dk:#D4881A;
+  --dark:     #080808;
+  --pill:     9999px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);padding-top:164px;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--blue-dark);height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;border-bottom:1px solid rgba(255,255,255,.1);}
+.topbar-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.topbar-soc{display:flex;gap:12px;}
+.topbar-soc a{color:rgba(255,255,255,.6);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
+.topbar-soc a:hover{color:var(--orange);}
+.topbar-soc svg{width:14px;height:14px;fill:currentColor;}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-wa{display:flex;align-items:center;gap:6px;color:var(--orange);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.5px;}
+.topbar-wa svg{width:13px;height:13px;fill:currentColor;}
+.ticker-wrap{flex:1;overflow:hidden;margin:0 20px;height:36px;display:flex;align-items:center;}
+.ticker{display:flex;gap:48px;animation:tick 32s linear infinite;white-space:nowrap;}
+.ticker span{font-size:11px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:8px;}
+.ticker span b{color:var(--orange);font-weight:700;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── PLAYER BAR ── */
+#player-bar{
+  position:fixed;top:36px;left:0;right:0;z-index:1001;
+  background:var(--s1);border-bottom:2px solid var(--orange);
+  height:80px;display:flex;align-items:stretch;padding:0;
+}
+#player-live-info{display:none;}
+#player-next-prog{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;padding:0 20px;width:220px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.08);}
+.pnp-label{font-size:9px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;}
+.pnp-time{font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;color:var(--orange);}
+.pnp-name{font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.pnp-pres{font-size:10px;color:var(--ts);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+#player-center{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 24px;}
+#player-center-row{display:flex;align-items:center;gap:10px;}
+#player-center .p-radio-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:15px;color:var(--tp);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
+#player-center .p-radio-sub{font-size:10px;color:var(--ts);letter-spacing:3px;text-transform:uppercase;}
+#player-clock-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:0 22px;border-left:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;min-width:120px;}
+#player-clock{font-family:'Raleway',sans-serif;font-size:22px;font-weight:700;color:var(--orange);letter-spacing:2px;font-variant-numeric:tabular-nums;}
+#player-clock-date{font-size:10px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+#player-prog-area{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 20px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;max-width:200px;}
+#player-curr-prog{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:0 20px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;max-width:200px;}
+#player-prog-label{font-size:9px;color:var(--ts);letter-spacing:2px;text-transform:uppercase;}
+#player-prog-name{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+#player-prog-pres{font-size:10px;color:var(--orange);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.p-socials-wrap{display:flex;align-items:center;padding:0 20px;flex-shrink:0;}
+.live-badge{background:#DC2626;color:#fff;font-family:'Raleway',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 9px;border-radius:3px;animation:pulse-live 1.4s ease-in-out infinite;flex-shrink:0;}
+@keyframes pulse-live{0%,100%{opacity:1}50%{opacity:.4}}
+.play-btn{width:36px;height:36px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0;}
+.play-btn:hover{background:var(--orange-dk);transform:scale(1.08);}
+.play-btn svg{width:13px;height:13px;fill:#080808;margin-left:2px;}
+.player-info{flex:1;min-width:0;}
+.player-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:12px;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.player-sub{font-size:10px;color:var(--ts);margin-top:1px;}
+.waveform{display:flex;align-items:center;gap:2px;height:22px;}
+.waveform span{display:block;width:3px;background:var(--orange);border-radius:2px;animation:wv 1s ease-in-out infinite;}
+.waveform span:nth-child(1){height:7px;animation-delay:0s}
+.waveform span:nth-child(2){height:14px;animation-delay:.1s}
+.waveform span:nth-child(3){height:10px;animation-delay:.2s}
+.waveform span:nth-child(4){height:18px;animation-delay:.3s}
+.waveform span:nth-child(5){height:12px;animation-delay:.4s}
+.waveform span:nth-child(6){height:16px;animation-delay:.5s}
+.waveform span:nth-child(7){height:9px;animation-delay:.6s}
+.waveform.paused span{animation-play-state:paused;height:4px!important;transition:height .3s;}
+@keyframes wv{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.vol-ctrl{display:flex;align-items:center;gap:8px;padding:0 18px;border-right:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.vol-ico-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;color:var(--ts);transition:color .2s;flex-shrink:0;}
+.vol-ico-btn:hover{color:var(--tp);}
+.vol-ico-btn svg{width:17px;height:17px;fill:currentColor;}
+.vol-slider{-webkit-appearance:none;width:80px;height:3px;background:var(--s4);border-radius:2px;outline:none;cursor:pointer;flex-shrink:0;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--orange);cursor:pointer;box-shadow:0 0 6px rgba(245,163,36,.5);}
+.vol-slider::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--orange);cursor:pointer;border:none;}
+/* ── ENTRADA OVERLAY ── */
+#entrada-overlay{position:fixed;inset:0;z-index:9999;background:linear-gradient(105deg,#0b1f3a 0%,#0d0906 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;transition:opacity .6s ease,visibility .6s ease;}
+#entrada-overlay.saindo{opacity:0;visibility:hidden;}
+.entrada-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.entrada-note{position:absolute;opacity:.06;animation:floatNote linear infinite;}
+.entrada-mic-wrap{position:relative;display:flex;align-items:center;justify-content:center;animation:float 5s ease-in-out infinite;margin-bottom:32px;}
+.entrada-grad-ring{position:absolute;width:382px;height:382px;border-radius:50%;background:conic-gradient(from 0deg,rgba(245,163,36,.85) 0%,rgba(26,79,138,.85) 35%,transparent 50%,rgba(26,79,138,.85) 65%,rgba(245,163,36,.85) 100%);animation:spin-ring 5s linear infinite;filter:blur(1px);z-index:0;}
+.entrada-ring{position:absolute;border-radius:50%;pointer-events:none;}
+.entrada-ring-1{width:408px;height:408px;border:2px solid rgba(245,163,36,.5);animation:pulse-ring 3s ease-out infinite;}
+.entrada-ring-2{width:450px;height:450px;border:1.5px solid rgba(37,99,176,.4);animation:pulse-ring 3s ease-out infinite .8s;}
+.entrada-ring-3{width:492px;height:492px;border:1px solid rgba(245,163,36,.2);animation:pulse-ring 3s ease-out infinite 1.6s;}
+.entrada-circle{width:360px;height:360px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(245,163,36,.35),0 0 40px rgba(245,163,36,.18),0 20px 60px rgba(0,0,0,.6);position:relative;z-index:1;}
+.entrada-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.entrada-sub{font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:36px;}
+.btn-entrada{display:inline-flex;align-items:center;gap:10px;background:#F5A324;color:#080808;font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;letter-spacing:.5px;padding:16px 40px;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 8px 32px rgba(245,163,36,.35);transition:.25s;}
+.btn-entrada:hover{background:#D4881A;transform:translateY(-2px);box-shadow:0 12px 40px rgba(245,163,36,.5);}
+@media(max-width:480px){
+  .entrada-circle{width:260px;height:260px;}
+  .entrada-grad-ring{width:276px;height:276px;}
+  .entrada-ring-1{width:296px;height:296px;}
+  .entrada-ring-2{width:326px;height:326px;}
+  .entrada-ring-3{width:356px;height:356px;}
+  .entrada-mic-wrap{margin-bottom:24px;}
+}
+
+/* ── VIDEO MODAL ── */
+#video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;align-items:center;justify-content:center;padding:20px;}
+#video-modal.open{display:flex;}
+.vm-inner{position:relative;width:100%;max-width:960px;aspect-ratio:16/9;}
+.vm-close{position:absolute;top:-42px;right:0;background:none;border:none;color:#fff;font-size:26px;cursor:pointer;line-height:1;padding:4px 8px;opacity:.8;transition:opacity .2s;}
+.vm-close:hover{opacity:1;}
+#vm-iframe{width:100%;height:100%;border:none;border-radius:10px;display:block;}
+
+.p-socials{display:flex;gap:10px;}
+.p-socials a{color:var(--ts);display:flex;align-items:center;transition:color .2s;text-decoration:none;}
+.p-socials a:hover{color:var(--orange);}
+.p-socials svg{width:16px;height:16px;fill:currentColor;}
+
+/* ── HEADER ── */
+header{position:fixed;top:116px;left:0;right:0;z-index:1000;background:var(--blue);height:48px;display:flex;align-items:center;box-shadow:0 2px 20px rgba(0,0,0,.5);}
+.hdr{max-width:1200px;margin:0 auto;width:100%;padding:0 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+nav{display:flex;align-items:center;gap:1px;}
+nav a{font-family:'Raleway',sans-serif;font-weight:600;font-size:12.5px;color:rgba(255,255,255,.75);text-decoration:none;padding:7px 12px;border-radius:var(--pill);transition:.2s;letter-spacing:.3px;}
+nav a:hover,nav a.active{color:#fff;background:rgba(255,255,255,.12);}
+nav a.cta{background:var(--orange);color:var(--dark);font-weight:700;border-radius:var(--pill);}
+nav a.cta:hover{background:var(--orange-dk);}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:8px;}
+.burger span{display:block;width:20px;height:2px;background:#fff;margin:4px 0;transition:.3s;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 50%,#040d18 100%);min-height:500px;display:flex;align-items:flex-start;position:relative;overflow:hidden;padding:0;}
+.hero-particles{position:absolute;inset:0;pointer-events:none;}
+.note{position:absolute;font-size:20px;opacity:.06;animation:floatNote linear infinite;}
+@keyframes floatNote{0%{transform:translateY(100%) rotate(0deg);opacity:0}10%{opacity:.1}90%{opacity:.04}100%{transform:translateY(-120px) rotate(360deg);opacity:0}}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(245,163,36,.12) 0%,transparent 60%);}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;padding:28px 24px;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.3);color:var(--orange);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:var(--pill);margin-bottom:52px;font-family:'Raleway',sans-serif;}
+.hero-row{display:flex;align-items:center;gap:32px;}
+.dot-live{width:7px;height:7px;border-radius:50%;background:#DC2626;animation:pulse-live 1.4s infinite;}
+.hero h1{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(32px,4.5vw,58px);color:var(--tp);line-height:1.05;margin-bottom:6px;}
+.hero h1 span{color:var(--orange);}
+.hero-presenter{font-size:14px;color:var(--ts);letter-spacing:1px;margin-bottom:18px;font-family:'Raleway',sans-serif;}
+.hero-desc{font-size:15px;color:var(--ts);line-height:1.75;margin-bottom:32px;max-width:400px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-pri{background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;padding:12px 28px;border-radius:var(--pill);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:.25s;border:none;cursor:pointer;letter-spacing:.5px;}
+.btn-pri:hover{background:var(--orange-dk);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,163,36,.3);}
+.btn-sec{background:transparent;color:var(--tp);font-family:'Raleway',sans-serif;font-weight:600;font-size:13px;padding:12px 28px;border-radius:var(--pill);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:.25s;border:1px solid rgba(255,255,255,.3);}
+.btn-sec:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);}
+.hero-visual{display:flex;align-items:center;justify-content:center;position:relative;padding-top:40px;}
+.hero-yt-wrap{width:100%;max-width:520px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.7);border:1px solid var(--border);}
+.hero-yt-wrap iframe{width:100%;height:352px;display:block;border:none;}
+.yt-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:opacity .3s;z-index:2;}
+.yt-overlay.hidden{opacity:0;pointer-events:none;}
+.yt-overlay-btn{width:64px;height:64px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(245,163,36,.5);transition:.2s;}
+.yt-overlay-btn svg{width:22px;height:22px;fill:#080808;margin-left:4px;}
+.yt-overlay-btn:hover{transform:scale(1.1);}
+.yt-overlay-label{font-family:'Raleway',sans-serif;font-weight:700;font-size:12px;color:#fff;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── STATS BAR ── */
+.stats-bar{background:var(--blue);padding:32px 24px;}
+.stats-bar-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.stat-item{text-align:center;padding:20px 10px;position:relative;}
+.stat-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.1);}
+.stat-n{font-family:'Raleway',sans-serif;font-weight:900;font-size:38px;color:var(--tp);line-height:1;margin-bottom:4px;}
+.stat-n span{color:var(--orange);}
+.stat-l{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.5px;font-weight:600;text-transform:uppercase;}
+
+/* ── SECTIONS ── */
+section{padding:64px 24px;}
+.wrap{max-width:1200px;margin:0 auto;}
+.sec-hdr{margin-bottom:40px;}
+.sec-hdr.center{text-align:center;}
+.sec-hdr.center .sec-title{margin:0 auto 12px;}
+.eyebrow{font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:24px;height:2px;background:var(--orange);display:block;border-radius:2px;}
+.sec-hdr.center .eyebrow{justify-content:center;}
+.sec-hdr.center .eyebrow::before{display:none;}
+.sec-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:clamp(24px,3.5vw,34px);color:var(--tp);margin-bottom:10px;line-height:1.15;}
+.sec-desc{font-size:15px;color:var(--ts);line-height:1.7;}
+
+/* ── PODCASTS ── */
+.podcasts{background:var(--bg);}
+.pod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.pod-card{background:var(--s1);border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:.3s;cursor:pointer;border:1px solid var(--border);}
+.pod-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.6);background:var(--s2);border-color:rgba(245,163,36,.3);}
+.pod-thumb{height:180px;position:relative;display:flex;align-items:center;justify-content:center;font-size:50px;overflow:hidden;background:#000;}
+.pod-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.pt1{background:linear-gradient(145deg,#1A4F8A,#0D2A4A)}
+.pt2{background:linear-gradient(145deg,#0D2A4A,#153E70)}
+.pt3{background:linear-gradient(145deg,#F5A324,#D4881A)}
+.pt4{background:linear-gradient(145deg,#1A4F8A,#F5A324)}
+.pod-thumb-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:.3s;display:flex;align-items:center;justify-content:center;}
+.pod-card:hover .pod-thumb-overlay{opacity:1;}
+.pod-thumb-overlay-btn{width:52px;height:52px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;transform:scale(.8);transition:.3s;}
+.pod-card:hover .pod-thumb-overlay-btn{transform:scale(1);}
+.pod-thumb-overlay-btn svg{width:18px;height:18px;fill:#080808;margin-left:3px;}
+.pod-ep{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);color:var(--orange);font-family:'Raleway',sans-serif;font-weight:700;font-size:10px;padding:3px 8px;border-radius:var(--pill);letter-spacing:1px;}
+.pod-info{padding:16px;}
+.pod-brand{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.pod-brand-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.pod-brand-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:11px;color:var(--orange);letter-spacing:.5px;}
+.pod-date{font-size:11px;color:var(--tm);margin-bottom:6px;}
+.pod-title{font-family:'Raleway',sans-serif;font-weight:700;font-size:13.5px;color:var(--tp);margin-bottom:10px;line-height:1.4;}
+.pod-footer{display:flex;align-items:center;justify-content:space-between;}
+.pod-dur{font-size:11px;color:var(--ts);display:flex;align-items:center;gap:4px;}
+.pod-dur svg{width:11px;height:11px;fill:currentColor;}
+.pod-bar{height:3px;background:var(--s3);border-radius:2px;margin-top:8px;overflow:hidden;}
+.pod-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--orange));border-radius:2px;transition:width .3s;}
+
+/* ── CLIPES ── */
+.clipes{background:var(--s1);}
+.clipes-scroll{display:flex;gap:16px;overflow-x:auto;padding:4px 0 18px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--orange) var(--s3);}
+.clipes-scroll::-webkit-scrollbar{height:4px;}
+.clipes-scroll::-webkit-scrollbar-track{background:var(--s3);border-radius:2px;}
+.clipes-scroll::-webkit-scrollbar-thumb{background:var(--orange);border-radius:2px;}
+.clip-card{flex-shrink:0;width:272px;cursor:pointer;scroll-snap-align:start;transition:transform .3s ease,opacity .3s ease;}
+.clipes-scroll:has(.clip-card:hover) .clip-card:not(:hover){opacity:.38;transform:scale(.96);}
+.clip-thumb{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;transition:border-color .3s ease,box-shadow .3s ease;}
+.clip-card:hover .clip-thumb{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange),0 14px 44px rgba(245,163,36,.28);}
+.clip-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;}
+.clip-card:hover .clip-thumb img{transform:scale(1.07);}
+.clip-overlay{position:absolute;inset:0;background:rgba(0,0,0,.48);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;}
+.clip-card:hover .clip-overlay{opacity:1;}
+.clip-play-btn{width:58px;height:58px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;transform:scale(.6);transition:transform .3s ease;box-shadow:0 6px 24px rgba(0,0,0,.5);}
+.clip-card:hover .clip-play-btn{transform:scale(1);}
+.clip-play-btn svg{width:22px;height:22px;fill:#080808;margin-left:3px;}
+.clip-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.72);color:var(--orange);font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;padding:3px 8px;border-radius:var(--pill);letter-spacing:1.5px;text-transform:uppercase;backdrop-filter:blur(4px);}
+.clip-title{font-family:'Raleway',sans-serif;font-weight:600;font-size:12.5px;color:var(--tp);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 2px 0;max-height:0;opacity:0;transition:max-height .3s ease,opacity .3s ease;}
+.clip-card:hover .clip-title{max-height:36px;opacity:1;}
+@media(max-width:768px){.clip-title{max-height:36px;opacity:1;}}
+.clipes-scroll-wrap{position:relative;}
+.clip-arrow{position:absolute;top:calc(50% - 18px);transform:translateY(-50%);z-index:10;width:40px;height:40px;border-radius:50%;background:rgba(10,10,10,.8);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(6px);padding:0;}
+.clip-arrow:hover{background:var(--orange);border-color:var(--orange);color:#080808;}
+.clip-arrow.clip-arr-left{left:-12px;}
+.clip-arrow.clip-arr-right{right:-12px;}
+@media(max-width:900px){.clip-arrow{display:none;}}
+@media(min-width:769px){.clipes-scroll{scrollbar-width:none;cursor:grab;}.clipes-scroll::-webkit-scrollbar{display:none;}.clipes-scroll.dragging{cursor:grabbing;}}
+
+/* ── TOP 10 ── */
+.top10{background:#0a0a0a;}
+.top10-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.top10-item{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:6px;background:var(--s1);border:1px solid var(--border);transition:.25s;cursor:pointer;}
+.top10-item:hover{background:var(--s2);border-color:rgba(245,163,36,.25);transform:translateX(4px);}
+.top10-num{font-family:'Raleway',sans-serif;font-weight:900;font-size:22px;color:var(--tm);min-width:32px;text-align:center;line-height:1;}
+.top10-item:hover .top10-num{color:var(--orange);}
+.top10-item.top3 .top10-num{color:var(--orange);}
+.top10-info{flex:1;min-width:0;}
+.top10-song{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--tp);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.top10-artist{font-size:11.5px;color:var(--ts);margin-top:2px;}
+.top10-play{width:30px;height:30px;border-radius:50%;background:var(--s3);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-shrink:0;}
+.top10-item:hover .top10-play{background:var(--orange);}
+.top10-play svg{width:10px;height:10px;fill:var(--ts);margin-left:2px;}
+.top10-item:hover .top10-play svg{fill:#080808;}
+.top10-item.playing{border-color:var(--orange);background:var(--s2);}
+.top10-item.playing .top10-num{color:var(--orange);}
+.spotify-embed-wrap{margin-top:24px;border-radius:12px;overflow:hidden;display:none;}
+.spotify-embed-wrap.active{display:block;}
+
+/* ── PROGRAMAÇÃO ── */
+.prog{background:var(--s1);}
+.day-tabs{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap;}
+.day-btn{font-family:'Raleway',sans-serif;font-size:12.5px;font-weight:600;padding:8px 18px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--ts);cursor:pointer;transition:.2s;}
+.day-btn:hover{border-color:var(--orange);color:var(--tp);}
+.day-btn.active{background:var(--orange);border-color:var(--orange);color:var(--dark);font-weight:700;}
+.period-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.period-btn{font-family:'Raleway',sans-serif;font-size:11px;font-weight:600;padding:5px 14px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--ts);cursor:pointer;transition:.2s;letter-spacing:.5px;text-transform:uppercase;}
+.period-btn:hover{border-color:var(--orange);color:var(--tp);}
+.period-btn.active{background:rgba(245,163,36,.12);border-color:var(--orange);color:var(--orange);font-weight:700;}
+.sched-list{display:grid;gap:8px;}
+.sched-item{display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:6px;background:var(--s2);border:1px solid var(--border);transition:.2s;}
+.sched-item:hover{border-color:rgba(245,163,36,.2);background:var(--s3);}
+.sched-item.feat{background:rgba(245,163,36,.06);border-color:rgba(245,163,36,.2);}
+.sched-time{font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;color:var(--orange);min-width:80px;}
+.sched-dot{width:8px;height:8px;border-radius:50%;background:var(--s4);flex-shrink:0;}
+.sched-item.feat .sched-dot{background:var(--orange);}
+.sched-prog{flex:1;}
+.sched-name{font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;color:var(--tp);}
+.sched-pres{font-size:12px;color:var(--ts);margin-top:2px;}
+.sched-badge{background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:var(--pill);white-space:nowrap;}
+.sched-play-btn{width:32px;height:32px;border-radius:50%;background:var(--orange);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;}
+.sched-play-btn:hover{background:var(--orange-dk);transform:scale(1.1);}
+.sched-play-btn svg{width:11px;height:11px;fill:#080808;margin-left:2px;}
+#video-modal.spotify .vm-inner{aspect-ratio:unset;height:232px;max-width:620px;}
+
+/* ── ANUNCIE ── */
+.anuncie{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 60%,#040d18 100%);padding:80px 0;position:relative;overflow:hidden;}
+.anuncie::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,163,36,.1) 0%,transparent 65%);pointer-events:none;}
+.anuncie-inner{position:relative;z-index:1;}
+.anuncie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;}
+.anuncie-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:32px 28px;text-align:center;transition:.3s;cursor:pointer;}
+.anuncie-card:hover{border-color:rgba(245,163,36,.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}
+.anuncie-icon{width:56px;height:56px;border-radius:50%;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+.anuncie-icon svg{width:24px;height:24px;fill:var(--orange);}
+.anuncie-card-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:16px;color:var(--tp);margin-bottom:10px;}
+.anuncie-card-desc{font-size:13px;color:var(--ts);line-height:1.7;}
+.anuncie-cta{text-align:center;margin-top:48px;}
+.anuncie-cta p{font-size:15px;color:var(--ts);margin-bottom:20px;}
+
+/* ── NOTÍCIAS ── */
+.noticias{background:var(--bg);}
+.news-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
+.news-featured{border-radius:8px;overflow:hidden;background:var(--s1);border:1px solid var(--border);box-shadow:0 4px 20px rgba(0,0,0,.4);transition:.3s;cursor:pointer;}
+.news-featured:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.6);border-color:rgba(245,163,36,.25);}
+.news-featured-img{height:280px;background:linear-gradient(145deg,#0D2A4A,#1A4F8A);display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden;}
+.news-featured-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent 60%);}
+.news-feat-cat{position:absolute;top:16px;left:16px;background:var(--orange);color:var(--dark);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:var(--pill);z-index:1;}
+.news-feat-body{padding:24px;}
+.news-feat-date{font-size:12px;color:var(--tm);margin-bottom:10px;}
+.news-feat-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:22px;color:var(--tp);margin-bottom:12px;line-height:1.3;}
+.news-feat-exc{font-size:14px;color:var(--ts);line-height:1.7;}
+.news-more{display:inline-flex;align-items:center;gap:4px;color:var(--orange);font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;margin-top:14px;text-decoration:none;transition:gap .2s;}
+.news-more:hover{gap:8px;}
+.news-sidebar{display:flex;flex-direction:column;gap:12px;}
+.news-card-sm{display:flex;gap:14px;padding:14px;border-radius:8px;background:var(--s1);border:1px solid var(--border);transition:.25s;cursor:pointer;align-items:flex-start;}
+.news-card-sm:hover{border-color:rgba(245,163,36,.25);transform:translateX(4px);background:var(--s2);}
+.news-sm-thumb{width:72px;height:60px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.nt1{background:linear-gradient(135deg,rgba(26,79,138,.4),rgba(26,79,138,.6))}
+.nt2{background:linear-gradient(135deg,rgba(245,163,36,.2),rgba(245,163,36,.4))}
+.nt3{background:linear-gradient(135deg,rgba(13,42,74,.4),rgba(13,42,74,.6))}
+.news-sm-body{flex:1;min-width:0;}
+.news-sm-cat{font-family:'Raleway',sans-serif;font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.news-sm-title{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--tp);line-height:1.35;margin-bottom:5px;}
+.news-sm-date{font-size:11px;color:var(--tm);}
+
+/* ── SOBRE ── */
+.sobre{background:var(--s1);}
+.sobre-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.sobre-text p{font-size:15px;color:var(--ts);line-height:1.85;margin-bottom:16px;}
+.sobre-text p strong{color:var(--tp);}
+.sobre-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;}
+.s-stat{text-align:center;padding:18px 10px;background:var(--s2);border-radius:8px;border:1px solid var(--border);}
+.s-stat-n{font-family:'Raleway',sans-serif;font-weight:900;font-size:30px;color:var(--tp);line-height:1;}
+.s-stat-n span{color:var(--orange);}
+.s-stat-l{font-size:11px;color:var(--ts);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.sobre-vis{display:flex;align-items:center;justify-content:center;}
+.mic-wrap{position:relative;display:flex;align-items:center;justify-content:center;animation:float 5s ease-in-out infinite;}
+.mic-grad-ring{position:absolute;width:318px;height:318px;border-radius:50%;background:conic-gradient(from 0deg,#F5A324 0%,#1A4F8A 40%,transparent 50%,#1A4F8A 60%,#F5A324 100%);animation:spin-ring 5s linear infinite;z-index:0;}
+.mic-grad-ring::after{content:'';position:absolute;inset:5px;border-radius:50%;background:#181818;}
+.mic-ring{position:absolute;border-radius:50%;pointer-events:none;}
+.mic-ring-1{width:340px;height:340px;border:2px solid rgba(245,163,36,.55);animation:pulse-ring 3s ease-out infinite;}
+.mic-ring-2{width:375px;height:375px;border:1.5px solid rgba(37,99,176,.45);animation:pulse-ring 3s ease-out infinite .8s;}
+.mic-ring-3{width:410px;height:410px;border:1px solid rgba(245,163,36,.25);animation:pulse-ring 3s ease-out infinite 1.6s;}
+.mic-circle{width:300px;height:300px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(245,163,36,.35),0 0 40px rgba(245,163,36,.18),0 20px 60px rgba(0,0,0,.6);position:relative;z-index:1;}
+.mic-circle::before,.mic-circle::after{display:none;}
+.mic-circle svg{width:150px;height:150px;}
+.hero-mic-wrap{position:relative;display:flex;align-items:center;justify-content:center;animation:float 5s ease-in-out infinite;margin-bottom:28px;}
+.hero-mic-circle{width:180px;height:180px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px rgba(245,163,36,.4),0 0 40px rgba(245,163,36,.18),0 16px 48px rgba(0,0,0,.6);position:relative;z-index:1;}
+.hero-mic-grad-ring{position:absolute;width:194px;height:194px;border-radius:50%;background:conic-gradient(from 0deg,rgba(245,163,36,.85) 0%,rgba(26,79,138,.85) 35%,transparent 50%,rgba(26,79,138,.85) 65%,rgba(245,163,36,.85) 100%);animation:spin-ring 5s linear infinite;filter:blur(1px);z-index:0;}
+.hero-mic-ring{position:absolute;border-radius:50%;pointer-events:none;}
+.hero-mic-ring-1{width:207px;height:207px;border:2px solid rgba(245,163,36,.5);animation:pulse-ring 3s ease-out infinite;}
+.hero-mic-ring-2{width:230px;height:230px;border:1.5px solid rgba(37,99,176,.4);animation:pulse-ring 3s ease-out infinite .8s;}
+.hero-mic-ring-3{width:252px;height:252px;border:1px solid rgba(245,163,36,.2);animation:pulse-ring 3s ease-out infinite 1.6s;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes spin-ring{to{transform:rotate(360deg)}}
+@keyframes pulse-ring{0%{transform:scale(.85);opacity:1}100%{transform:scale(1.1);opacity:0}}
+
+/* ── CONTATO ── */
+.contato{background:var(--bg);}
+.contato-inner{display:grid;grid-template-columns:1fr 1.5fr;gap:56px;align-items:start;}
+.contato-info{padding-top:8px;}
+.contato-info h3{font-family:'Raleway',sans-serif;font-weight:800;font-size:20px;color:var(--tp);margin-bottom:16px;}
+.contato-info p{font-size:14px;color:var(--ts);line-height:1.8;margin-bottom:28px;}
+.info-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.info-icon{width:38px;height:38px;border-radius:8px;background:rgba(245,163,36,.12);border:1px solid rgba(245,163,36,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.info-icon svg{width:16px;height:16px;fill:var(--orange);}
+.info-text strong{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--tp);display:block;margin-bottom:2px;}
+.info-text span{font-size:13px;color:var(--ts);}
+.form-wrap{background:var(--s1);border-radius:12px;padding:32px;border:1px solid var(--border);}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.f-group{margin-bottom:16px;}
+label{display:block;font-family:'Raleway',sans-serif;font-weight:600;font-size:11px;color:var(--ts);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;}
+input,textarea,select{width:100%;padding:11px 14px;border:1px solid var(--s3);border-radius:6px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;background:var(--s2);color:var(--tp);resize:vertical;}
+input::placeholder,textarea::placeholder{color:var(--tm);}
+select option{background:var(--s2);}
+input:focus,textarea:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 2px rgba(245,163,36,.1);}
+textarea{min-height:120px;}
+
+/* ── FOOTER SOCIAL BAR ── */
+.ft-social-bar{background:var(--blue);padding:22px 24px;}
+.ft-social-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;}
+.ft-social-bar p{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:rgba(255,255,255,.7);}
+.ft-social-bar .ft-soc{display:flex;gap:10px;}
+.ft-social-bar .ft-soc a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:.25s;}
+.ft-social-bar .ft-soc a:hover{background:var(--orange);color:var(--dark);}
+.ft-social-bar .ft-soc svg{width:16px;height:16px;fill:currentColor;}
+footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
+.ft-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+.ft-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ft-bname{font-family:'Raleway',sans-serif;font-weight:800;font-size:14px;color:var(--tp);}
+.ft-bsub{font-size:10px;color:var(--orange);}
+.ft-desc{font-size:13px;line-height:1.75;margin-bottom:18px;max-width:240px;color:var(--ts);}
+.ft-soc{display:flex;gap:8px;}
+.ft-soc a{width:32px;height:32px;border-radius:50%;background:var(--s1);display:flex;align-items:center;justify-content:center;color:var(--ts);text-decoration:none;transition:.2s;}
+.ft-soc a:hover{background:var(--orange);color:var(--dark);}
+.ft-soc svg{width:14px;height:14px;fill:currentColor;}
+.ft-col h4{font-family:'Raleway',sans-serif;font-weight:700;font-size:13px;color:var(--tp);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.ft-col ul{list-style:none;}
+.ft-col ul li{margin-bottom:8px;}
+.ft-col ul li a{font-size:12.5px;color:var(--ts);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px;}
+.ft-col ul li a::before{content:'›';color:var(--orange);font-size:14px;}
+.ft-col ul li a:hover{color:var(--orange);}
+.ft-bottom{max-width:1200px;margin:0 auto;padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--tm);flex-wrap:wrap;gap:8px;}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal-left.visible{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal-right.visible{opacity:1;transform:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .pod-grid{grid-template-columns:repeat(2,1fr);}
+  .top10-grid{grid-template-columns:1fr;}
+  .stats-bar-inner{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:900px){
+  body{padding-top:122px;}
+  .hero-inner{grid-template-columns:1fr;text-align:center;}
+  .hero-visual{display:flex;}
+  .hero-yt-wrap{max-width:100%;}
+  .hero-btns{justify-content:center;}
+  .hero-desc{margin:0 auto 20px;}
+  .hero-inner{padding:20px 24px 24px;}
+  .hero-visual{display:flex;}
+  .hero-row{flex-direction:column;align-items:center;}
+  .hero-tag{margin-bottom:38px;}
+  .hero-mic-wrap{margin-bottom:10px!important;}
+  .hero-mic-circle{width:110px;height:110px;}
+  .hero-mic-grad-ring{width:118px;height:118px;}
+  .hero-mic-ring-1{width:126px;height:126px;}
+  .hero-mic-ring-2{width:140px;height:140px;}
+  .hero-mic-ring-3{width:154px;height:154px;}
+  .hero-desc{margin-bottom:12px!important;}
+  .news-layout{grid-template-columns:1fr;}
+  .anuncie-grid{grid-template-columns:1fr;}
+  .sobre-inner{grid-template-columns:1fr;}
+  .sobre-vis{display:none;}
+  .contato-inner{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .topbar{display:none;}
+  body{padding-top:112px;}
+  #player-bar{top:0;height:64px;padding:0 14px;gap:8px;}
+  #player-next-prog,#player-curr-prog{display:none;}
+  #player-center{display:flex;flex:0 0 auto;padding:0;flex-direction:row;align-items:center;gap:6px;}
+  #player-center .p-radio-name{display:none;}
+  #player-center .p-radio-sub{display:none;}
+  #player-center-row{gap:6px;}
+  #player-center-row .waveform{display:flex;}
+  #player-prog-area{display:flex;flex:1;min-width:0;padding:0;border:none;max-width:none;align-items:center;}
+  #player-prog-label{display:none;}
+  #player-prog-name{font-size:12px;max-width:none;}
+  #player-prog-pres{font-size:10px;}
+  #player-clock-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0 8px;border:none;min-width:auto;flex-shrink:0;}
+  #player-clock{font-size:14px;letter-spacing:1px;}
+  #player-clock-date{display:block;font-size:8px;}
+  .p-socials-wrap{display:none;}
+  header{top:64px;}
+  .vol-ctrl{display:flex;padding:0;border:none;gap:6px;}
+  .vol-ico-btn,.vol-slider,.p-socials{display:none;}
+  nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0a0a0a;border:1px solid var(--border);flex-direction:column;padding:10px;gap:3px;box-shadow:0 8px 20px rgba(0,0,0,.5);}
+  nav.open{display:flex;}
+  nav a{width:100%;text-align:center;border-radius:6px;}
+  .burger{display:block;}
+  .hdr{position:relative;}
+  .pod-grid{grid-template-columns:1fr 1fr;}
+  .top10-grid{grid-template-columns:1fr;}
+  .f-row{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+  .ft-grid > .ft-brand{grid-column:1/-1;}
+  .day-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .day-tabs::-webkit-scrollbar{display:none;}
+  .day-btn{flex-shrink:0;}
+}
+@media(max-width:520px){
+  .pod-grid{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr;}
+  .stats-bar-inner{grid-template-columns:1fr 1fr;}
+  .stat-item::after{display:none;}
+  .period-btn{flex:1;text-align:center;padding:5px 6px;font-size:10px;letter-spacing:0;}
+  .sched-item{padding:10px 12px;gap:8px;}
+  .sched-time{min-width:46px;font-size:12px;}
+  .sched-dot{display:none;}
+  .sched-name{font-size:13px;}
+  .sched-badge{font-size:8px;padding:2px 6px;letter-spacing:.5px;}
+  .sched-play-btn{width:28px;height:28px;}
+  .sched-play-btn svg{width:10px;height:10px;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ ENTRADA OVERLAY ══════════ -->
+<div id="entrada-overlay">
+  <div class="entrada-particles" id="entradaParticles"></div>
+  <div class="entrada-mic-wrap">
+    <div class="entrada-grad-ring"></div>
+    <span class="entrada-ring entrada-ring-1"></span>
+    <span class="entrada-ring entrada-ring-2"></span>
+    <span class="entrada-ring entrada-ring-3"></span>
+    <div class="entrada-circle">
+      <img src="logo_tunein_1200x1200.jpg" alt="Encontro de Adoradores">
+    </div>
+  </div>
+  <p class="entrada-sub">Rádio Gospel Online</p>
+  <button class="btn-entrada" onclick="entrarNoSite()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    Entrar e Ouvir
+  </button>
+</div>
+
+<!-- ══════════ TOPBAR ══════════ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-soc">
+      <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="https://web.facebook.com/groups/531845303692096" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker" id="ticker">
+        <span>🎵 <b>Ao Vivo Agora:</b> <span class="ticker-curr">—</span></span>
+        <span>📻 <b>Próximo:</b> <span class="ticker-next">—</span></span>
+        <span>🎙️ <b>Novo Podcast:</b> EP 384 — O Poder da Adoração Genuína — disponível agora</span>
+        <span>🙏 <b>Participe:</b> Envie seu pedido de oração pelo WhatsApp</span>
+        <span>🎵 <b>Ao Vivo Agora:</b> <span class="ticker-curr">—</span></span>
+        <span>📻 <b>Próximo:</b> <span class="ticker-next">—</span></span>
+        <span>🎙️ <b>Novo Podcast:</b> EP 384 — O Poder da Adoração Genuína — disponível agora</span>
+        <span>🙏 <b>Participe:</b> Envie seu pedido de oração pelo WhatsApp</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="#contato" class="topbar-wa">
+        <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg>
+        Participe
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PLAYER BAR ══════════ -->
+<div id="player-bar">
+  <audio id="radioAudio" preload="none"></audio>
+  <div id="player-next-prog">
+    <div class="pnp-label">Próximo Programa</div>
+    <div id="next-prog-time" class="pnp-time">—</div>
+    <div id="next-prog-name" class="pnp-name">—</div>
+    <div id="next-prog-pres" class="pnp-pres">—</div>
+  </div>
+  <div id="player-center">
+    <div id="player-center-row">
+      <span class="live-badge">AO VIVO</span>
+      <div class="waveform paused" id="radioWaveform">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="p-radio-name">Encontro de Adoradores</div>
+    <div class="p-radio-sub">Rádio Gospel Online</div>
+  </div>
+  <div id="player-prog-area">
+    <div id="player-prog-label">Tocando Agora</div>
+    <div id="player-prog-name">—</div>
+    <div id="player-prog-pres">—</div>
+  </div>
+  <div class="vol-ctrl">
+    <button class="play-btn" id="radioPlayBtn" onclick="toggleRadio()" title="Ouvir rádio ao vivo">
+      <svg viewBox="0 0 24 24" id="radioPlayIcon"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button class="vol-ico-btn" id="volBtn" onclick="toggleMute()" title="Mudo/Som">
+      <svg viewBox="0 0 24 24" id="volIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+    </button>
+    <input type="range" class="vol-slider" id="radioVol" min="0" max="1" step="0.05" value="0.8" oninput="setRadioVol(this.value)">
+  </div>
+  <div id="player-clock-area">
+    <div id="player-clock">00:00:00</div>
+    <div id="player-clock-date">Carregando...</div>
+  </div>
+  <div id="player-curr-prog">
+    <div class="pnp-label">Programa Atual</div>
+    <div id="curr-prog-name" class="pnp-name">—</div>
+    <div id="curr-prog-pres" class="pnp-pres">—</div>
+  </div>
+  <div class="p-socials-wrap">
+    <div class="p-socials">
+      <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="https://wa.me/5521988057754" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="hdr" id="hdr">
+    <a href="#" class="logo">
+      <img src="logo_tunein_1200x1200.jpg" alt="Encontro de Adoradores" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div>
+        <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:14px;color:#fff;line-height:1;">Encontro de</div>
+        <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:19px;color:#fff;line-height:1.1;">Adoradores</div>
+        <div style="font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;color:#F5A324;letter-spacing:2px;text-transform:uppercase;margin-top:1px;">com Anderson Gustavo</div>
+      </div>
+    </a>
+    <button class="burger" id="burgerBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mainNav">
+      <a href="#" class="active">Home</a>
+      <a href="#podcasts">Podcasts</a>
+      <a href="#clipes">Clipes</a>
+      <a href="#top10">Top Gospel</a>
+      <a href="#programacao">Programação</a>
+      <a href="#anuncie">Anuncie</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato" class="cta">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-particles" id="heroParticles"></div>
+  <div class="hero-inner">
+    <div class="reveal">
+      <div class="hero-tag"><span class="dot-live"></span> Transmissão ao vivo</div>
+      <div class="hero-row">
+        <div class="hero-mic-wrap" style="margin-bottom:0;flex-shrink:0;">
+          <div class="hero-mic-grad-ring"></div>
+          <span class="hero-mic-ring hero-mic-ring-1"></span>
+          <span class="hero-mic-ring hero-mic-ring-2"></span>
+          <span class="hero-mic-ring hero-mic-ring-3"></span>
+          <div class="hero-mic-circle">
+            <img src="logo_tunein_1200x1200.jpg" alt="Encontro de Adoradores" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+          </div>
+        </div>
+        <div>
+          <p class="hero-desc" style="margin-bottom:20px;">Um programa de adoração, fé e encontro com Deus. Música gospel, mensagens de esperança e uma comunidade que ama louvar.</p>
+          <div class="hero-btns">
+            <button class="btn-pri" onclick="togglePlay()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Ouvir Agora
+            </button>
+            <a href="#podcasts" class="btn-sec">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+              Ver Podcasts
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-yt-wrap">
+        <div id="heroYtFacade" onclick="loadHeroVideo()" style="cursor:pointer;position:relative;width:100%;height:352px;background:#000;border-radius:12px;overflow:hidden;">
+          <img src="https://img.youtube.com/vi/0EnEXK3ZihY/maxresdefault.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Encontro de Adoradores" loading="lazy">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);">
+            <div style="width:68px;height:68px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.5);">
+              <svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:#080808;margin-left:4px;"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <iframe id="hero-yt-frame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="display:none;width:100%;height:352px;border:none;"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ STATS BAR ══════════ -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">8+</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Anos no ar</div>
+    </div>
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">384</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Episódios</div>
+    </div>
+    <div class="stat-item reveal">
+      <div style="font-family:'Raleway',sans-serif;font-weight:900;font-size:36px;color:var(--orange);line-height:1;">+192M</div>
+      <div style="font-size:12px;color:var(--ts);letter-spacing:1px;text-transform:uppercase;margin-top:6px;">Milhões de Ouvintes</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PODCASTS ══════════ -->
+<section class="podcasts" id="podcasts">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="eyebrow">Ouça quando quiser</div>
+        <h2 class="sec-title">Últimos Podcasts</h2>
+        <p class="sec-desc">Reviva os melhores momentos do programa.</p>
+      </div>
+      <a href="https://www.youtube.com/@adoracastoficial" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
+    </div>
+    <div class="clipes-scroll-wrap">
+    <button class="clip-arrow clip-arr-left" onclick="podScroll(-1)">&#8249;</button>
+    <div class="clipes-scroll reveal" id="podcastsScroll">
+
+      <div class="clip-card" onclick="openVideo('0VXUfbjc93Y')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/0VXUfbjc93Y/hqdefault.jpg" loading="lazy" alt="AdoraCast #003">
+          <span class="clip-badge">EP 003</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('eGstAwa_3RM')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/eGstAwa_3RM/hqdefault.jpg" loading="lazy" alt="AdoraCast #002">
+          <span class="clip-badge">EP 002</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('XjoMMluWL4Q')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/XjoMMluWL4Q/hqdefault.jpg" loading="lazy" alt="AdoraCast #001">
+          <span class="clip-badge">EP 001</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+    </div>
+    <button class="clip-arrow clip-arr-right" onclick="podScroll(1)">&#8250;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CLIPES MUSICAIS ══════════ -->
+<section class="clipes" id="clipes">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+      <div>
+        <div class="eyebrow">Música que transforma</div>
+        <h2 class="sec-title">Clipes Musicais</h2>
+        <p class="sec-desc">Os melhores momentos em clipes direto no YouTube.</p>
+      </div>
+      <a href="https://www.youtube.com/@AndersonGustavo/" target="_blank" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
+    </div>
+    <div class="clipes-scroll-wrap">
+    <button class="clip-arrow clip-arr-left" onclick="clipScroll(-1)">&#8249;</button>
+    <div class="clipes-scroll reveal" id="clipesScroll">
+
+      <div class="clip-card" onclick="openVideo('vZdi0ilPC10')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/vZdi0ilPC10/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('s2IWlph65Hk')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/s2IWlph65Hk/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('nX_nsuS4nxM')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/nX_nsuS4nxM/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('86h1kAykF1s')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/86h1kAykF1s/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('Mp1FamEgKVQ')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/Mp1FamEgKVQ/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('Ml_39Kaum98')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/Ml_39Kaum98/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('slbVyf6XtcM')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/slbVyf6XtcM/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('ZLy-XNSxE1U')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/ZLy-XNSxE1U/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('LdF4JseNaHg')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/LdF4JseNaHg/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('1_9iRlgZjP4')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/1_9iRlgZjP4/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('LLMEjMHBLLs')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/LLMEjMHBLLs/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('0rw52JnCueI')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/0rw52JnCueI/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('yJZ6gLF41T4')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/yJZ6gLF41T4/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('rUDwAGm7tSw')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/rUDwAGm7tSw/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('7lEt0hdvfeU')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/7lEt0hdvfeU/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('yxHSzbsrE0c')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/yxHSzbsrE0c/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+      <div class="clip-card" onclick="openVideo('AYMyOWF-mfg')">
+        <div class="clip-thumb">
+          <img src="https://img.youtube.com/vi/AYMyOWF-mfg/hqdefault.jpg" loading="lazy" alt="Clipe">
+          <span class="clip-badge">▶ Clipe</span>
+          <div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        </div>
+      </div>
+
+    </div>
+    <button class="clip-arrow clip-arr-right" onclick="clipScroll(1)">&#8250;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TOP 10 GOSPEL ══════════ -->
+<section class="top10" id="top10">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px;">
+      <div>
+        <div class="eyebrow">As mais tocadas</div>
+        <h2 class="sec-title">Top 10 Gospel da Semana</h2>
+      </div>
+      <span id="week-label" style="font-size:12px;color:var(--tm);font-family:'Raleway',sans-serif;"></span>
+    </div>
+    <div class="top10-grid reveal">
+      <div class="top10-item top3" onclick="playTrack(this,'19Xy8BoE21tNtz91Qh2fpt')"><span class="top10-num">1</span><div class="top10-info"><div class="top10-song">Se eu Somente Te Tocar</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'3ghzHm4lHHhA9WO9Yiu5nY')"><span class="top10-num">2</span><div class="top10-info"><div class="top10-song">Deus de Moisés</div><div class="top10-artist">Bruna Karla</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'6eVwr0VQPICNNQx3gqoqYI')"><span class="top10-num">3</span><div class="top10-info"><div class="top10-song">Que Jesus Seja o Nome</div><div class="top10-artist">Aline Freire</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'6uAt2yexEpQLPIWJuY9kL6')"><span class="top10-num">4</span><div class="top10-info"><div class="top10-song">Quem Poderá? (Ao Vivo)</div><div class="top10-artist">Valesca Mayssa</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'0X3vkwKZwCBP2XCLSvPf1b')"><span class="top10-num">5</span><div class="top10-info"><div class="top10-song">Espírito Santo (Inhabit)</div><div class="top10-artist">Thalles Roberto</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'0jJXmVGbODa8dZqg3fgMdY')"><span class="top10-num">6</span><div class="top10-info"><div class="top10-song">Filho Pródigo (Ao Vivo)</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5yB0FK61teDTe4xpKaqSBm')"><span class="top10-num">7</span><div class="top10-info"><div class="top10-song">Oh Vem Me Avivar</div><div class="top10-artist">Ana Nóbrega</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5y07NTJg6NkDLW3fkrxDW5')"><span class="top10-num">8</span><div class="top10-info"><div class="top10-song">Sou Grato Por Seu Amor</div><div class="top10-artist">Get Worship</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'1EzlXvFPrQ8d7Ar4L9kOSx')"><span class="top10-num">9</span><div class="top10-info"><div class="top10-song">Fiel é Deus</div><div class="top10-artist">Isaias Saad</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5gH9bIF0s0kSVBGbuCbSN1')"><span class="top10-num">10</span><div class="top10-info"><div class="top10-song">Deus Provedor</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+    </div>
+    <div class="spotify-embed-wrap" id="spotify-embed-wrap">
+      <iframe id="spotify-iframe" src="" width="100%" height="80" frameborder="0" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROGRAMAÇÃO ══════════ -->
+<section class="prog" id="programacao">
+  <div class="wrap">
+    <div class="sec-hdr reveal">
+      <div class="eyebrow">Não perca nenhum momento</div>
+      <h2 class="sec-title">Programação Semanal</h2>
+    </div>
+    <div class="day-tabs reveal">
+      <button class="day-btn active" onclick="switchDay(this,'seg')">Segunda</button>
+      <button class="day-btn" onclick="switchDay(this,'ter')">Terça</button>
+      <button class="day-btn" onclick="switchDay(this,'qua')">Quarta</button>
+      <button class="day-btn" onclick="switchDay(this,'qui')">Quinta</button>
+      <button class="day-btn" onclick="switchDay(this,'sex')">Sexta</button>
+      <button class="day-btn" onclick="switchDay(this,'sab')">Sábado</button>
+      <button class="day-btn" onclick="switchDay(this,'dom')">Domingo</button>
+    </div>
+    <div class="period-tabs reveal">
+      <button class="period-btn" onclick="switchPeriod(this,'madrugada')">Madrugada</button>
+      <button class="period-btn" onclick="switchPeriod(this,'manha')">Manhã</button>
+      <button class="period-btn" onclick="switchPeriod(this,'tarde')">Tarde</button>
+      <button class="period-btn" onclick="switchPeriod(this,'noite')">Noite</button>
+    </div>
+    <div class="sched-list" id="schedList"></div>
+  </div>
+</section>
+
+<!-- ══════════ ANUNCIE ══════════ -->
+<section class="anuncie" id="anuncie">
+  <div class="wrap anuncie-inner">
+    <div class="sec-hdr reveal" style="text-align:center;">
+      <div class="eyebrow">Oportunidades</div>
+      <h2 class="sec-title">Anuncie no Programa</h2>
+      <p style="color:var(--ts);font-size:15px;max-width:540px;margin:12px auto 0;line-height:1.7;">Quer divulgar sua marca, negócio ou ministério? Ou ter um espaço especial na programação? Fale com a gente.</p>
+    </div>
+    <div class="anuncie-grid reveal">
+      <div class="anuncie-card">
+        <div class="anuncie-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        </div>
+        <div class="anuncie-card-title">Patrocínio do Programa</div>
+        <div class="anuncie-card-desc">Sua marca associada ao Encontro de Adoradores. Menção ao vivo, inserção no site e nas redes sociais do programa.</div>
+      </div>
+      <div class="anuncie-card">
+        <div class="anuncie-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
+        </div>
+        <div class="anuncie-card-title">Espaço na Programação</div>
+        <div class="anuncie-card-desc">Bloco dedicado ao seu ministério, evento ou mensagem dentro da grade semanal do programa ao vivo.</div>
+      </div>
+      <div class="anuncie-card">
+        <div class="anuncie-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+        </div>
+        <div class="anuncie-card-title">Divulgação de Eventos</div>
+        <div class="anuncie-card-desc">Divulgue seu evento gospel, culto, conferência ou lançamento musical para milhares de ouvintes fiéis.</div>
+      </div>
+    </div>
+    <div class="anuncie-cta reveal">
+      <p>Entre em contato e receba nossa tabela de valores e formatos disponíveis.</p>
+      <a href="anuncie.html" class="btn-pri" style="font-size:15px;padding:14px 36px;letter-spacing:1px;text-transform:uppercase;font-weight:800;box-shadow:0 4px 24px rgba(245,163,36,.4);">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#080808;flex-shrink:0;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        Quero Anunciar
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SOBRE ══════════ -->
+<section class="sobre" id="sobre">
+  <div class="wrap">
+    <div class="sobre-inner">
+      <div class="sobre-text reveal-left">
+        <div class="eyebrow">Quem somos</div>
+        <h2 class="sec-title">Sobre a Rádio</h2>
+        <p>A <strong>Rádio Encontro de Adoradores</strong> é uma rádio web gospel dedicada a criar um ambiente de adoração, fé e encontro com Deus. Anderson Gustavo é o idealizador da rádio, que nasceu do antigo Programa Encontro de Adoradores apresentado na Rádio 93 FM.</p>
+        <p>Há mais de 8 anos no ar, o programa tem sido um canal de bênçãos para milhões de ouvintes — levando música gospel de qualidade, mensagens inspiradoras e momentos de oração ao coração das famílias brasileiras.</p>
+        <div class="sobre-stats">
+          <div class="s-stat"><div class="s-stat-n">8<span>+</span></div><div class="s-stat-l">Anos no ar</div></div>
+          <div class="s-stat"><div class="s-stat-n">384</div><div class="s-stat-l">Episódios</div></div>
+          <div class="s-stat"><div class="s-stat-n">192<span>M</span></div><div class="s-stat-l">Ouvintes</div></div>
+        </div>
+      </div>
+      <div class="sobre-vis reveal-right">
+        <img src="logo_tunein_1200x1200.jpg" alt="Encontro de Adoradores" style="width:300px;height:300px;object-fit:cover;border-radius:50%;box-shadow:0 0 0 3px rgba(245,163,36,.35),0 0 40px rgba(245,163,36,.18),0 20px 60px rgba(0,0,0,.6);">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTATO ══════════ -->
+<section class="contato" id="contato">
+  <div class="wrap">
+    <div class="sec-hdr reveal center" style="margin-bottom:48px;">
+      <div class="eyebrow">Fale conosco</div>
+      <h2 class="sec-title">Entre em Contato</h2>
+      <p class="sec-desc">Envie sua mensagem, pedido de oração ou participação no programa.</p>
+    </div>
+    <div class="contato-inner reveal">
+      <div class="contato-info">
+        <h3>Informações</h3>
+        <p>Ficamos felizes em receber sua mensagem, pedido de oração ou sugestão. Responderemos em breve com muito carinho.</p>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+          <div class="info-text"><strong>E-mail</strong><span>encontrodeadoradoresof@gmail.com</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg></div>
+          <div class="info-text"><strong>WhatsApp</strong><span>Envie sua mensagem de áudio ou texto</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+          <div class="info-text"><strong>Pedido de Oração</strong><span>Envie seu pedido e oraremos por você</span></div>
+        </div>
+      </div>
+      <form class="form-wrap" onsubmit="submitForm(event)" id="contactForm" novalidate>
+        <input type="hidden" name="access_key" value="5c85e58d-8b0f-4054-b910-c78a413568d4">
+        <input type="hidden" name="subject" value="Nova mensagem — Encontro de Adoradores">
+        <input type="hidden" name="from_name" value="Site Encontro de Adoradores">
+        <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
+        <div class="f-row">
+          <div><label>Nome</label><input id="f-nome" name="Nome" type="text" placeholder="Seu nome completo" required></div>
+          <div><label>E-mail</label><input id="f-email" name="Email" type="email" placeholder="seu@email.com" required></div>
+        </div>
+        <div class="f-group">
+          <label>Telefone</label>
+          <div style="display:flex;gap:8px;">
+            <select id="f-ddi" name="DDI" style="width:140px;flex-shrink:0;">
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+351">🇵🇹 +351</option>
+              <option value="+54">🇦🇷 +54</option>
+              <option value="+598">🇺🇾 +598</option>
+              <option value="+595">🇵🇾 +595</option>
+              <option value="+591">🇧🇴 +591</option>
+              <option value="+56">🇨🇱 +56</option>
+              <option value="+57">🇨🇴 +57</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+44">🇬🇧 +44</option>
+            </select>
+            <input id="f-tel" name="Telefone" type="tel" placeholder="(00) 00000-0000" maxlength="15" required style="flex:1;">
+          </div>
+        </div>
+        <div class="f-group">
+          <label>Assunto</label>
+          <select id="f-assunto" name="Assunto" required>
+            <option value="">Selecione o assunto</option>
+            <option>Pedido de Oração</option>
+            <option>Participação no Programa</option>
+            <option>Parceria e Publicidade</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="f-group">
+          <label>Mensagem</label>
+          <textarea id="f-msg" name="Mensagem" placeholder="Escreva sua mensagem aqui..." required></textarea>
+        </div>
+        <button type="submit" class="btn-pri" style="width:100%;justify-content:center;font-size:14px;padding:14px;" id="submitBtn">
+          Enviar Mensagem
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER SOCIAL BAR ══════════ -->
+<div class="ft-social-bar">
+  <div class="ft-social-bar-inner">
+    <p>Siga-nos nas redes sociais!</p>
+    <div class="ft-soc">
+      <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+      <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+      <a href="https://web.facebook.com/groups/531845303692096" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+      <a href="https://wa.me/5521988057754" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="ft-brand-logo">
+        <img src="logo_tunein_1200x1200.jpg" alt="Encontro de Adoradores" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+        <div>
+          <div class="ft-bname">Encontro de Adoradores</div>
+          <div class="ft-bsub">com Anderson Gustavo</div>
+        </div>
+      </div>
+      <p class="ft-desc">Um programa de adoração, fé e encontro com Deus. Transformando vidas pela música gospel e pela Palavra.</p>
+      <div class="ft-soc">
+        <a href="https://www.youtube.com/@adoracastoficial" target="_blank" title="YouTube"><svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.2 5 12 5 12 5s-4.2 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.9C6.8 19 12 19 12 19s4.2 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9.5l5.4 2.5-5.4 2.5z"/></svg></a>
+        <a href="https://www.instagram.com/adora_cast/" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1C3.9 21.6 2.4 20 2.3 16.8 2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-3.2 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+        <a href="https://web.facebook.com/groups/531845303692096" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+        <a href="https://wa.me/5521988057754" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.48-.88-.78-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.34.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17 0-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zm-5.42 7.4h-.01A9.87 9.87 0 017 20.4l-.36-.21-3.74.98.99-3.64-.24-.37A9.86 9.86 0 012.14 12C2.15 6.55 6.59 2.1 12.04 2.1c2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 012.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.13 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.3-1.65A11.88 11.88 0 0012.05 24h.01c6.55 0 11.89-5.34 11.89-11.9a11.82 11.82 0 00-3.49-8.42z"/></svg></a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#podcasts">Podcasts</a></li>
+        <li><a href="#clipes">Clipes</a></li>
+        <li><a href="#top10">Top Gospel</a></li>
+        <li><a href="#programacao">Programação</a></li>
+        <li><a href="#anuncie">Anuncie</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="termos.html">Termos de Serviço</a></li>
+        <li><a href="privacidade.html">Política de Privacidade</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="mailto:encontrodeadoradoresof@gmail.com">encontrodeadoradoresof@gmail.com</a></li>
+        <li><a href="https://wa.me/5521988057754" target="_blank">WhatsApp</a></li>
+        <li><a href="#contato">Pedido de Oração</a></li>
+        <li><a href="#contato">Participe do Programa</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2026 Encontro de Adoradores — com Anderson Gustavo. Todos os direitos reservados.</span>
+    <span>Feito com fé e dedicação ♪</span>
+  </div>
+</footer>
+
+<script>
+// ── SCHEDULE ──
+var _ds=[
+  {t:'00:00',n:'Vozes da Adoração',p:'Equipe EA',f:false},
+  {t:'01:00',n:'Clamor da Meia-Noite',p:'Equipe EA',f:false},
+  {t:'02:00',n:'Instrumental com Deus',p:'Equipe EA',f:false},
+  {t:'03:00',n:'Madrugada Profética',p:'Equipe EA',f:false},
+  {t:'04:00',n:'Despertar da Fé',p:'Equipe EA',f:false},
+  {t:'05:00',n:'Alvorada com Cristo',p:'Equipe EA',f:false},
+  {t:'06:00',n:'Bom Dia Reino',p:'Equipe EA',f:false},
+  {t:'08:00',n:'Café com Esperança',p:'Equipe EA',f:false},
+  {t:'09:00',n:'Mulheres de Fé',p:'Equipe EA',f:false},
+  {t:'10:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true,s:'7MJj4d0ZfHNVsoJFE9FYAf'},
+  {t:'11:00',n:'Palavra que Alimenta',p:'Equipe EA',f:false},
+  {t:'12:00',n:'Hora da Vitória',p:'Equipe EA',f:false},
+  {t:'13:00',n:'Top Louvor Brasil',p:'Equipe EA',f:false},
+  {t:'14:00',n:'Louvor em Família',p:'Equipe EA',f:false},
+  {t:'15:00',n:'Família no Altar',p:'Equipe EA',f:false},
+  {t:'16:00',n:'Som da Esperança',p:'Equipe EA',f:false},
+  {t:'17:00',n:'Encontro de Adoradores',p:'Anderson Gustavo',f:true,s:'7MJj4d0ZfHNVsoJFE9FYAf'},
+  {t:'18:00',n:'Jornal Gospel News',p:'Equipe EA',f:false},
+  {t:'19:00',n:'Adoração Total',p:'Equipe EA',f:false},
+  {t:'20:00',n:'Impacto Jovem',p:'Equipe EA',f:false},
+  {t:'21:00',n:'Noite de Milagres',p:'Equipe EA',f:false},
+  {t:'22:00',n:'Acústico Gospel Live',p:'Equipe EA',f:false},
+  {t:'23:00',n:'Descansando em Deus',p:'Equipe EA',f:false},
+];
+var _dsWknd=_ds.map(function(i){
+  if(i.t==='10:00') return {t:'10:00',n:'Conexão Gospel',p:'Equipe EA',f:false};
+  if(i.t==='17:00') return {t:'17:00',n:'Conversa com o Pastor',p:'Equipe EA',f:false};
+  return i;
+});
+const sched={seg:_ds,ter:_ds,qua:_ds,qui:_ds,sex:_ds,sab:_dsWknd,dom:_dsWknd};
+
+var DAYS_MAP = ['dom','seg','ter','qua','qui','sex','sab'];
+var currentDay = 'seg';
+var currentPeriod = 'tarde';
+
+function getPeriodForHour(h) {
+  if (h >= 0 && h <= 4) return 'madrugada';
+  if (h >= 5 && h <= 11) return 'manha';
+  if (h >= 12 && h <= 17) return 'tarde';
+  return 'noite';
+}
+
+function renderSched(day, period) {
+  var slots = sched[day].filter(function(i) {
+    var h = parseInt(i.t.split(':')[0]);
+    if (period === 'madrugada') return h >= 0 && h <= 4;
+    if (period === 'manha') return h >= 5 && h <= 11;
+    if (period === 'tarde') return h >= 12 && h <= 17;
+    if (period === 'noite') return h >= 18 && h <= 23;
+    return true;
+  });
+  document.getElementById('schedList').innerHTML = slots.map(i => `
+    <div class="sched-item${i.f?' feat':''}">
+      <span class="sched-time">${i.t}</span>
+      <div class="sched-dot"></div>
+      <div class="sched-prog">
+        <div class="sched-name">${i.n}</div>
+        <div class="sched-pres">${i.p}</div>
+      </div>
+      ${i.f ? `<span class="sched-badge">PROGRAMA</span>` : ''}
+    </div>`).join('');
+}
+function switchDay(btn, day) {
+  currentDay = day;
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSched(currentDay, currentPeriod);
+}
+function switchPeriod(btn, period) {
+  currentPeriod = period;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSched(currentDay, currentPeriod);
+}
+(function initSched() {
+  var now = new Date();
+  currentDay = DAYS_MAP[now.getDay()];
+  currentPeriod = getPeriodForHour(now.getHours());
+  document.querySelectorAll('.day-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('onclick').indexOf("'"+currentDay+"'") > -1);
+  });
+  document.querySelectorAll('.period-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('onclick').indexOf("'"+currentPeriod+"'") > -1);
+  });
+  renderSched(currentDay, currentPeriod);
+})();
+
+// ── PLAYER ──
+var PAUSA_ARTIST = '5bl6PmAUm5h5q3RdFNCBbU';
+function getCurrentProgram() {
+  var now = new Date();
+  var day = DAYS_MAP[now.getDay()];
+  var hm = now.getHours() * 100 + now.getMinutes();
+  var slots = sched[day];
+  var current = slots[0];
+  for (var i = 0; i < slots.length; i++) {
+    var parts = slots[i].t.split(':');
+    var slotHm = parseInt(parts[0]) * 100 + parseInt(parts[1]);
+    if (hm >= slotHm) current = slots[i]; else break;
+  }
+  return current;
+}
+function getNextProgram() {
+  var now = new Date();
+  var day = DAYS_MAP[now.getDay()];
+  var hm = now.getHours() * 100 + now.getMinutes();
+  var slots = sched[day];
+  for (var i = 0; i < slots.length; i++) {
+    var slotHm = parseInt(slots[i].t.split(':')[0]) * 100 + parseInt(slots[i].t.split(':')[1]);
+    if (slotHm > hm) return slots[i];
+  }
+  return sched[DAYS_MAP[(now.getDay() + 1) % 7]][0];
+}
+
+function pauseRadioForMedia() {
+  if (radioPlaying) toggleRadio();
+}
+function loadHeroVideo() {
+  pauseRadioForMedia();
+  document.getElementById('heroYtFacade').style.display = 'none';
+  var f = document.getElementById('hero-yt-frame');
+  f.style.display = 'block';
+  f.src = 'https://www.youtube.com/embed/0EnEXK3ZihY?autoplay=1&rel=0&modestbranding=1';
+}
+
+var radioPlaying = false;
+function toggleRadio() {
+  var audio = document.getElementById('radioAudio');
+  var icon = document.getElementById('radioPlayIcon');
+  var wave = document.getElementById('radioWaveform');
+  if (radioPlaying) {
+    audio.pause();
+    audio.src = '';
+    radioPlaying = false;
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    wave.classList.add('paused');
+  } else {
+    audio.src = 'https://radio.encontrodeadoradores.com/listen/encontro_de_adoradores/radio.mp3';
+    audio.volume = parseFloat(document.getElementById('radioVol').value);
+    audio.play();
+    radioPlaying = true;
+    icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    wave.classList.remove('paused');
+  }
+}
+var _mutedVol = 0.8;
+var _VOL_ON = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
+var _VOL_OFF = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+function setRadioVol(v) {
+  var audio = document.getElementById('radioAudio');
+  audio.volume = parseFloat(v);
+  document.getElementById('volIcon').innerHTML = parseFloat(v) === 0 ? _VOL_OFF : _VOL_ON;
+}
+function toggleMute() {
+  var audio = document.getElementById('radioAudio');
+  var slider = document.getElementById('radioVol');
+  if (audio.volume > 0) {
+    _mutedVol = audio.volume;
+    audio.volume = 0;
+    slider.value = 0;
+    document.getElementById('volIcon').innerHTML = _VOL_OFF;
+  } else {
+    audio.volume = _mutedVol;
+    slider.value = _mutedVol;
+    document.getElementById('volIcon').innerHTML = _VOL_ON;
+  }
+}
+function togglePlay() {
+  toggleRadio();
+}
+function entrarNoSite() {
+  var ov = document.getElementById('entrada-overlay');
+  ov.classList.add('saindo');
+  setTimeout(function(){ ov.style.display='none'; }, 650);
+  toggleRadio();
+}
+(function initEntradaParticles() {
+  var notes = ['♪','♫','♩','♬'];
+  var p = document.getElementById('entradaParticles');
+  if (!p) return;
+  for (var i = 0; i < 12; i++) {
+    var n = document.createElement('span');
+    n.className = 'entrada-note';
+    n.textContent = notes[i % 4];
+    n.style.left = (Math.random() * 100) + '%';
+    n.style.animationDuration = (8 + Math.random() * 14) + 's';
+    n.style.animationDelay = (Math.random() * 10) + 's';
+    n.style.fontSize = (14 + Math.random() * 16) + 'px';
+    p.appendChild(n);
+  }
+})();
+
+
+(function pollNowPlaying() {
+  function update() {
+    fetch('https://radio.encontrodeadoradores.com/api/nowplaying/encontro_de_adoradores')
+      .then(function(r){ return r.json(); })
+      .then(function(d) {
+        var np = d && d.now_playing && d.now_playing.song;
+        if (!np) return;
+        var rawTitle = (np.title || '—');
+        rawTitle = rawTitle.replace(/\.mp3.*/gi, '');
+        rawTitle = rawTitle.replace(/\s*[\(\[].*?[\)\]]\s*/g, '');
+        rawTitle = rawTitle.replace(/\s*[-–|].*$/, '');
+        rawTitle = rawTitle.trim();
+        var title = rawTitle.split(' ').map(function(w){ return w ? w.charAt(0).toUpperCase() + w.slice(1) : ''; }).join(' ');
+        var artist = np.artist || '';
+        document.getElementById('player-prog-name').textContent = title;
+        document.getElementById('player-prog-pres').textContent = artist;
+      })
+      .catch(function(){});
+  }
+  update();
+  setInterval(update, 20000);
+})();
+
+
+
+// ── CLOCK + PROGRAM BAR ──
+var DAYS_PT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+var MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+function updateBarClock() {
+  var now = new Date();
+  var clockEl = document.getElementById('player-clock');
+  var dateEl = document.getElementById('player-clock-date');
+  var progNameEl = document.getElementById('curr-prog-name');
+  var progPresEl = document.getElementById('curr-prog-pres');
+  if (clockEl) {
+    clockEl.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+  }
+  if (dateEl) {
+    dateEl.textContent = DAYS_PT[now.getDay()] + ' · ' + String(now.getDate()).padStart(2,'0') + ' ' + MONTHS_PT[now.getMonth()];
+  }
+  var prog = getCurrentProgram();
+  if (progNameEl) progNameEl.textContent = prog.n;
+  if (progPresEl) progPresEl.textContent = prog.p;
+  var next = getNextProgram();
+  var nextNameEl = document.getElementById('next-prog-name');
+  var nextPresEl = document.getElementById('next-prog-pres');
+  var nextTimeEl = document.getElementById('next-prog-time');
+  if (nextNameEl) nextNameEl.textContent = next.n;
+  if (nextPresEl) nextPresEl.textContent = next.p;
+  if (nextTimeEl) nextTimeEl.textContent = next.t;
+  document.querySelectorAll('.ticker-curr').forEach(function(el){ el.textContent = prog.n + ' — ' + prog.p; });
+  document.querySelectorAll('.ticker-next').forEach(function(el){ el.textContent = next.n + ' — ' + next.t; });
+}
+updateBarClock();
+setInterval(updateBarClock, 1000);
+
+// ── MENU ──
+function toggleMenu() {
+  document.getElementById('mainNav').classList.toggle('open');
+}
+
+// ── SCROLL REVEAL ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+// ── COUNTER ANIMATION ──
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.target);
+    const suffix = el.innerHTML.replace(/^\d+/, '');
+    let cur = 0;
+    const step = Math.ceil(target / 40);
+    const timer = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.innerHTML = cur + suffix;
+      if (cur >= target) clearInterval(timer);
+    }, 40);
+    counterObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-n[data-target]').forEach(el => counterObs.observe(el));
+
+// ── HERO PARTICLES ──
+(function() {
+  const wrap = document.getElementById('heroParticles');
+  const notes = ['♪','♫','♬','♩'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('span');
+    el.className = 'note';
+    el.textContent = notes[i % notes.length];
+    el.style.left = (Math.random() * 100) + '%';
+    el.style.bottom = '-30px';
+    el.style.fontSize = (14 + Math.random() * 14) + 'px';
+    el.style.animationDuration = (12 + Math.random() * 16) + 's';
+    el.style.animationDelay = (Math.random() * 14) + 's';
+    wrap.appendChild(el);
+  }
+})();
+
+// ── SECURITY UTILS ──
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function safeYtThumb(url, vid) {
+  if (url && /^https:\/\/(i\.ytimg\.com|img\.youtube\.com)\//.test(url)) return url;
+  return 'https://img.youtube.com/vi/' + vid + '/hqdefault.jpg';
+}
+
+// ── PHONE MASK ──
+function loadPodcasts() {
+  var PLAYLIST_ID = 'PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD';
+  var API_KEY = 'AIzaSyB0SNeMDV_cgSonAFQcFXYbLN2i-G6DI0Q';
+  var grid = document.getElementById('podcastsScroll');
+  if (!grid) return;
+  var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=6&playlistId=' + PLAYLIST_ID + '&key=' + API_KEY;
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.items || !data.items.length) return;
+      var html = '';
+      data.items.forEach(function(item) {
+        try {
+          var s = item.snippet;
+          var vid = s.resourceId && s.resourceId.videoId;
+          if (!vid || s.title === 'Private video' || s.title === 'Deleted video') return;
+          var title = s.title;
+          var tn = s.thumbnails || {};
+          var thumb = safeYtThumb((tn.high || tn.medium || tn.default || {}).url, vid);
+          var epMatch = title.match(/#(\d+)/);
+          var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '▶ Podcast';
+          var safeVid = /^[a-zA-Z0-9_-]{11}$/.test(vid) ? vid : '';
+          if (!safeVid) return;
+          html +=
+            '<div class="clip-card" onclick="openVideo(\'' + safeVid + '\')">' +
+            '<div class="clip-thumb">' +
+            '<img src="' + escHtml(thumb) + '" alt="' + escHtml(title) + '" loading="lazy">' +
+            '<span class="clip-badge">' + escHtml(epLabel) + '</span>' +
+            '<div class="clip-overlay"><div class="clip-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
+            '</div>' +
+            '<div class="clip-title">' + escHtml(title) + '</div>' +
+            '</div>';
+        } catch(e) {}
+      });
+      if (html) grid.innerHTML = html;
+    })
+    .catch(function() {});
+}
+loadPodcasts();
+
+document.addEventListener('DOMContentLoaded', function() {
+  var tel = document.getElementById('f-tel');
+  var ddi = document.getElementById('f-ddi');
+  function maskBR(v) {
+    v = v.replace(/\D/g, '').slice(0, 11);
+    if (v.length <= 2) return v.replace(/^(\d{0,2})/, '($1');
+    if (v.length <= 7) return v.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+    return v.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+  }
+  if (tel) {
+    tel.addEventListener('input', function() {
+      if (ddi && ddi.value === '+55') this.value = maskBR(this.value);
+    });
+    if (ddi) ddi.addEventListener('change', function() {
+      tel.value = '';
+      tel.placeholder = this.value === '+55' ? '(00) 00000-0000' : '000000000';
+      tel.maxLength = this.value === '+55' ? 15 : 20;
+    });
+  }
+});
+
+// ── FORM ──
+function submitForm(e) {
+  e.preventDefault();
+  const fields = [
+    document.getElementById('f-nome'),
+    document.getElementById('f-email'),
+    document.getElementById('f-tel'),
+    document.getElementById('f-assunto'),
+    document.getElementById('f-msg')
+  ];
+  let valid = true;
+  fields.forEach(f => {
+    const empty = !f.value.trim() || (f.tagName === 'SELECT' && f.value === '');
+    const emailInvalid = f.type === 'email' && f.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value.trim());
+    if (empty || emailInvalid) {
+      f.style.borderColor = '#ef4444';
+      f.style.boxShadow = '0 0 0 3px rgba(239,68,68,.15)';
+      valid = false;
+    } else {
+      f.style.borderColor = '';
+      f.style.boxShadow = '';
+    }
+    f.addEventListener('input', function() {
+      this.style.borderColor = '';
+      this.style.boxShadow = '';
+    }, { once: true });
+  });
+  if (!valid) return;
+  const btn = document.getElementById('submitBtn');
+  btn.innerHTML = 'Enviando...';
+  btn.disabled = true;
+  const formData = new FormData(e.target);
+  fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        btn.innerHTML = '✓ Mensagem enviada! Deus abençoe!';
+        btn.style.background = '#16A34A';
+        setTimeout(() => {
+          btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
+          btn.style.background = '';
+          btn.disabled = false;
+          e.target.reset();
+          fields.forEach(f => { f.style.borderColor = ''; f.style.boxShadow = ''; });
+        }, 3000);
+      } else {
+        btn.innerHTML = '✗ Erro ao enviar. Tente novamente.';
+        btn.style.background = '#ef4444';
+        setTimeout(() => {
+          btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      }
+    })
+    .catch(() => {
+      btn.innerHTML = '✗ Sem conexão. Tente novamente.';
+      btn.style.background = '#ef4444';
+      setTimeout(() => {
+        btn.innerHTML = 'Enviar Mensagem <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    });
+}
+
+(function(){
+  var months=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var today=new Date();
+  var dow=today.getDay();
+  var end=new Date(today); end.setDate(today.getDate()-dow);
+  var start=new Date(end); start.setDate(end.getDate()-6);
+  var sd=String(start.getDate()).padStart(2,'0');
+  var ed=String(end.getDate()).padStart(2,'0');
+  var sm=months[start.getMonth()];
+  var em=months[end.getMonth()];
+  var y=end.getFullYear();
+  var label=start.getMonth()===end.getMonth()
+    ? sd+' a '+ed+' de '+em+' de '+y
+    : sd+' de '+sm+' a '+ed+' de '+em+' de '+y;
+  var el=document.getElementById('week-label');
+  if(el) el.textContent='Semana de '+label;
+})();
+function playTrack(el, trackId) {
+  if (!/^[a-zA-Z0-9]{22}$/.test(trackId)) return;
+  pauseRadioForMedia();
+  document.querySelectorAll('.top10-item').forEach(function(i){ i.classList.remove('playing'); });
+  el.classList.add('playing');
+  const wrap = document.getElementById('spotify-embed-wrap');
+  const iframe = document.getElementById('spotify-iframe');
+  iframe.src = 'https://open.spotify.com/embed/track/' + trackId + '?utm_source=generator&theme=0&autoplay=1';
+  wrap.classList.add('active');
+  wrap.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function openVideo(id) {
+  if (!/^[a-zA-Z0-9_-]{11}$/.test(id)) return;
+  pauseRadioForMedia();
+  document.getElementById('vm-iframe').src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+  var m = document.getElementById('video-modal');
+  m.classList.add('open');
+  m.classList.remove('spotify');
+  document.body.style.overflow = 'hidden';
+}
+function openSpotify(id) {
+  if (id && !/^[a-zA-Z0-9]{22}$/.test(id)) return;
+  pauseRadioForMedia();
+  var src = id
+    ? 'https://open.spotify.com/embed/episode/' + id + '?utm_source=generator&theme=0'
+    : 'https://open.spotify.com/embed/show/3ujfpuVt8NpdBiQxsmL2DR?utm_source=generator&theme=0';
+  document.getElementById('vm-iframe').src = src;
+  var m = document.getElementById('video-modal');
+  m.classList.add('open','spotify');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo(e) {
+  if (e && e.type === 'click' && e.target !== document.getElementById('video-modal') && !e.target.closest('.vm-close')) return;
+  document.getElementById('vm-iframe').src = '';
+  document.getElementById('video-modal').classList.remove('open','spotify');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideo(); });
+
+// ── CLIPES: setas, arrastar, auto-scroll ──
+(function(){
+  var scroll = document.getElementById('clipesScroll');
+  if (!scroll) return;
+  var CARD_W = 288;
+  var autoTimer, paused = false;
+
+  // setas
+  window.clipScroll = function(dir) {
+    scroll.scrollBy({ left: dir * CARD_W, behavior: 'smooth' });
+  };
+
+  // arrastar com mouse
+  var isDrag = false, dragX, dragLeft;
+  scroll.addEventListener('mousedown', function(e) {
+    isDrag = true; dragX = e.pageX; dragLeft = scroll.scrollLeft;
+    scroll.classList.add('dragging');
+  });
+  document.addEventListener('mouseup', function() {
+    isDrag = false; scroll.classList.remove('dragging');
+  });
+  scroll.addEventListener('mousemove', function(e) {
+    if (!isDrag) return;
+    e.preventDefault();
+    scroll.scrollLeft = dragLeft - (e.pageX - dragX);
+  });
+
+  // auto-scroll a cada 3.5s, pausa no hover
+  function tick() {
+    if (paused) return;
+    var max = scroll.scrollWidth - scroll.clientWidth;
+    if (scroll.scrollLeft >= max - 4) {
+      scroll.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      scroll.scrollBy({ left: CARD_W, behavior: 'smooth' });
+    }
+  }
+  autoTimer = setInterval(tick, 3500);
+  scroll.addEventListener('mouseenter', function() { paused = true; });
+  scroll.addEventListener('mouseleave', function() { paused = false; });
+})();
+
+// ── PODCASTS: setas e arrastar ──
+(function(){
+  var scroll = document.getElementById('podcastsScroll');
+  if (!scroll) return;
+  var CARD_W = 288;
+  window.podScroll = function(dir) {
+    scroll.scrollBy({ left: dir * CARD_W, behavior: 'smooth' });
+  };
+  var isDrag = false, dragX, dragLeft;
+  scroll.addEventListener('mousedown', function(e) {
+    isDrag = true; dragX = e.pageX; dragLeft = scroll.scrollLeft;
+    scroll.classList.add('dragging');
+  });
+  document.addEventListener('mouseup', function() {
+    isDrag = false; scroll.classList.remove('dragging');
+  });
+  scroll.addEventListener('mousemove', function(e) {
+    if (!isDrag) return;
+    e.preventDefault();
+    scroll.scrollLeft = dragLeft - (e.pageX - dragX);
+  });
+})();
+
+// ── CLIP TITLES via oEmbed ──
+(function(){
+  document.querySelectorAll('.clip-card').forEach(function(card){
+    var m = (card.getAttribute('onclick')||'').match(/openVideo\('([^']+)'\)/);
+    if (!m) return;
+    var vid = m[1];
+    var titleEl = document.createElement('div');
+    titleEl.className = 'clip-title';
+    card.appendChild(titleEl);
+    fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+vid+'&format=json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){ titleEl.textContent = d.title; })
+      .catch(function(){});
+  });
+})();
+</script>
+
+<!-- VIDEO MODAL -->
+<div id="video-modal" onclick="closeVideo(event)">
+  <div class="vm-inner">
+    <button class="vm-close" onclick="closeVideo()">✕</button>
+    <iframe id="vm-iframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+  </div>
+</div>
+
+</body>
+</html>
