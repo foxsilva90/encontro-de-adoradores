@@ -468,12 +468,18 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   #player-center{display:flex;flex:0 0 auto;padding:0;flex-direction:row;align-items:center;gap:6px;}
   #player-center .p-radio-name{display:none;}
   #player-center .p-radio-sub{display:none;}
-  #player-center-row{gap:6px;}
-  #player-center-row .waveform{display:flex;}
-  #player-prog-area{display:flex;flex:1;min-width:0;padding:0;border:none;max-width:none;align-items:center;}
+  #player-center-row{gap:4px;flex-direction:column;align-items:center;}
+  #player-center-row .waveform{display:flex;order:1;}
+  #player-center-row .live-badge{order:2;font-size:8px;padding:2px 6px;}
+  #player-prog-area{display:flex;flex:1;min-width:0;padding:0;border:none;max-width:none;align-items:center;justify-content:center;text-align:center;}
   #player-prog-label{display:none;}
-  #player-prog-name{font-size:12px;max-width:none;}
-  #player-prog-pres{font-size:10px;}
+  #player-prog-name{font-size:12px;max-width:none;text-align:center;}
+  #player-prog-pres{font-size:10px;text-align:center;}
+  .hero-mic-circle{width:130px;height:130px;}
+  .hero-mic-grad-ring{width:140px;height:140px;}
+  .hero-mic-ring-1{width:150px;height:150px;}
+  .hero-mic-ring-2{width:165px;height:165px;}
+  .hero-mic-ring-3{width:180px;height:180px;}
   #player-clock-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0 8px;border:none;min-width:auto;flex-shrink:0;}
   #player-clock{font-size:14px;letter-spacing:1px;}
   #player-clock-date{display:block;font-size:8px;}
