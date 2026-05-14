@@ -1,0 +1,23 @@
+name: AzuraCast Playlist Scheduler
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # 09:00 BRT (UTC-3)
+  workflow_dispatch:
+
+jobs:
+  manage-playlists:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install requests
+
+      - name: Run scheduler
+        env:
+          AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
+        run: python scripts/azuracast_scheduler.py
