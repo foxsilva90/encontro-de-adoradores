@@ -2,7 +2,7 @@ name: AzuraCast Playlist Scheduler
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # 00:00 BRT (UTC-3)
+    - cron: '0 2 * * *'  # 23:00 BRT (UTC-3), 1h antes do AzuraCast recalcular agendamento
   workflow_dispatch:
 
 jobs:

@@ -4,12 +4,13 @@ Habilita/desabilita playlists do AzuraCast automaticamente com base nas datas
 configuradas nos agendamentos (start_date / end_date).
 
 - Playlists SEM datas no agendamento (ex: Louvores 24h) não são tocadas.
-- Playlists com datas: habilitadas quando hoje cai dentro do range, desabilitadas fora.
+- Playlists com datas: habilitadas quando start_date <= amanhã E end_date >= hoje.
+  (Habilita 1 dia antes do início para garantir que o AzuraCast reconheça antes da meia-noite.)
 """
 import os
 import sys
 import requests
-from datetime import date
+from datetime import date, timedelta
 
 API_KEY = os.environ["AZURACAST_API_KEY"]
 BASE_URL = "https://radio.encontrodeadoradores.com/api"
@@ -17,7 +18,8 @@ STATION_ID = 1
 HEADERS = {"X-API-Key": API_KEY, "Content-Type": "application/json"}
 
 today = date.today()
-print(f"Date: {today}")
+tomorrow = today + timedelta(days=1)
+print(f"Date: {today} (checking through: {tomorrow})")
 
 r = requests.get(f"{BASE_URL}/station/{STATION_ID}/playlists", headers=HEADERS)
 r.raise_for_status()
@@ -33,7 +35,8 @@ for pl in playlists:
         continue
 
     should_be_active = any(
-        date.fromisoformat(i["start_date"]) <= today <= date.fromisoformat(i["end_date"])
+        date.fromisoformat(i["start_date"]) <= tomorrow and
+        date.fromisoformat(i["end_date"]) >= today
         for i in dated_items
     )
 
