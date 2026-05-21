@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 Atualiza as playlists de PG do AzuraCast para tocar apenas o programa do dia.
-Detecta automaticamente pela pasta (Semana DD a DD/Mês) e ordem dos arquivos.
-- pg_006 = 1º dia da semana, pg_007 = 2º, etc.
+- Semana atual detectada pelo nome da playlist: "PG ... - 10h (18 a 22/Maio)"
+- Arquivos da semana buscados pela pasta: "Semana 18 a 22"
+- Ordem alfabética dos arquivos = ordem dos dias (pg_006=dia0, pg_007=dia1...)
 - Roda via GitHub Actions junto com azuracast_scheduler.py
 """
 import os
@@ -65,16 +66,18 @@ def update_file_playlists(file_id, playlist_ids):
     r.raise_for_status()
 
 
-def parse_week_start(folder_path):
-    match = re.search(r"[Ss]emana\s+(\d+)\s+a\s+\d+[/\s]+(\w+)", folder_path)
-    if not match:
-        return None
-    day = int(match.group(1))
-    month_str = match.group(2)[:3].lower()
+def parse_playlist_week(name):
+    """Extract (week_start, start_day, end_day) from playlist name like '(18 a 22/Maio)'."""
+    m = re.search(r"\((\d+)\s+a\s+(\d+)/(\w+)\)", name)
+    if not m:
+        return None, None, None
+    start_day = int(m.group(1))
+    end_day = int(m.group(2))
+    month_str = m.group(3)[:3].lower()
     month = MONTH_MAP.get(month_str)
     if not month:
-        return None
-    return date(today.year, month, day)
+        return None, None, None
+    return date(today.year, month, start_day), start_day, end_day
 
 
 def get_file_playlist_ids(f):
@@ -95,53 +98,63 @@ if not pg_playlists:
     sys.exit(1)
 
 print(f"Playlists: {[pl['name'] for pl in pg_playlists.values()]}")
-pg_playlist_ids = set(pg_playlists.keys())
+
+# Find current week from playlist names
+week_start = None
+current_week_pl_ids = set()
+week_folder_pattern = None
+
+for pl_id, pl in pg_playlists.items():
+    wstart, start_day, end_day = parse_playlist_week(pl["name"])
+    if not wstart:
+        continue
+    wend = date(today.year, wstart.month, end_day)
+    if wstart <= today <= wend:
+        week_start = wstart
+        week_folder_pattern = f"Semana {start_day} a {end_day}"
+        current_week_pl_ids.add(pl_id)
+
+if not week_start:
+    print(f"ERROR: No current week playlist found for {today}")
+    sys.exit(1)
+
+print(f"Current week: {week_folder_pattern} (starts {week_start})")
+print(f"Current week playlists: {[pg_playlists[pid]['name'] for pid in current_week_pl_ids]}")
 
 pg_files = get_all_pg_files()
 print(f"Files found: {len(pg_files)}")
-for f in pg_files[:5]:
-    print(f"  path: {f.get('path', '?')}")
 
-# Group files by week folder
-week_groups = {}
-for f in pg_files:
-    path = f.get("path", "")
-    m = re.search(r"[Ss]emana [^/]+(?:/\w+)?", path)
-    if m:
-        week_groups.setdefault(m.group(0), []).append(f)
+# Get files for current week folder
+week_files = [f for f in pg_files if week_folder_pattern in f.get("path", "")]
+week_files_sorted = sorted(week_files, key=lambda x: x.get("path", ""))
+print(f"Week files: {[f['path'].split('/')[-1] for f in week_files_sorted]}")
 
-# Find today's file
-today_file = None
-for week_key, files in week_groups.items():
-    start = parse_week_start(week_key)
-    if not start:
-        continue
-    files_sorted = sorted(files, key=lambda x: x.get("path", ""))
-    day_idx = (today - start).days
-    if 0 <= day_idx < len(files_sorted):
-        today_file = files_sorted[day_idx]
-        print(f"Today's file: {today_file['path'].split('/')[-1]} (day {day_idx}, week starts {start})")
-        break
+day_idx = (today - week_start).days
+print(f"Day index: {day_idx}")
 
-if not today_file:
-    print(f"ERROR: No file found for {today}")
+if not week_files_sorted:
+    print(f"ERROR: No files found in folder '{week_folder_pattern}'")
     sys.exit(1)
 
-# Update playlists: only today's file stays in PG playlists
+if not (0 <= day_idx < len(week_files_sorted)):
+    print(f"ERROR: day_idx {day_idx} out of range (have {len(week_files_sorted)} files)")
+    sys.exit(1)
+
+today_file = week_files_sorted[day_idx]
+print(f"Today's file: {today_file['path'].split('/')[-1]}")
+
+# Update playlists: only today's file in current week's PG playlists
 errors = []
 
-for f in pg_files:
+for f in week_files_sorted:
     file_pl_ids = get_file_playlist_ids(f)
-    in_pg = [pid for pid in file_pl_ids if pid in pg_playlist_ids]
-
-    if not in_pg and f["id"] != today_file["id"]:
-        continue
+    in_current = [pid for pid in file_pl_ids if pid in current_week_pl_ids]
 
     if f["id"] == today_file["id"]:
-        missing = [pid for pid in pg_playlist_ids if pid not in file_pl_ids]
+        missing = [pid for pid in current_week_pl_ids if pid not in file_pl_ids]
         if missing:
             try:
-                update_file_playlists(f["id"], file_pl_ids + list(missing))
+                update_file_playlists(f["id"], file_pl_ids + missing)
                 print(f"Added to playlists: {f['path'].split('/')[-1]}")
             except Exception as e:
                 print(f"ERROR adding today's file: {e}")
@@ -149,13 +162,16 @@ for f in pg_files:
         else:
             print(f"Already in playlists: {f['path'].split('/')[-1]}")
     else:
-        new_pls = [pid for pid in file_pl_ids if pid not in pg_playlist_ids]
-        try:
-            update_file_playlists(f["id"], new_pls)
-            print(f"Removed: {f['path'].split('/')[-1]}")
-        except Exception as e:
-            print(f"ERROR removing {f['path'].split('/')[-1]}: {e}")
-            errors.append(str(e))
+        if in_current:
+            new_pls = [pid for pid in file_pl_ids if pid not in current_week_pl_ids]
+            try:
+                update_file_playlists(f["id"], new_pls)
+                print(f"Removed: {f['path'].split('/')[-1]}")
+            except Exception as e:
+                print(f"ERROR removing {f['path'].split('/')[-1]}: {e}")
+                errors.append(str(e))
+        else:
+            print(f"Already not in playlists: {f['path'].split('/')[-1]}")
 
 if errors:
     print(f"\nFailed: {errors}")
