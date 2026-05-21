@@ -98,6 +98,9 @@ print(f"Playlists: {[pl['name'] for pl in pg_playlists.values()]}")
 pg_playlist_ids = set(pg_playlists.keys())
 
 pg_files = get_all_pg_files()
+print(f"Files found: {len(pg_files)}")
+for f in pg_files[:5]:
+    print(f"  path: {f.get('path', '?')}")
 
 # Group files by week folder
 week_groups = {}
