@@ -103,7 +103,7 @@ pg_files = get_all_pg_files()
 week_groups = {}
 for f in pg_files:
     path = f.get("path", "")
-    m = re.search(r"[Ss]emana [^/]+", path)
+    m = re.search(r"[Ss]emana [^/]+(?:/\w+)?", path)
     if m:
         week_groups.setdefault(m.group(0), []).append(f)
 
