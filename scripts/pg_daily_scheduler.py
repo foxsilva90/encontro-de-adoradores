@@ -143,6 +143,7 @@ def process_group(group, all_playlists):
     print(f"Week files: {[f['path'].split('/')[-1] for f in week_files_sorted]}")
 
     if not week_files_sorted:
+        print(f"All files found ({len(all_files)}): {[f.get('path','?') for f in all_files[:10]]}")
         print(f"ERROR: No files in folder '{week_folder}'")
         return [f"[{name}] No files in '{week_folder}'"]
 
