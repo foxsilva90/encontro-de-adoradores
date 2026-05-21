@@ -17,7 +17,12 @@ jobs:
 
       - run: pip install requests
 
-      - name: Run scheduler
+      - name: Run playlist scheduler
         env:
           AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
         run: python scripts/azuracast_scheduler.py
+
+      - name: Run PG daily scheduler
+        env:
+          AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
+        run: python scripts/pg_daily_scheduler.py
