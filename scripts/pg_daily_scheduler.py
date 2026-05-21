@@ -33,7 +33,8 @@ PROGRAM_GROUPS = [
     },
     {
         "name": "PG Lugar Secreto",
-        "search": "PG Lugar Secreto",
+        "search": "Lugar Secreto",
+        "use_week_folder": False,
         "keywords": [
             "PG Lugar Secreto (Elivelton) - 03h",
             "PG Lugar Secreto (Elivelton) - 12h",
@@ -133,19 +134,27 @@ def process_group(group, all_playlists):
         print(f"No current week playlist for {today}, skipping.")
         return []
 
-    week_folder = f"Semana {week_start.day} a {week_end.day}"
-    print(f"Current week: {week_folder} ({week_start} to {week_end})")
+    print(f"Current week: {week_start} to {week_end}")
     print(f"Active playlists: {[pg_playlists[pid]['name'] for pid in current_week_pl_ids]}")
 
     all_files = get_files(group["search"])
-    week_files = [f for f in all_files if week_folder in f.get("path", "")]
-    week_files_sorted = sorted(week_files, key=lambda x: x.get("path", ""))
+
+    use_week_folder = group.get("use_week_folder", True)
+    if use_week_folder:
+        week_folder = f"Semana {week_start.day} a {week_end.day}"
+        week_files_sorted = sorted(
+            [f for f in all_files if week_folder in f.get("path", "")],
+            key=lambda x: x.get("path", ""),
+        )
+        print(f"Folder filter: '{week_folder}'")
+    else:
+        week_files_sorted = sorted(all_files, key=lambda x: x.get("path", ""))
+
     print(f"Week files: {[f['path'].split('/')[-1] for f in week_files_sorted]}")
 
     if not week_files_sorted:
-        print(f"All files found ({len(all_files)}): {[f.get('path','?') for f in all_files[:10]]}")
-        print(f"ERROR: No files in folder '{week_folder}'")
-        return [f"[{name}] No files in '{week_folder}'"]
+        print(f"ERROR: No files found (search='{group['search']}')")
+        return [f"[{name}] No files found"]
 
     day_idx = (today - week_start).days
     print(f"Day index: {day_idx}")
