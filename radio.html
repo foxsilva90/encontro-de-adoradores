@@ -1298,11 +1298,11 @@ function renderSched(day, period) {
   });
   document.getElementById('schedList').innerHTML = slots.map(i => `
     <div class="sched-item${i.f?' feat':''}">
-      <span class="sched-time">${i.t}</span>
+      <span class="sched-time">${escHtml(i.t)}</span>
       <div class="sched-dot"></div>
       <div class="sched-prog">
-        <div class="sched-name">${i.n}</div>
-        <div class="sched-pres">${i.p}</div>
+        <div class="sched-name">${escHtml(i.n)}</div>
+        <div class="sched-pres">${escHtml(i.p)}</div>
       </div>
       ${i.f ? `<span class="sched-badge">PROGRAMA</span>` : ''}
     </div>`).join('');
