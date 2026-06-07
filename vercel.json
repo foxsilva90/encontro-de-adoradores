@@ -1,6 +1,6 @@
 {
   "redirects": [
-    { "source": "/", "destination": "/radio.html", "permanent": false }
+    { "source": "/", "destination": "/radio.html", "permanent": true }
   ],
   "headers": [
     {
