@@ -21,9 +21,13 @@ today = date.today()
 tomorrow = today + timedelta(days=1)
 print(f"Date: {today} (checking through: {tomorrow})")
 
-r = requests.get(f"{BASE_URL}/station/{STATION_ID}/playlists", headers=HEADERS)
-r.raise_for_status()
-playlists = r.json()
+try:
+    r = requests.get(f"{BASE_URL}/station/{STATION_ID}/playlists", headers=HEADERS, timeout=30)
+    r.raise_for_status()
+    playlists = r.json()
+except requests.exceptions.ConnectionError as e:
+    print(f"SKIP: AzuraCast unreachable ({e})")
+    sys.exit(0)
 
 errors = []
 

@@ -47,7 +47,7 @@ print(f"Date: {today}")
 
 
 def get_playlists():
-    r = requests.get(f"{BASE_URL}/station/{STATION_ID}/playlists", headers=HEADERS)
+    r = requests.get(f"{BASE_URL}/station/{STATION_ID}/playlists", headers=HEADERS, timeout=30)
     r.raise_for_status()
     return r.json()
 
@@ -199,7 +199,12 @@ def process_group(group, all_playlists):
 
 # --- Main ---
 
-all_playlists = get_playlists()
+try:
+    all_playlists = get_playlists()
+except requests.exceptions.ConnectionError as e:
+    print(f"SKIP: AzuraCast unreachable ({e})")
+    sys.exit(0)
+
 all_errors = []
 
 for group in PROGRAM_GROUPS:
