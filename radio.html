@@ -328,6 +328,14 @@ section{padding:64px 24px;}
 .sched-play-btn svg{width:11px;height:11px;fill:#080808;margin-left:2px;}
 #video-modal.spotify .vm-inner{aspect-ratio:unset;height:232px;max-width:620px;}
 
+/* ── ANUNCIE MODAL ── */
+#anuncie-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9100;align-items:flex-start;justify-content:center;padding:0;}
+#anuncie-modal.open{display:flex;}
+.am-inner{position:relative;width:100%;max-width:1100px;height:100vh;display:flex;flex-direction:column;margin:0 auto;}
+.am-close{position:absolute;top:12px;right:16px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:4px 10px;border-radius:6px;opacity:.8;transition:opacity .2s;z-index:10;}
+.am-close:hover{opacity:1;}
+#am-iframe{width:100%;flex:1;border:none;display:block;}
+
 /* ── ANUNCIE ── */
 .anuncie{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 60%,#040d18 100%);padding:80px 0;position:relative;overflow:hidden;}
 .anuncie::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,163,36,.1) 0%,transparent 65%);pointer-events:none;}
@@ -1026,7 +1034,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     </div>
     <div class="anuncie-cta reveal">
       <p>Entre em contato e receba nossa tabela de valores e formatos disponíveis.</p>
-      <a href="anuncie.html" class="btn-pri" style="font-size:15px;padding:14px 36px;letter-spacing:1px;text-transform:uppercase;font-weight:800;box-shadow:0 4px 24px rgba(245,163,36,.4);">
+      <a href="javascript:void(0)" onclick="openAnuncie()" class="btn-pri" style="font-size:15px;padding:14px 36px;letter-spacing:1px;text-transform:uppercase;font-weight:800;box-shadow:0 4px 24px rgba(245,163,36,.4);">
         <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#080808;flex-shrink:0;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
         Quero Anunciar
       </a>
@@ -1725,6 +1733,17 @@ function closeVideo(e) {
   document.getElementById('video-modal').classList.remove('open','spotify');
   document.body.style.overflow = '';
 }
+function openAnuncie() {
+  document.getElementById('am-iframe').src = 'anuncie.html';
+  document.getElementById('anuncie-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAnuncie(e) {
+  if (e && e.type === 'click' && e.target !== document.getElementById('anuncie-modal') && !e.target.closest('.am-close')) return;
+  document.getElementById('am-iframe').src = '';
+  document.getElementById('anuncie-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideo(); });
 
 // ── CLIPES: setas, arrastar, auto-scroll ──
@@ -1808,6 +1827,14 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   });
 })();
 </script>
+
+<!-- ANUNCIE MODAL -->
+<div id="anuncie-modal" onclick="closeAnuncie(event)">
+  <div class="am-inner">
+    <button class="am-close" onclick="closeAnuncie()">✕</button>
+    <iframe id="am-iframe" src="" title="Anuncie"></iframe>
+  </div>
+</div>
 
 <!-- VIDEO MODAL -->
 <div id="video-modal" onclick="closeVideo(event)">
