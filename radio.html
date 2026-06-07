@@ -1241,7 +1241,32 @@ var _dsWknd=_ds.map(function(i){
   if(i.t==='17:00') return {t:'17:00',n:'Conversa com o Pastor',p:'Equipe EA',f:false};
   return i;
 });
-const sched={seg:_ds,ter:_ds,qua:_ds,qui:_ds,sex:_ds,sab:_dsWknd,dom:_dsWknd};
+function _dayWith(base,overrides){
+  var result=base.map(function(i){
+    var ov=overrides.find(function(o){return o.t===i.t;});
+    return ov||i;
+  });
+  overrides.forEach(function(ov){
+    if(!base.find(function(i){return i.t===ov.t;})) result.push(ov);
+  });
+  result.sort(function(a,b){return a.t.localeCompare(b.t);});
+  return result;
+}
+var _dsQua=_dayWith(_ds,[
+  {t:'18:30',n:'Momento Profético',p:'Ap Igor Santos',f:false}
+]);
+var _dsQui=_dayWith(_ds,[
+  {t:'11:00',n:'Palavras de Fé',p:'Pr Anderson Barbosa',f:false}
+]);
+var _dsSex=_dayWith(_ds,[
+  {t:'08:30',n:'Sexta Gospel Hits',p:'Equipe EA',f:false},
+  {t:'15:00',n:'Sexta Gospel Hits',p:'Equipe EA',f:false},
+  {t:'19:00',n:'Sexta Gospel Hits',p:'Equipe EA',f:false}
+]);
+var _dsSab=_dayWith(_dsWknd,[
+  {t:'08:00',n:'Clássicos do Talito',p:'Talito',f:false}
+]);
+const sched={seg:_ds,ter:_ds,qua:_dsQua,qui:_dsQui,sex:_dsSex,sab:_dsSab,dom:_dsWknd};
 
 var DAYS_MAP = ['dom','seg','ter','qua','qui','sex','sab'];
 var currentDay = 'seg';
