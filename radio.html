@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0D2A4A">
 <link rel="icon" href="favicon.png" type="image/png">
 <meta name="description" content="Ouça o Encontro de Adoradores ao vivo — rádio gospel online com Anderson Gustavo. Música gospel, mensagens de fé e adoração 24 horas por dia.">
 <link rel="canonical" href="https://encontrodeadoradores.com/radio.html">
@@ -32,7 +33,7 @@
 <title>Encontro de Adoradores — Rádio Gospel Online com Anderson Gustavo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:       #121212;
@@ -42,7 +43,7 @@
   --s4:       #333333;
   --tp:       #ffffff;
   --ts:       #b3b3b3;
-  --tm:       #535353;
+  --tm:       #8a8a8a;
   --border:   rgba(255,255,255,.08);
   --blue:     #1A4F8A;
   --blue-dark:#0D2A4A;
@@ -55,6 +56,15 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tp);padding-top:164px;}
+
+/* ── Acessibilidade ── */
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:3px;}
+.skip-link{position:absolute;left:-9999px;top:0;z-index:2000;background:var(--orange);color:var(--dark);
+  font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;padding:12px 20px;border-radius:0 0 8px 0;text-decoration:none;}
+.skip-link:focus{left:0;}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+}
 
 /* ── TOPBAR ── */
 .topbar{background:var(--blue-dark);height:36px;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:1002;border-bottom:1px solid rgba(255,255,255,.1);}
@@ -555,6 +565,8 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 </head>
 <body>
 
+<a href="#player-bar" class="skip-link">Pular para o player</a>
+
 <!-- ══════════ ENTRADA OVERLAY ══════════ -->
 <div id="entrada-overlay">
   <div class="entrada-particles" id="entradaParticles"></div>
@@ -628,10 +640,10 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div id="player-prog-pres">—</div>
   </div>
   <div class="vol-ctrl">
-    <button class="play-btn" id="radioPlayBtn" onclick="toggleRadio()" title="Ouvir rádio ao vivo">
+    <button class="play-btn" id="radioPlayBtn" onclick="toggleRadio()" title="Ouvir rádio ao vivo" aria-label="Reproduzir ou pausar a rádio ao vivo">
       <svg viewBox="0 0 24 24" id="radioPlayIcon"><path d="M8 5v14l11-7z"/></svg>
     </button>
-    <button class="vol-ico-btn" id="volBtn" onclick="toggleMute()" title="Mudo/Som">
+    <button class="vol-ico-btn" id="volBtn" onclick="toggleMute()" title="Mudo/Som" aria-label="Ativar ou desativar o som">
       <svg viewBox="0 0 24 24" id="volIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
     </button>
     <input type="range" class="vol-slider" id="radioVol" min="0" max="1" step="0.05" value="0.8" oninput="setRadioVol(this.value)">
@@ -665,10 +677,10 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <div style="font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;color:#F5A324;letter-spacing:2px;text-transform:uppercase;margin-top:1px;">com Anderson Gustavo</div>
       </div>
     </a>
-    <button class="burger" id="burgerBtn" onclick="toggleMenu()">
+    <button class="burger" id="burgerBtn" onclick="toggleMenu()" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="mainNav">
       <span></span><span></span><span></span>
     </button>
-    <nav id="mainNav">
+    <nav id="mainNav" aria-label="Navegação principal">
       <a href="#" class="active">Home</a>
       <a href="#podcasts">Podcasts</a>
       <a href="#clipes">Clipes</a>
@@ -758,7 +770,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <a href="https://www.youtube.com/@adoracastoficial" target="_blank" rel="noopener noreferrer" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
     </div>
     <div class="clipes-scroll-wrap">
-    <button class="clip-arrow clip-arr-left" onclick="podScroll(-1)">&#8249;</button>
+    <button class="clip-arrow clip-arr-left" onclick="podScroll(-1)" aria-label="Ver podcasts anteriores">&#8249;</button>
     <div class="clipes-scroll reveal" id="podcastsScroll">
 
       <div class="clip-card" onclick="openVideo('0VXUfbjc93Y')">
@@ -786,7 +798,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       </div>
 
     </div>
-    <button class="clip-arrow clip-arr-right" onclick="podScroll(1)">&#8250;</button>
+    <button class="clip-arrow clip-arr-right" onclick="podScroll(1)" aria-label="Ver próximos podcasts">&#8250;</button>
     </div>
   </div>
 </section>
@@ -803,7 +815,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <a href="https://www.youtube.com/@AndersonGustavo/" target="_blank" rel="noopener noreferrer" class="btn-pri" style="flex-shrink:0;padding:10px 20px;font-size:12px;">Ver todos no YouTube</a>
     </div>
     <div class="clipes-scroll-wrap">
-    <button class="clip-arrow clip-arr-left" onclick="clipScroll(-1)">&#8249;</button>
+    <button class="clip-arrow clip-arr-left" onclick="clipScroll(-1)" aria-label="Ver clipes anteriores">&#8249;</button>
     <div class="clipes-scroll reveal" id="clipesScroll">
 
       <div class="clip-card" onclick="openVideo('vZdi0ilPC10')">
@@ -943,7 +955,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       </div>
 
     </div>
-    <button class="clip-arrow clip-arr-right" onclick="clipScroll(1)">&#8250;</button>
+    <button class="clip-arrow clip-arr-right" onclick="clipScroll(1)" aria-label="Ver próximos clipes">&#8250;</button>
     </div>
   </div>
 </section>
@@ -959,16 +971,16 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <span id="week-label" style="font-size:12px;color:var(--tm);font-family:'Raleway',sans-serif;"></span>
     </div>
     <div class="top10-grid reveal">
-      <div class="top10-item top3" onclick="playTrack(this,'19Xy8BoE21tNtz91Qh2fpt')"><span class="top10-num">1</span><div class="top10-info"><div class="top10-song">Se eu Somente Te Tocar</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item top3" onclick="playTrack(this,'3ghzHm4lHHhA9WO9Yiu5nY')"><span class="top10-num">2</span><div class="top10-info"><div class="top10-song">Deus de Moisés</div><div class="top10-artist">Bruna Karla</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item top3" onclick="playTrack(this,'6eVwr0VQPICNNQx3gqoqYI')"><span class="top10-num">3</span><div class="top10-info"><div class="top10-song">Que Jesus Seja o Nome</div><div class="top10-artist">Aline Freire</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'6uAt2yexEpQLPIWJuY9kL6')"><span class="top10-num">4</span><div class="top10-info"><div class="top10-song">Quem Poderá? (Ao Vivo)</div><div class="top10-artist">Valesca Mayssa</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'0X3vkwKZwCBP2XCLSvPf1b')"><span class="top10-num">5</span><div class="top10-info"><div class="top10-song">Espírito Santo (Inhabit)</div><div class="top10-artist">Thalles Roberto</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'0jJXmVGbODa8dZqg3fgMdY')"><span class="top10-num">6</span><div class="top10-info"><div class="top10-song">Filho Pródigo (Ao Vivo)</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'5yB0FK61teDTe4xpKaqSBm')"><span class="top10-num">7</span><div class="top10-info"><div class="top10-song">Oh Vem Me Avivar</div><div class="top10-artist">Ana Nóbrega</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'5y07NTJg6NkDLW3fkrxDW5')"><span class="top10-num">8</span><div class="top10-info"><div class="top10-song">Sou Grato Por Seu Amor</div><div class="top10-artist">Get Worship</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'1EzlXvFPrQ8d7Ar4L9kOSx')"><span class="top10-num">9</span><div class="top10-info"><div class="top10-song">Fiel é Deus</div><div class="top10-artist">Isaias Saad</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-      <div class="top10-item" onclick="playTrack(this,'5gH9bIF0s0kSVBGbuCbSN1')"><span class="top10-num">10</span><div class="top10-info"><div class="top10-song">Deus Provedor</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'19Xy8BoE21tNtz91Qh2fpt')"><span class="top10-num">1</span><div class="top10-info"><div class="top10-song">Se eu Somente Te Tocar</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'3ghzHm4lHHhA9WO9Yiu5nY')"><span class="top10-num">2</span><div class="top10-info"><div class="top10-song">Deus de Moisés</div><div class="top10-artist">Bruna Karla</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item top3" onclick="playTrack(this,'6eVwr0VQPICNNQx3gqoqYI')"><span class="top10-num">3</span><div class="top10-info"><div class="top10-song">Que Jesus Seja o Nome</div><div class="top10-artist">Aline Freire</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'6uAt2yexEpQLPIWJuY9kL6')"><span class="top10-num">4</span><div class="top10-info"><div class="top10-song">Quem Poderá? (Ao Vivo)</div><div class="top10-artist">Valesca Mayssa</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'0X3vkwKZwCBP2XCLSvPf1b')"><span class="top10-num">5</span><div class="top10-info"><div class="top10-song">Espírito Santo (Inhabit)</div><div class="top10-artist">Thalles Roberto</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'0jJXmVGbODa8dZqg3fgMdY')"><span class="top10-num">6</span><div class="top10-info"><div class="top10-song">Filho Pródigo (Ao Vivo)</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5yB0FK61teDTe4xpKaqSBm')"><span class="top10-num">7</span><div class="top10-info"><div class="top10-song">Oh Vem Me Avivar</div><div class="top10-artist">Ana Nóbrega</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5y07NTJg6NkDLW3fkrxDW5')"><span class="top10-num">8</span><div class="top10-info"><div class="top10-song">Sou Grato Por Seu Amor</div><div class="top10-artist">Get Worship</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'1EzlXvFPrQ8d7Ar4L9kOSx')"><span class="top10-num">9</span><div class="top10-info"><div class="top10-song">Fiel é Deus</div><div class="top10-artist">Isaias Saad</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <div class="top10-item" onclick="playTrack(this,'5gH9bIF0s0kSVBGbuCbSN1')"><span class="top10-num">10</span><div class="top10-info"><div class="top10-song">Deus Provedor</div><div class="top10-artist">Nilson Junior</div></div><button class="top10-play" aria-label="Ouvir prévia no Spotify"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
     </div>
     <div class="spotify-embed-wrap" id="spotify-embed-wrap">
       <iframe id="spotify-iframe" src="" width="100%" height="80" frameborder="0" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -1497,7 +1509,12 @@ setInterval(updateBarClock, 1000);
 
 // ── MENU ──
 function toggleMenu() {
-  document.getElementById('mainNav').classList.toggle('open');
+  var open = document.getElementById('mainNav').classList.toggle('open');
+  var b = document.getElementById('burgerBtn');
+  if (b) {
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    b.setAttribute('aria-label', open ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+  }
 }
 
 // ── SCROLL REVEAL ──
@@ -1826,7 +1843,7 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
 <!-- ANUNCIE MODAL -->
 <div id="anuncie-modal" onclick="closeAnuncie(event)">
   <div class="am-inner">
-    <button class="am-close" onclick="closeAnuncie()">✕</button>
+    <button class="am-close" onclick="closeAnuncie()" aria-label="Fechar">✕</button>
     <iframe id="am-iframe" src="" title="Anuncie"></iframe>
   </div>
 </div>
@@ -1834,7 +1851,7 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
 <!-- VIDEO MODAL -->
 <div id="video-modal" onclick="closeVideo(event)">
   <div class="vm-inner">
-    <button class="vm-close" onclick="closeVideo()">✕</button>
+    <button class="vm-close" onclick="closeVideo()" aria-label="Fechar vídeo">✕</button>
     <iframe id="vm-iframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
   </div>
 </div>
