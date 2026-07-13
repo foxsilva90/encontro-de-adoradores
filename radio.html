@@ -1553,28 +1553,22 @@ function safeYtThumb(url, vid) {
 
 // ── PHONE MASK ──
 function loadPodcasts() {
-  var PLAYLIST_ID = 'PLdcKr-qi984jtu4vrA5MNc5YrXREE1lJD';
-  var API_KEY = 'AIzaSyB0SNeMDV_cgSonAFQcFXYbLN2i-G6DI0Q';
   var grid = document.getElementById('podcastsScroll');
   if (!grid) return;
-  var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=6&playlistId=' + PLAYLIST_ID + '&key=' + API_KEY;
-  fetch(url)
+  fetch('/api/podcasts')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (!data.items || !data.items.length) return;
       var html = '';
       data.items.forEach(function(item) {
         try {
-          var s = item.snippet;
-          var vid = s.resourceId && s.resourceId.videoId;
-          if (!vid || s.title === 'Private video' || s.title === 'Deleted video') return;
-          var title = s.title;
-          var tn = s.thumbnails || {};
-          var thumb = safeYtThumb((tn.high || tn.medium || tn.default || {}).url, vid);
-          var epMatch = title.match(/#(\d+)/);
-          var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '▶ Podcast';
+          var vid = item.videoId;
           var safeVid = /^[a-zA-Z0-9_-]{11}$/.test(vid) ? vid : '';
           if (!safeVid) return;
+          var title = item.title || '';
+          var thumb = safeYtThumb(item.thumbnail, safeVid);
+          var epMatch = title.match(/#(\d+)/);
+          var epLabel = epMatch ? 'EP ' + String(parseInt(epMatch[1])).padStart(3, '0') : '▶ Podcast';
           html +=
             '<div class="clip-card" onclick="openVideo(\'' + safeVid + '\')">' +
             '<div class="clip-thumb">' +

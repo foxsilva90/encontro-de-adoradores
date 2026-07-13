@@ -6,3 +6,6 @@ client_secrets.json
 youtube_token.pkl
 .env
 *.env
+
+# Screenshots com credenciais visíveis
+chave API Azuracast *.jpg

@@ -1,6 +1,11 @@
+# Credenciais — nunca enviar para o deploy
+client_secrets.json
+*.pkl
+.env
+*.env
+
 *.zip
 *.mp4
-*.pkl
 panel_local.py
 scripts/
 chave API Azuracast .jpg
