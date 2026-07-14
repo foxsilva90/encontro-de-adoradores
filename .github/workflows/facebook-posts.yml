@@ -1,0 +1,87 @@
+name: Facebook — posts automáticos
+
+on:
+  schedule:
+    - cron: '0 9 * * *'    # Devocional — 06:00 BRT (todo dia)
+    - cron: '0 12 * * 1'   # Top 10    — 09:00 BRT (segunda)
+    - cron: '0 18 * * *'   # Podcast   — 15:00 BRT (checa episódio novo)
+  workflow_dispatch:
+    inputs:
+      tarefa:
+        description: 'Qual post publicar agora'
+        required: true
+        default: 'devocional'
+        type: choice
+        options:
+          - devocional
+          - top10
+          - podcast
+
+jobs:
+  devocional:
+    # Roda no cron das 09:00 UTC, ou manualmente escolhendo "devocional"
+    if: >-
+      github.event.schedule == '0 9 * * *' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.tarefa == 'devocional')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests tzdata
+      - name: Publicar devocional
+        working-directory: scripts
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python fb_devocional.py
+
+  top10:
+    if: >-
+      github.event.schedule == '0 12 * * 1' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.tarefa == 'top10')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Publicar Top 10
+        working-directory: scripts
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python fb_top10.py
+
+  podcast:
+    if: >-
+      github.event.schedule == '0 18 * * *' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.tarefa == 'podcast')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # para commitar o estado quando houver episódio novo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Checar e publicar episódio novo
+        working-directory: scripts
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python fb_podcast.py
+      - name: Salvar estado se mudou
+        run: |
+          if ! git diff --quiet scripts/fb_state.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add scripts/fb_state.json
+            git commit -m "chore: atualiza estado do último podcast publicado"
+            git push
+          else
+            echo "Estado inalterado — nada a commitar."
+          fi
