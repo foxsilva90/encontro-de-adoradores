@@ -1571,6 +1571,16 @@ function toggleMenu() {
   }
 }
 
+document.addEventListener('click', function(e){
+  var nav = document.getElementById('mainNav');
+  var burger = document.getElementById('burgerBtn');
+  if (!nav || !burger || !nav.classList.contains('open')) return;
+  if (nav.contains(e.target) || burger.contains(e.target)) return;
+  nav.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+  burger.setAttribute('aria-label', 'Abrir menu de navegação');
+});
+
 // ── SCROLL REVEAL ──
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
