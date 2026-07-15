@@ -1901,7 +1901,7 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   try { shownThisSession = sessionStorage.getItem(SESSION_KEY) === '1'; } catch(e){}
 
   if (!isSubscribed && !shownThisSession) {
-    setTimeout(openPopup, 15000);
+    openPopup();
   }
 
   closeBtn.addEventListener('click', function(){ closePopup(false); });
