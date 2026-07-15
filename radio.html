@@ -561,11 +561,45 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .sched-play-btn svg{width:10px;height:10px;}
 }
 
+/* ── Pop-up devocional ── */
+#devo-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:3000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s ease;}
+#devo-overlay.open{opacity:1;pointer-events:auto;}
+#devo-modal{background:var(--s2);border:1px solid var(--border);border-radius:16px;max-width:380px;width:100%;padding:28px 24px;position:relative;transform:translateY(12px);transition:transform .25s ease;}
+#devo-overlay.open #devo-modal{transform:translateY(0);}
+#devo-close{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--tm);font-size:20px;cursor:pointer;line-height:1;padding:6px;}
+#devo-close:hover{color:var(--tp);}
+#devo-modal h3{font-family:'Raleway',sans-serif;font-weight:800;font-size:19px;margin-bottom:8px;color:var(--tp);}
+#devo-modal p{color:var(--ts);font-size:14px;margin-bottom:18px;line-height:1.5;}
+#devo-form{display:flex;flex-direction:column;gap:10px;}
+#devo-form input{background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--tp);font-family:'Nunito',sans-serif;font-size:14px;}
+#devo-form input:focus{outline:2px solid var(--orange);outline-offset:1px;}
+#devo-submit{background:var(--orange);color:var(--dark);border:none;border-radius:8px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px;}
+#devo-submit:hover{background:var(--orange-dk);}
+#devo-submit:disabled{opacity:.6;cursor:default;}
+#devo-msg{font-size:13px;margin-top:10px;min-height:16px;}
+#devo-msg.ok{color:#7CD992;}
+#devo-msg.err{color:#F08080;}
+
 </style>
 </head>
 <body>
 
 <a href="#player-bar" class="skip-link">Pular para o player</a>
+
+<div id="devo-overlay" role="dialog" aria-modal="true" aria-labelledby="devo-title">
+  <div id="devo-modal">
+    <button id="devo-close" type="button" aria-label="Fechar">&times;</button>
+    <h3 id="devo-title">Receba o devocional diário</h3>
+    <p>Cadastre-se e receba uma mensagem de fé todos os dias no seu e-mail.</p>
+    <form id="devo-form">
+      <input type="text" id="devo-nome" name="nome" placeholder="Seu nome" required minlength="2" autocomplete="name">
+      <input type="email" id="devo-email" name="email" placeholder="Seu e-mail" required autocomplete="email">
+      <input type="tel" id="devo-whatsapp" name="whatsapp" placeholder="WhatsApp (opcional)" autocomplete="tel">
+      <button id="devo-submit" type="submit">Quero receber</button>
+    </form>
+    <div id="devo-msg" role="status"></div>
+  </div>
+</div>
 
 <!-- ══════════ ENTRADA OVERLAY ══════════ -->
 <div id="entrada-overlay">
@@ -1836,6 +1870,81 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
       .then(function(r){ return r.json(); })
       .then(function(d){ titleEl.textContent = d.title; })
       .catch(function(){});
+  });
+})();
+
+// ── POP-UP DEVOCIONAL ──
+(function(){
+  var STORAGE_KEY = 'devo_popup_dismissed';
+  var overlay = document.getElementById('devo-overlay');
+  var closeBtn = document.getElementById('devo-close');
+  var form = document.getElementById('devo-form');
+  var submitBtn = document.getElementById('devo-submit');
+  var msg = document.getElementById('devo-msg');
+  if (!overlay || !form) return;
+
+  function openPopup(){
+    overlay.classList.add('open');
+  }
+  function closePopup(remember){
+    overlay.classList.remove('open');
+    if (remember) {
+      try { localStorage.setItem(STORAGE_KEY, '1'); } catch(e){}
+    }
+  }
+
+  var alreadyDismissed = false;
+  try { alreadyDismissed = localStorage.getItem(STORAGE_KEY) === '1'; } catch(e){}
+
+  if (!alreadyDismissed) {
+    setTimeout(openPopup, 15000);
+  }
+
+  closeBtn.addEventListener('click', function(){ closePopup(true); });
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closePopup(true);
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    msg.textContent = '';
+    msg.className = '';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+
+    var payload = {
+      nome: document.getElementById('devo-nome').value,
+      email: document.getElementById('devo-email').value,
+      whatsapp: document.getElementById('devo-whatsapp').value
+    };
+
+    fetch('/api/devocional-signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function(r){ return r.json().then(function(data){ return { ok: r.ok, data: data }; }); })
+      .then(function(result){
+        if (!result.ok) {
+          msg.textContent = (result.data && result.data.error) || 'Não foi possível cadastrar. Tente novamente.';
+          msg.className = 'err';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Quero receber';
+          return;
+        }
+        msg.textContent = result.data.alreadyRegistered
+          ? 'Você já está cadastrado(a)! 🙏'
+          : 'Cadastro feito! Confira seu e-mail. 🙏';
+        msg.className = 'ok';
+        submitBtn.textContent = 'Cadastrado!';
+        closePopup(true);
+      })
+      .catch(function(){
+        msg.textContent = 'Erro de conexão. Tente novamente.';
+        msg.className = 'err';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Quero receber';
+      });
   });
 })();
 </script>
