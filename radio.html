@@ -596,7 +596,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   <div id="devo-modal">
     <button id="devo-close" type="button" aria-label="Fechar">&times;</button>
     <h3 id="devo-title">Receba o devocional diário</h3>
-    <p>Cadastre-se e receba uma mensagem de fé todos os dias no seu e-mail.</p>
+    <p id="devo-intro">Cadastre-se e receba uma mensagem de fé todos os dias no seu e-mail.</p>
     <form id="devo-form">
       <input type="text" id="devo-nome" name="nome" placeholder="Seu nome" required minlength="2" autocomplete="name">
       <input type="email" id="devo-email" name="email" placeholder="Seu e-mail" required autocomplete="email">
@@ -1894,6 +1894,8 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   var form = document.getElementById('devo-form');
   var submitBtn = document.getElementById('devo-submit');
   var msg = document.getElementById('devo-msg');
+  var title = document.getElementById('devo-title');
+  var intro = document.getElementById('devo-intro');
   var successPanel = document.getElementById('devo-success');
   var successTitle = document.getElementById('devo-success-title');
   var successText = document.getElementById('devo-success-text');
@@ -1927,6 +1929,8 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   successClose.addEventListener('click', function(){ closePopup(true); });
 
   function showSuccess(alreadyRegistered){
+    title.style.display = 'none';
+    intro.style.display = 'none';
     form.style.display = 'none';
     msg.textContent = '';
     successTitle.textContent = alreadyRegistered ? 'Você já está cadastrado(a)! 🙏' : 'Cadastro realizado!';
