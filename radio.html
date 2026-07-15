@@ -577,8 +577,14 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 #devo-submit:hover{background:var(--orange-dk);}
 #devo-submit:disabled{opacity:.6;cursor:default;}
 #devo-msg{font-size:13px;margin-top:10px;min-height:16px;}
-#devo-msg.ok{color:#7CD992;}
 #devo-msg.err{color:#F08080;}
+#devo-success{display:none;text-align:center;padding:8px 0;}
+#devo-success.show{display:block;}
+#devo-success .devo-check{font-size:40px;line-height:1;margin-bottom:12px;}
+#devo-success h3{margin-bottom:10px;}
+#devo-success p{margin-bottom:0;}
+#devo-success-close{background:var(--orange);color:var(--dark);border:none;border-radius:8px;padding:12px 22px;font-weight:700;font-size:14px;cursor:pointer;margin-top:18px;}
+#devo-success-close:hover{background:var(--orange-dk);}
 
 </style>
 </head>
@@ -598,6 +604,12 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <button id="devo-submit" type="submit">Quero receber</button>
     </form>
     <div id="devo-msg" role="status"></div>
+    <div id="devo-success" role="status">
+      <div class="devo-check">🎉</div>
+      <h3 id="devo-success-title">Cadastro realizado!</h3>
+      <p id="devo-success-text">Verifique seu e-mail para acompanhar o devocional diário.</p>
+      <button id="devo-success-close" type="button">Fechar</button>
+    </div>
   </div>
 </div>
 
@@ -1882,6 +1894,10 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   var form = document.getElementById('devo-form');
   var submitBtn = document.getElementById('devo-submit');
   var msg = document.getElementById('devo-msg');
+  var successPanel = document.getElementById('devo-success');
+  var successTitle = document.getElementById('devo-success-title');
+  var successText = document.getElementById('devo-success-text');
+  var successClose = document.getElementById('devo-success-close');
   if (!overlay || !form) return;
 
   function openPopup(){
@@ -1908,6 +1924,17 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
   overlay.addEventListener('click', function(e){
     if (e.target === overlay) closePopup(false);
   });
+  successClose.addEventListener('click', function(){ closePopup(true); });
+
+  function showSuccess(alreadyRegistered){
+    form.style.display = 'none';
+    msg.textContent = '';
+    successTitle.textContent = alreadyRegistered ? 'Você já está cadastrado(a)! 🙏' : 'Cadastro realizado!';
+    successText.textContent = alreadyRegistered
+      ? 'Você já recebe o devocional diário no seu e-mail.'
+      : 'Verifique seu e-mail — enviamos uma mensagem de boas-vindas com mais detalhes.';
+    successPanel.classList.add('show');
+  }
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -1936,12 +1963,8 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
           submitBtn.textContent = 'Quero receber';
           return;
         }
-        msg.textContent = result.data.alreadyRegistered
-          ? 'Você já está cadastrado(a)! 🙏'
-          : 'Cadastro feito! Confira seu e-mail. 🙏';
-        msg.className = 'ok';
-        submitBtn.textContent = 'Cadastrado!';
-        closePopup(true);
+        try { localStorage.setItem(SUBSCRIBED_KEY, '1'); } catch(e){}
+        showSuccess(!!result.data.alreadyRegistered);
       })
       .catch(function(){
         msg.textContent = 'Erro de conexão. Tente novamente.';
