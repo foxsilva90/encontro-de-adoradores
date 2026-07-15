@@ -1875,7 +1875,8 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
 
 // ── POP-UP DEVOCIONAL ──
 (function(){
-  var STORAGE_KEY = 'devo_popup_dismissed';
+  var SUBSCRIBED_KEY = 'devo_subscribed';   // permanente — só grava quando o cadastro dá certo
+  var SESSION_KEY = 'devo_popup_shown';     // por aba/sessão — evita reabrir de novo na mesma visita
   var overlay = document.getElementById('devo-overlay');
   var closeBtn = document.getElementById('devo-close');
   var form = document.getElementById('devo-form');
@@ -1885,24 +1886,27 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
 
   function openPopup(){
     overlay.classList.add('open');
+    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e){}
   }
-  function closePopup(remember){
+  function closePopup(subscribed){
     overlay.classList.remove('open');
-    if (remember) {
-      try { localStorage.setItem(STORAGE_KEY, '1'); } catch(e){}
+    if (subscribed) {
+      try { localStorage.setItem(SUBSCRIBED_KEY, '1'); } catch(e){}
     }
   }
 
-  var alreadyDismissed = false;
-  try { alreadyDismissed = localStorage.getItem(STORAGE_KEY) === '1'; } catch(e){}
+  var isSubscribed = false;
+  var shownThisSession = false;
+  try { isSubscribed = localStorage.getItem(SUBSCRIBED_KEY) === '1'; } catch(e){}
+  try { shownThisSession = sessionStorage.getItem(SESSION_KEY) === '1'; } catch(e){}
 
-  if (!alreadyDismissed) {
+  if (!isSubscribed && !shownThisSession) {
     setTimeout(openPopup, 15000);
   }
 
-  closeBtn.addEventListener('click', function(){ closePopup(true); });
+  closeBtn.addEventListener('click', function(){ closePopup(false); });
   overlay.addEventListener('click', function(e){
-    if (e.target === overlay) closePopup(true);
+    if (e.target === overlay) closePopup(false);
   });
 
   form.addEventListener('submit', function(e){
