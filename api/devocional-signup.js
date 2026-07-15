@@ -1,10 +1,12 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FROM_EMAIL = 'Rádio Encontro de Adoradores <devocional@encontrodeadoradores.com>';
 const COMMUNITY_LINK = 'https://whatsapp.com/channel/0029VbDQwyoIXnlxtiOuSN2R';
+const LOGO_URL = 'https://encontrodeadoradores.com/logo_tunein_1200x1200.jpg';
 
 function welcomeEmailHtml(nome) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a;">
+      <div style="text-align:center;margin-bottom:16px;"><img src="${LOGO_URL}" alt="Encontro de Adoradores" width="80" height="80" style="border-radius:50%;"></div>
       <h2 style="color: #0D2A4A;">Bem-vindo(a), ${nome}!</h2>
       <p>Você está cadastrado(a) para receber o devocional diário da Rádio Encontro de Adoradores por e-mail. 🙏</p>
       <p>Entre também na nossa comunidade do WhatsApp para acompanhar novidades:</p>

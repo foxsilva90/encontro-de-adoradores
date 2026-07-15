@@ -11,6 +11,7 @@ import requests
 from devocionais import devocional_do_dia
 
 FROM_EMAIL = "Rádio Encontro de Adoradores <devocional@encontrodeadoradores.com>"
+LOGO_URL = "https://encontrodeadoradores.com/logo_tunein_1200x1200.jpg"
 
 
 def _creds():
@@ -40,6 +41,7 @@ def _fetch_subscribers(supabase_url, service_key):
 def _email_html(nome, dia_semana, ref, verso, reflexao):
     return f"""
     <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a;">
+      <div style="text-align:center;margin-bottom:16px;"><img src="{LOGO_URL}" alt="Encontro de Adoradores" width="80" height="80" style="border-radius:50%;"></div>
       <h2 style="color: #0D2A4A;">Devocional do dia — {dia_semana}</h2>
       <p>Olá, {nome}!</p>
       <blockquote style="border-left: 3px solid #F5A324; margin: 16px 0; padding: 4px 16px; font-style: italic;">
