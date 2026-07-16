@@ -3,6 +3,13 @@ const FROM_EMAIL = 'Rádio Encontro de Adoradores <devocional@encontrodeadorador
 const COMMUNITY_LINK = 'https://whatsapp.com/channel/0029VbDQwyoIXnlxtiOuSN2R';
 const LOGO_URL = 'https://encontrodeadoradores.com/logo_tunein_1200x1200.jpg';
 
+function toE164(whatsapp) {
+  if (!whatsapp) return undefined;
+  const digits = whatsapp.replace(/\D/g, '');
+  if (!digits) return undefined;
+  return `+${digits.startsWith('55') ? digits : `55${digits}`}`;
+}
+
 function welcomeEmailHtml(nome) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a;">
@@ -29,6 +36,29 @@ async function insertSubscriber(nome, email, whatsapp) {
     body: JSON.stringify({ nome, email, whatsapp: whatsapp || null }),
   });
   return response;
+}
+
+async function addToReach(nome, email, whatsapp) {
+  const token = process.env.HOSTINGER_API_TOKEN;
+  if (!token) return;
+
+  try {
+    await fetch('https://developers.hostinger.com/api/reach/v1/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        email,
+        name: nome,
+        phone: toE164(whatsapp),
+      }),
+    });
+  } catch (err) {
+    // Best-effort: Reach é só uma cópia dos contatos pra campanhas manuais.
+    // Falha aqui não pode derrubar o cadastro principal (Supabase + e-mail).
+  }
 }
 
 async function sendWelcomeEmail(nome, email) {
@@ -84,6 +114,7 @@ export default async function handler(req, res) {
     }
 
     await sendWelcomeEmail(cleanNome, cleanEmail);
+    await addToReach(cleanNome, cleanEmail, cleanWhatsapp);
 
     return res.status(200).json({ ok: true });
   } catch (err) {
