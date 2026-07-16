@@ -24,7 +24,11 @@
   "description": "Rádio gospel online com Anderson Gustavo. Música gospel, mensagens de fé e adoração 24 horas por dia.",
   "url": "https://encontrodeadoradores.com",
   "logo": "https://encontrodeadoradores.com/logo_tunein_1200x1200.jpg",
-  "sameAs": [],
+  "sameAs": [
+    "https://www.youtube.com/@adoracastoficial",
+    "https://www.instagram.com/adora_cast/",
+    "https://www.facebook.com/radioencontrodeadoradores"
+  ],
   "broadcastFrequency": "Online",
   "broadcastTimezone": "America/Sao_Paulo",
   "inLanguage": "pt-BR"
@@ -764,6 +768,8 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           </div>
         </div>
         <div>
+          <h1>Encontro de <span>Adoradores</span></h1>
+          <div class="hero-presenter">Rádio Gospel Online com Anderson Gustavo</div>
           <p class="hero-desc" style="margin-bottom:20px;">Uma rádio de adoração, fé e encontro com Deus. Música gospel, mensagens de esperança e uma comunidade que ama louvar.</p>
           <div class="hero-btns">
             <button class="btn-pri" onclick="togglePlay()">
@@ -781,7 +787,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
     <div class="hero-visual">
       <div class="hero-yt-wrap">
         <div id="heroYtFacade" onclick="loadHeroVideo()" style="cursor:pointer;position:relative;width:100%;height:352px;background:#000;border-radius:12px;overflow:hidden;">
-          <img src="https://img.youtube.com/vi/0EnEXK3ZihY/maxresdefault.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Encontro de Adoradores" loading="lazy">
+          <img src="https://img.youtube.com/vi/0EnEXK3ZihY/maxresdefault.jpg" style="width:100%;height:100%;object-fit:cover;display:block;" alt="Vídeo de destaque — Encontro de Adoradores, rádio gospel online" loading="lazy">
           <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);">
             <div style="width:68px;height:68px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.5);">
               <svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:#080808;margin-left:4px;"><path d="M8 5v14l11-7z"/></svg>
@@ -1117,7 +1123,9 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <div class="eyebrow">Quem somos</div>
         <h2 class="sec-title">Sobre a Rádio</h2>
         <p>A <strong>Rádio Encontro de Adoradores</strong> é uma rádio web gospel dedicada a criar um ambiente de adoração, fé e encontro com Deus. Anderson Gustavo é o idealizador da rádio, que nasceu do antigo Programa Encontro de Adoradores apresentado na Rádio 93 FM.</p>
-        <p>Há mais de 8 anos no ar, o programa tem sido um canal de bênçãos para milhões de ouvintes — levando música gospel de qualidade, mensagens inspiradoras e momentos de oração ao coração das famílias brasileiras.</p>
+        <p>Há mais de 8 anos no ar, o programa tem sido um canal de bênçãos para milhões de ouvintes — levando música gospel de qualidade, mensagens inspiradoras e momentos de oração ao coração das famílias brasileiras. Você pode ouvir a rádio gospel online 24 horas por dia, direto do site, sem precisar instalar nenhum aplicativo.</p>
+        <p>Além da transmissão ao vivo, a rádio mantém o <strong>AdoraCast</strong>, um podcast semanal com entrevistas, reflexões e música gospel, disponível direto na página inicial e nas principais plataformas de áudio. Toda semana também divulgamos a <strong>Top 10 Gospel</strong>, um ranking das músicas mais tocadas e pedidas pelos ouvintes.</p>
+        <p>Para quem quer levar um pouco de fé pro dia a dia, oferecemos um <strong>devocional diário gratuito por e-mail</strong> — uma mensagem curta, com versículo e reflexão, direto na sua caixa de entrada todas as manhãs.</p>
         <div class="sobre-stats">
           <div class="s-stat"><div class="s-stat-n">8<span>+</span></div><div class="s-stat-l">Anos no ar</div></div>
           <div class="s-stat"><div class="s-stat-n">384</div><div class="s-stat-l">Episódios</div></div>
@@ -1135,6 +1143,20 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DEVOCIONAL ══════════ -->
+<section id="devocional-diario">
+  <div class="wrap">
+    <div class="sec-hdr reveal" style="text-align:center;">
+      <div class="eyebrow">Todo dia, no seu e-mail</div>
+      <h2 class="sec-title">Devocional Diário</h2>
+      <p style="color:var(--ts);font-size:15px;max-width:540px;margin:12px auto 0;line-height:1.7;">Receba gratuitamente, toda manhã, uma mensagem curta com versículo e reflexão — um lembrete de fé pra começar o dia com Deus.</p>
+      <a href="javascript:void(0)" onclick="document.getElementById('devo-overlay').classList.add('open')" class="btn-pri" style="margin-top:20px;font-size:15px;padding:14px 36px;letter-spacing:1px;text-transform:uppercase;font-weight:800;box-shadow:0 4px 24px rgba(245,163,36,.4);">
+        Quero Receber
+      </a>
     </div>
   </div>
 </section>
@@ -1896,9 +1918,13 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
     var titleEl = document.createElement('div');
     titleEl.className = 'clip-title';
     card.appendChild(titleEl);
+    var img = card.querySelector('img');
     fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+vid+'&format=json')
       .then(function(r){ return r.json(); })
-      .then(function(d){ titleEl.textContent = d.title; })
+      .then(function(d){
+        titleEl.textContent = d.title;
+        if (img) img.alt = 'Clipe: ' + d.title + ' | Encontro de Adoradores';
+      })
       .catch(function(){});
   });
 })();
