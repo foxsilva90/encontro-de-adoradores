@@ -19,8 +19,11 @@ Credenciais vêm de variáveis de ambiente (secrets do GitHub Actions):
 Se as credenciais não estiverem presentes, faz SKIP em vez de falhar.
 """
 import base64
+import io
 import os
 import sys
+import time
+import wave
 from xml.etree import ElementTree
 
 import requests
@@ -77,46 +80,94 @@ def fetch_headlines():
     return [t for t in candidates if is_appropriate(t)][:HEADLINE_COUNT]
 
 
+MAX_CHUNK_LEN = 200  # XTTS-v2 engasga/erra em textos longos numa só chamada
+
+
+def _split_long_sentence(sentence):
+    if len(sentence) <= MAX_CHUNK_LEN:
+        return [sentence]
+    # Quebra em pontos naturais (; ,) mantendo os pedaços dentro do limite.
+    parts, current = [], ""
+    for piece in sentence.replace(";", ",").split(","):
+        piece = piece.strip()
+        if not piece:
+            continue
+        candidate = f"{current}, {piece}" if current else piece
+        if len(candidate) > MAX_CHUNK_LEN and current:
+            parts.append(current + ".")
+            current = piece
+        else:
+            current = candidate
+    if current:
+        parts.append(current if current.endswith((".", "!", "?")) else f"{current}.")
+    return parts
+
+
 def build_script(headlines):
     if not headlines:
         return None
-    partes = [
+    segments = [
         "Você está ouvindo o boletim de notícias da Rádio Encontro de Adoradores.",
         "As principais notícias desta hora:",
     ]
-    partes.extend(headlines)
-    partes.append("Fique com a gente. Voltamos com mais música e adoração.")
-    return " ... ".join(partes)
+    for h in headlines:
+        sentence = h if h.endswith((".", "!", "?")) else f"{h}."
+        segments.extend(_split_long_sentence(sentence))
+    segments.append("Fique com a gente.")
+    segments.append("Voltamos com mais música e adoração.")
+    return segments
 
 
-def generate_audio(text, path, replicate_token, voice_url):
-    resp = requests.post(
-        "https://api.replicate.com/v1/predictions",
-        headers={
-            "Authorization": f"Bearer {replicate_token}",
-            "Content-Type": "application/json",
-            "Prefer": "wait",
-        },
-        json={
-            "version": REPLICATE_MODEL_VERSION,
-            "input": {
-                "text": text,
-                "speaker": voice_url,
-                "language": "pt",
-                "cleanup_voice": True,
+def _generate_segment(text, replicate_token, voice_url, retries=4):
+    for attempt in range(retries):
+        resp = requests.post(
+            "https://api.replicate.com/v1/predictions",
+            headers={
+                "Authorization": f"Bearer {replicate_token}",
+                "Content-Type": "application/json",
+                "Prefer": "wait",
             },
-        },
-        timeout=120,
-    )
-    resp.raise_for_status()
+            json={
+                "version": REPLICATE_MODEL_VERSION,
+                "input": {
+                    "text": text,
+                    "speaker": voice_url,
+                    "language": "pt",
+                    "cleanup_voice": True,
+                },
+            },
+            timeout=120,
+        )
+        if resp.status_code == 429 and attempt < retries - 1:
+            time.sleep(2 ** attempt * 3)  # 3s, 6s, 12s...
+            continue
+        resp.raise_for_status()
+        break
+
     prediction = resp.json()
     if prediction.get("status") != "succeeded":
         raise RuntimeError(f"Geração de voz falhou: {prediction.get('error') or prediction.get('status')}")
 
     audio_resp = requests.get(prediction["output"], timeout=60)
     audio_resp.raise_for_status()
-    with open(path, "wb") as fh:
-        fh.write(audio_resp.content)
+    return audio_resp.content
+
+
+def generate_audio(segments, path, replicate_token, voice_url):
+    clips = []
+    for i, s in enumerate(segments):
+        if i > 0:
+            time.sleep(1.5)  # evita 429 de rate limit entre chamadas seguidas
+        clips.append(_generate_segment(s, replicate_token, voice_url))
+
+    with wave.open(io.BytesIO(clips[0]), "rb") as first:
+        params = first.getparams()
+
+    with wave.open(path, "wb") as out:
+        out.setparams(params)
+        for clip in clips:
+            with wave.open(io.BytesIO(clip), "rb") as w:
+                out.writeframes(w.readframes(w.getnframes()))
 
 
 def api_request(method, base_url, api_key, path, **kwargs):
