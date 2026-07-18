@@ -99,6 +99,13 @@ def ensure_playlist(base_url, api_key, station):
     playlists = api_request("GET", base_url, api_key, f"/station/{station}/playlists")
     for p in playlists:
         if p.get("name") == PLAYLIST_NAME:
+            # Não interrompe o que estiver tocando — entra só depois que a
+            # faixa/segmento atual terminar. Sincroniza isso mesmo em
+            # playlists já criadas por uma execução anterior.
+            api_request(
+                "PUT", base_url, api_key, f"/station/{station}/playlist/{p['id']}",
+                json={"backend_options": []},
+            )
             return p["id"]
 
     print(f"Criando playlist '{PLAYLIST_NAME}'...")
@@ -108,7 +115,7 @@ def ensure_playlist(base_url, api_key, station):
             "name": PLAYLIST_NAME,
             "type": "once_per_hour",
             "play_per_hour_minute": 0,
-            "backend_options": ["interrupt"],
+            "backend_options": [],
             "is_enabled": True,
             "weight": 3,
             "schedule_items": [
