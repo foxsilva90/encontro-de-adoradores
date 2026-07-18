@@ -13,11 +13,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install requests edge-tts
+      - run: pip install requests
       - name: Gerar e publicar boletim
         working-directory: scripts
         env:
           AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
           AZURACAST_BASE_URL: ${{ secrets.AZURACAST_BASE_URL }}
           AZURACAST_STATION: ${{ secrets.AZURACAST_STATION }}
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          ANDERSON_VOICE_URL: ${{ secrets.ANDERSON_VOICE_URL }}
         run: python news_bulletin.py

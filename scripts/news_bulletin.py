@@ -3,35 +3,36 @@
 Gera e publica o boletim de notícias horário na rádio via API do AzuraCast.
 
 Fluxo: busca manchetes no RSS do G1 -> monta um texto de locução ->
-gera áudio (edge-tts, voz neural pt-BR) -> sobe pro AzuraCast, substituindo
-o boletim da hora anterior -> garante que está atribuído à playlist
-"Boletim de Notícias" (criada automaticamente na primeira execução, tipo
-once_per_hour, sem interromper a faixa atual, agendada só entre 6h e 22h).
+gera áudio com a voz clonada do Anderson Gustavo (XTTS-v2 via Replicate)
+-> sobe pro AzuraCast, substituindo o boletim da hora anterior -> garante
+que está atribuído à playlist "Boletim de Notícias" (criada
+automaticamente na primeira execução, tipo once_per_hour, sem interromper
+a faixa atual, agendada só entre 6h e 22h).
 
 Credenciais vêm de variáveis de ambiente (secrets do GitHub Actions):
-- AZURACAST_API_KEY : chave de API com permissão de estação
-- AZURACAST_BASE_URL: ex. https://radio.encontrodeadoradores.com
-- AZURACAST_STATION : shortcode da estação, ex. encontro_de_adoradores
+- AZURACAST_API_KEY   : chave de API com permissão de estação
+- AZURACAST_BASE_URL  : ex. https://radio.encontrodeadoradores.com
+- AZURACAST_STATION   : shortcode da estação, ex. encontro_de_adoradores
+- REPLICATE_API_TOKEN : token de API do Replicate
+- ANDERSON_VOICE_URL  : URL pública da amostra de voz de referência
 
 Se as credenciais não estiverem presentes, faz SKIP em vez de falhar.
 """
-import asyncio
 import base64
 import os
 import sys
 from xml.etree import ElementTree
 
-import edge_tts
 import requests
 
-TTS_VOICE = "pt-BR-AntonioNeural"
+REPLICATE_MODEL_VERSION = "684bc3855b37866c0c65add2ff39c78f3dea3f4ff103a436465326e0f438d55e"
 
 RSS_URL = "https://g1.globo.com/rss/g1/"
 HEADLINE_COUNT = 3
 HEADLINE_POOL_SIZE = 15  # quantas manchetes olhar no RSS antes de filtrar
 PLAYLIST_NAME = "Boletim de Notícias"
-UPLOAD_PATH = "boletim_noticias/atual.mp3"
-LOCAL_AUDIO_PATH = "boletim_atual.mp3"
+UPLOAD_PATH = "boletim_noticias/atual.wav"
+LOCAL_AUDIO_PATH = "boletim_atual.wav"
 
 # Termos que derrubam uma manchete do boletim — conteúdo pesado/impróprio
 # pra uma rádio gospel (crime, violência, sexual, etc). Lista propositalmente
@@ -59,10 +60,12 @@ def _creds():
     api_key = os.environ.get("AZURACAST_API_KEY")
     base_url = os.environ.get("AZURACAST_BASE_URL")
     station = os.environ.get("AZURACAST_STATION")
-    if not api_key or not base_url or not station:
-        print("SKIP: AZURACAST_API_KEY, AZURACAST_BASE_URL ou AZURACAST_STATION não configurados.")
+    replicate_token = os.environ.get("REPLICATE_API_TOKEN")
+    voice_url = os.environ.get("ANDERSON_VOICE_URL")
+    if not api_key or not base_url or not station or not replicate_token or not voice_url:
+        print("SKIP: alguma credencial (AZURACAST_*, REPLICATE_API_TOKEN, ANDERSON_VOICE_URL) não configurada.")
         sys.exit(0)
-    return api_key, base_url.rstrip("/"), station
+    return api_key, base_url.rstrip("/"), station, replicate_token, voice_url
 
 
 def fetch_headlines():
@@ -86,11 +89,34 @@ def build_script(headlines):
     return " ... ".join(partes)
 
 
-def generate_audio(text, path):
-    async def _run():
-        communicate = edge_tts.Communicate(text, voice=TTS_VOICE)
-        await communicate.save(path)
-    asyncio.run(_run())
+def generate_audio(text, path, replicate_token, voice_url):
+    resp = requests.post(
+        "https://api.replicate.com/v1/predictions",
+        headers={
+            "Authorization": f"Bearer {replicate_token}",
+            "Content-Type": "application/json",
+            "Prefer": "wait",
+        },
+        json={
+            "version": REPLICATE_MODEL_VERSION,
+            "input": {
+                "text": text,
+                "speaker": voice_url,
+                "language": "pt",
+                "cleanup_voice": True,
+            },
+        },
+        timeout=120,
+    )
+    resp.raise_for_status()
+    prediction = resp.json()
+    if prediction.get("status") != "succeeded":
+        raise RuntimeError(f"Geração de voz falhou: {prediction.get('error') or prediction.get('status')}")
+
+    audio_resp = requests.get(prediction["output"], timeout=60)
+    audio_resp.raise_for_status()
+    with open(path, "wb") as fh:
+        fh.write(audio_resp.content)
 
 
 def api_request(method, base_url, api_key, path, **kwargs):
@@ -157,7 +183,7 @@ def assign_playlist(base_url, api_key, station, media_id, playlist_id):
 
 
 def main():
-    api_key, base_url, station = _creds()
+    api_key, base_url, station, replicate_token, voice_url = _creds()
 
     headlines = fetch_headlines()
     script = build_script(headlines)
@@ -166,7 +192,7 @@ def main():
         sys.exit(0)
 
     print(f"Boletim: {len(headlines)} manchete(s).")
-    generate_audio(script, LOCAL_AUDIO_PATH)
+    generate_audio(script, LOCAL_AUDIO_PATH, replicate_token, voice_url)
 
     playlist_id = ensure_playlist(base_url, api_key, station)
     remove_previous_bulletin(base_url, api_key, station)

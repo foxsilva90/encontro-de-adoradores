@@ -9,3 +9,6 @@ youtube_token.pkl
 
 # Screenshots com credenciais visíveis
 chave API Azuracast *.jpg
+
+# Amostras de voz (dados pessoais, não versionar)
+ElevenLabs*.ogg
