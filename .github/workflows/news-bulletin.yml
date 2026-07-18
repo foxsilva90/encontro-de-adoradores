@@ -1,0 +1,23 @@
+name: Rádio — Boletim de notícias horário
+
+on:
+  schedule:
+    - cron: '0 9-23,0-1 * * *'   # de hora em hora, 06:00 às 22:00 BRT
+  workflow_dispatch:
+
+jobs:
+  bulletin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests gTTS
+      - name: Gerar e publicar boletim
+        working-directory: scripts
+        env:
+          AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
+          AZURACAST_BASE_URL: ${{ secrets.AZURACAST_BASE_URL }}
+          AZURACAST_STATION: ${{ secrets.AZURACAST_STATION }}
+        run: python news_bulletin.py
