@@ -3,10 +3,10 @@
 Gera e publica o boletim de notícias horário na rádio via API do AzuraCast.
 
 Fluxo: busca manchetes no RSS do G1 -> monta um texto de locução ->
-gera áudio (gTTS) -> sobe pro AzuraCast, substituindo o boletim da hora
-anterior -> garante que está atribuído à playlist "Boletim de Notícias"
-(criada automaticamente na primeira execução, tipo once_per_hour +
-interrupt, agendada só entre 6h e 22h).
+gera áudio (edge-tts, voz neural pt-BR) -> sobe pro AzuraCast, substituindo
+o boletim da hora anterior -> garante que está atribuído à playlist
+"Boletim de Notícias" (criada automaticamente na primeira execução, tipo
+once_per_hour, sem interromper a faixa atual, agendada só entre 6h e 22h).
 
 Credenciais vêm de variáveis de ambiente (secrets do GitHub Actions):
 - AZURACAST_API_KEY : chave de API com permissão de estação
@@ -15,13 +15,16 @@ Credenciais vêm de variáveis de ambiente (secrets do GitHub Actions):
 
 Se as credenciais não estiverem presentes, faz SKIP em vez de falhar.
 """
+import asyncio
 import base64
 import os
 import sys
 from xml.etree import ElementTree
 
+import edge_tts
 import requests
-from gtts import gTTS
+
+TTS_VOICE = "pt-BR-AntonioNeural"
 
 RSS_URL = "https://g1.globo.com/rss/g1/"
 HEADLINE_COUNT = 3
@@ -84,7 +87,10 @@ def build_script(headlines):
 
 
 def generate_audio(text, path):
-    gTTS(text=text, lang="pt", tld="com.br").save(path)
+    async def _run():
+        communicate = edge_tts.Communicate(text, voice=TTS_VOICE)
+        await communicate.save(path)
+    asyncio.run(_run())
 
 
 def api_request(method, base_url, api_key, path, **kwargs):
