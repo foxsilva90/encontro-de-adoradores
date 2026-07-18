@@ -133,7 +133,7 @@ def _generate_segment(text, replicate_token, voice_url, retries=4):
                     "text": text,
                     "speaker": voice_url,
                     "language": "pt",
-                    "cleanup_voice": True,
+                    "cleanup_voice": False,
                 },
             },
             timeout=120,
