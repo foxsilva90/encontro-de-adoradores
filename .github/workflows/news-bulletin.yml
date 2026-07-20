@@ -14,6 +14,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install requests
+      - name: Instalar ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - name: Gerar e publicar boletim
         working-directory: scripts
         env:
