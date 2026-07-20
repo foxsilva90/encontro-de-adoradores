@@ -110,12 +110,19 @@ def is_appropriate(headline):
     return True
 
 
+def _clean_env(name):
+    # Remove BOM/espaços perdidos que secrets configurados via alguns
+    # clientes (ex. pipe do PowerShell pro gh CLI) podem injetar.
+    value = os.environ.get(name)
+    return value.strip().lstrip("﻿") if value else value
+
+
 def _creds():
-    api_key = os.environ.get("AZURACAST_API_KEY")
-    base_url = os.environ.get("AZURACAST_BASE_URL")
-    station = os.environ.get("AZURACAST_STATION")
-    eleven_api_key = os.environ.get("ELEVENLABS_API_KEY")
-    eleven_voice_id = os.environ.get("ELEVENLABS_VOICE_ID")
+    api_key = _clean_env("AZURACAST_API_KEY")
+    base_url = _clean_env("AZURACAST_BASE_URL")
+    station = _clean_env("AZURACAST_STATION")
+    eleven_api_key = _clean_env("ELEVENLABS_API_KEY")
+    eleven_voice_id = _clean_env("ELEVENLABS_VOICE_ID")
     if not api_key or not base_url or not station or not eleven_api_key or not eleven_voice_id:
         print("SKIP: alguma credencial (AZURACAST_*, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID) não configurada.")
         sys.exit(0)
