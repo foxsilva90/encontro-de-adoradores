@@ -3,24 +3,25 @@
 Gera e publica o boletim de notícias horário na rádio via API do AzuraCast.
 
 Fluxo: busca manchetes no RSS do G1 -> monta um texto de locução ->
-gera áudio com a voz clonada do Anderson Gustavo (XTTS-v2 via Replicate)
--> sobe pro AzuraCast, substituindo o boletim da hora anterior -> garante
-que está atribuído à playlist "Boletim de Notícias" (criada
-automaticamente na primeira execução, tipo once_per_hour, sem interromper
-a faixa atual, agendada só entre 6h e 22h).
+gera áudio com voz da ElevenLabs (Sarah) -> sobe pro AzuraCast,
+substituindo o boletim da hora anterior -> garante que está atribuído à
+playlist "Boletim de Notícias" (criada automaticamente na primeira
+execução, tipo once_per_hour, sem interromper a faixa atual, agendada só
+entre 6h e 22h).
 
 Credenciais vêm de variáveis de ambiente (secrets do GitHub Actions):
 - AZURACAST_API_KEY   : chave de API com permissão de estação
 - AZURACAST_BASE_URL  : ex. https://radio.encontrodeadoradores.com
 - AZURACAST_STATION   : shortcode da estação, ex. encontro_de_adoradores
-- REPLICATE_API_TOKEN : token de API do Replicate
-- ANDERSON_VOICE_URL  : URL pública da amostra de voz de referência
+- ELEVENLABS_API_KEY  : chave de API da ElevenLabs
+- ELEVENLABS_VOICE_ID : id da voz na ElevenLabs (Sarah)
 
 Se as credenciais não estiverem presentes, faz SKIP em vez de falhar.
 """
 import base64
-import io
+import datetime
 import os
+import subprocess
 import sys
 import time
 import wave
@@ -28,14 +29,27 @@ from xml.etree import ElementTree
 
 import requests
 
-REPLICATE_MODEL_VERSION = "684bc3855b37866c0c65add2ff39c78f3dea3f4ff103a436465326e0f438d55e"
+ELEVENLABS_MODEL_ID = "eleven_v3"
+ELEVENLABS_SAMPLE_RATE = 24000
 
-RSS_URL = "https://g1.globo.com/rss/g1/"
+# Feeds por editoria — cobre só o essencial (economia, política, mundo,
+# esportes, entretenimento). O boletim gira a ordem a cada hora pra não
+# ficar sempre nas mesmas 3 categorias.
+CATEGORY_FEEDS = [
+    ("Economia", "https://g1.globo.com/rss/g1/economia/"),
+    ("Política", "https://g1.globo.com/rss/g1/politica/"),
+    ("Mundo", "https://g1.globo.com/rss/g1/mundo/"),
+    ("Esportes", "https://ge.globo.com/rss/ge/"),
+    ("Entretenimento", "https://g1.globo.com/rss/g1/pop-arte/"),
+]
 HEADLINE_COUNT = 3
-HEADLINE_POOL_SIZE = 15  # quantas manchetes olhar no RSS antes de filtrar
+HEADLINE_POOL_SIZE = 15  # quantas manchetes olhar por editoria antes de filtrar
 PLAYLIST_NAME = "Boletim de Notícias"
 UPLOAD_PATH = "boletim_noticias/atual.wav"
+VOICE_AUDIO_PATH = "boletim_voz.wav"
 LOCAL_AUDIO_PATH = "boletim_atual.wav"
+MUSIC_BED_PATH = "trilha_fundo.mp3"  # opcional; se ausente, publica só a voz
+MUSIC_BED_VOLUME = "0.07"
 
 # Termos que derrubam uma manchete do boletim — conteúdo pesado/impróprio
 # pra uma rádio gospel (crime, violência, sexual, etc). Lista propositalmente
@@ -44,7 +58,7 @@ BLOCKED_TERMS = [
     "estupro", "abuso", "pedofilia", "assédio", "molestad",
     "estuprador", "estupr", "sexual", "stealthing", "consentimento",
     "assassinato", "assassinad", "homicídio", "feminicídio", "chacina",
-    "morto a tiros", "morta a tiros", "esfaquead", "decapitad",
+    "morto a tiros", "morta a tiros", "esfaquead", "decapitad", "atropelad",
     "suicídio", "suicida", "automutilação",
     "violência doméstica", "espancad",
     "cadáver", "corpo encontrado", "corpo carbonizado",
@@ -53,88 +67,117 @@ BLOCKED_TERMS = [
     "overdose", "crack", "drogas", "nudes", "estupra",
 ]
 
+# Notícias de shows/entretenimento secular que não têm a ver com o
+# segmento gospel da rádio — fora as exceções abaixo.
+ENTERTAINMENT_TERMS = [
+    "show", "shows", "turnê", "turne", "festival de música", "festival de musica",
+    "novela", "balada", "boate", "carnaval",
+    # estilos musicais seculares — só passa se for exceção gospel abaixo
+    "sertanejo", "pagode", "funk", "rock", "rap", "trap", "axé", "axe",
+    "forró", "forro", "samba", "eletrônica", "eletronica", "k-pop", "kpop",
+    "pop nacional", "cantora pop", "cantor pop",
+]
+
+# Reality show e fofoca de celebridade: bloqueados sempre, sem exceção
+# gospel — o boletim deve se ater ao essencial (economia, política,
+# esportes, entretenimento relevante etc), não vida alheia de famoso.
+GOSSIP_TERMS = [
+    "reality show", "bbb", "big brother", "a fazenda", "power couple",
+    "ex-bbb", "ex-participante", "famosos", "celebridade", "affair",
+    "climão", "climao", "treta", "fofoca", "vida amorosa", "términou o namoro",
+    "terminou o namoro", "term de namoro", "romance de", "namoro de", "affair de",
+    "relacionamento", "se separaram", "reataram", "estão namorando", "estao namorando",
+    "novo romance", "términou", "terminaram o", "traição", "traicao",
+]
+
+# Artefatos de placar ao vivo do RSS de esporte — não são manchete de
+# verdade, são tickers de partida em andamento.
+LIVE_SCORE_MARKERS = ["ao vivo", "globoesporte.com"]
+
+GOSPEL_EXCEPTIONS = ["gospel", "evangélic", "evangelic", "cristã", "crista", "igreja", "adoração", "adoracao", "louvor"]
+
 
 def is_appropriate(headline):
     lowered = headline.lower()
-    return not any(term in lowered for term in BLOCKED_TERMS)
+    if any(term in lowered for term in BLOCKED_TERMS):
+        return False
+    if any(term in lowered for term in GOSSIP_TERMS):
+        return False
+    if any(term in lowered for term in LIVE_SCORE_MARKERS):
+        return False
+    if any(term in lowered for term in ENTERTAINMENT_TERMS):
+        return any(term in lowered for term in GOSPEL_EXCEPTIONS)
+    return True
 
 
 def _creds():
     api_key = os.environ.get("AZURACAST_API_KEY")
     base_url = os.environ.get("AZURACAST_BASE_URL")
     station = os.environ.get("AZURACAST_STATION")
-    replicate_token = os.environ.get("REPLICATE_API_TOKEN")
-    voice_url = os.environ.get("ANDERSON_VOICE_URL")
-    if not api_key or not base_url or not station or not replicate_token or not voice_url:
-        print("SKIP: alguma credencial (AZURACAST_*, REPLICATE_API_TOKEN, ANDERSON_VOICE_URL) não configurada.")
+    eleven_api_key = os.environ.get("ELEVENLABS_API_KEY")
+    eleven_voice_id = os.environ.get("ELEVENLABS_VOICE_ID")
+    if not api_key or not base_url or not station or not eleven_api_key or not eleven_voice_id:
+        print("SKIP: alguma credencial (AZURACAST_*, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID) não configurada.")
         sys.exit(0)
-    return api_key, base_url.rstrip("/"), station, replicate_token, voice_url
+    return api_key, base_url.rstrip("/"), station, eleven_api_key, eleven_voice_id
 
 
-def fetch_headlines():
-    resp = requests.get(RSS_URL, timeout=20)
+def _fetch_feed_titles(url):
+    resp = requests.get(url, timeout=20)
     resp.raise_for_status()
     root = ElementTree.fromstring(resp.content)
     titles = [item.findtext("title") for item in root.findall(".//item")]
-    candidates = [t.strip() for t in titles if t][:HEADLINE_POOL_SIZE]
-    return [t for t in candidates if is_appropriate(t)][:HEADLINE_COUNT]
+    return [t.strip() for t in titles if t]
 
 
-MAX_CHUNK_LEN = 200  # XTTS-v2 engasga/erra em textos longos numa só chamada
+def fetch_headlines():
+    # Roda a ordem das editorias por hora, pra variar o que entra nas 3
+    # manchetes ao longo do dia em vez de sempre priorizar as mesmas.
+    start = datetime.datetime.utcnow().hour % len(CATEGORY_FEEDS)
+    rotated = CATEGORY_FEEDS[start:] + CATEGORY_FEEDS[:start]
 
-
-def _split_long_sentence(sentence):
-    if len(sentence) <= MAX_CHUNK_LEN:
-        return [sentence]
-    # Quebra em pontos naturais (; ,) mantendo os pedaços dentro do limite.
-    parts, current = [], ""
-    for piece in sentence.replace(";", ",").split(","):
-        piece = piece.strip()
-        if not piece:
+    headlines = []
+    for _name, url in rotated:
+        try:
+            titles = _fetch_feed_titles(url)
+        except requests.RequestException:
             continue
-        candidate = f"{current}, {piece}" if current else piece
-        if len(candidate) > MAX_CHUNK_LEN and current:
-            parts.append(current + ".")
-            current = piece
-        else:
-            current = candidate
-    if current:
-        parts.append(current if current.endswith((".", "!", "?")) else f"{current}.")
-    return parts
+        for t in titles[:HEADLINE_POOL_SIZE]:
+            if is_appropriate(t):
+                headlines.append(t)
+                break
+        if len(headlines) >= HEADLINE_COUNT:
+            break
+    return headlines[:HEADLINE_COUNT]
 
 
 def build_script(headlines):
     if not headlines:
         return None
-    segments = [
+    lines = [
         "Você está ouvindo o boletim de notícias da Rádio Encontro de Adoradores.",
         "As principais notícias desta hora:",
     ]
     for h in headlines:
-        sentence = h if h.endswith((".", "!", "?")) else f"{h}."
-        segments.extend(_split_long_sentence(sentence))
-    segments.append("Fique com a gente.")
-    segments.append("Voltamos com mais música e adoração.")
-    return segments
+        lines.append(h if h.endswith((".", "!", "?")) else f"{h}.")
+    lines.append("Fique com a gente.")
+    lines.append("Voltamos com mais música e adoração.")
+    return " ".join(lines)
 
 
-def _generate_segment(text, replicate_token, voice_url, retries=4):
+def _generate_voice(text, eleven_api_key, eleven_voice_id, retries=4):
     for attempt in range(retries):
         resp = requests.post(
-            "https://api.replicate.com/v1/predictions",
+            f"https://api.elevenlabs.io/v1/text-to-speech/{eleven_voice_id}",
+            params={"output_format": f"pcm_{ELEVENLABS_SAMPLE_RATE}"},
             headers={
-                "Authorization": f"Bearer {replicate_token}",
+                "xi-api-key": eleven_api_key,
                 "Content-Type": "application/json",
-                "Prefer": "wait",
+                "Accept": "audio/pcm",
             },
             json={
-                "version": REPLICATE_MODEL_VERSION,
-                "input": {
-                    "text": text,
-                    "speaker": voice_url,
-                    "language": "pt",
-                    "cleanup_voice": False,
-                },
+                "text": text,
+                "model_id": ELEVENLABS_MODEL_ID,
             },
             timeout=120,
         )
@@ -142,32 +185,35 @@ def _generate_segment(text, replicate_token, voice_url, retries=4):
             time.sleep(2 ** attempt * 3)  # 3s, 6s, 12s...
             continue
         resp.raise_for_status()
-        break
-
-    prediction = resp.json()
-    if prediction.get("status") != "succeeded":
-        raise RuntimeError(f"Geração de voz falhou: {prediction.get('error') or prediction.get('status')}")
-
-    audio_resp = requests.get(prediction["output"], timeout=60)
-    audio_resp.raise_for_status()
-    return audio_resp.content
+        return resp.content
+    raise RuntimeError("Geração de voz falhou: excedeu tentativas após 429.")
 
 
-def generate_audio(segments, path, replicate_token, voice_url):
-    clips = []
-    for i, s in enumerate(segments):
-        if i > 0:
-            time.sleep(1.5)  # evita 429 de rate limit entre chamadas seguidas
-        clips.append(_generate_segment(s, replicate_token, voice_url))
-
-    with wave.open(io.BytesIO(clips[0]), "rb") as first:
-        params = first.getparams()
-
+def generate_audio(text, path, eleven_api_key, eleven_voice_id):
+    pcm = _generate_voice(text, eleven_api_key, eleven_voice_id)
     with wave.open(path, "wb") as out:
-        out.setparams(params)
-        for clip in clips:
-            with wave.open(io.BytesIO(clip), "rb") as w:
-                out.writeframes(w.readframes(w.getnframes()))
+        out.setnchannels(1)
+        out.setsampwidth(2)  # PCM 16-bit
+        out.setframerate(ELEVENLABS_SAMPLE_RATE)
+        out.writeframes(pcm)
+
+
+def mix_with_music(voice_path, music_path, output_path):
+    # Loopa a trilha de fundo, abaixa o volume dela e mixa com a voz;
+    # duration=first corta a mixagem no tamanho da voz (faixa da locução).
+    subprocess.run(
+        [
+            "ffmpeg", "-y",
+            "-i", voice_path,
+            "-stream_loop", "-1", "-i", music_path,
+            "-filter_complex",
+            f"[1:a]volume={MUSIC_BED_VOLUME}[bg];[0:a][bg]amix=inputs=2:duration=first:dropout_transition=3",
+            "-ac", "1",
+            output_path,
+        ],
+        check=True,
+        capture_output=True,
+    )
 
 
 def api_request(method, base_url, api_key, path, **kwargs):
@@ -234,7 +280,7 @@ def assign_playlist(base_url, api_key, station, media_id, playlist_id):
 
 
 def main():
-    api_key, base_url, station, replicate_token, voice_url = _creds()
+    api_key, base_url, station, eleven_api_key, eleven_voice_id = _creds()
 
     headlines = fetch_headlines()
     script = build_script(headlines)
@@ -243,7 +289,12 @@ def main():
         sys.exit(0)
 
     print(f"Boletim: {len(headlines)} manchete(s).")
-    generate_audio(script, LOCAL_AUDIO_PATH, replicate_token, voice_url)
+    generate_audio(script, VOICE_AUDIO_PATH, eleven_api_key, eleven_voice_id)
+
+    if os.path.exists(MUSIC_BED_PATH):
+        mix_with_music(VOICE_AUDIO_PATH, MUSIC_BED_PATH, LOCAL_AUDIO_PATH)
+    else:
+        os.replace(VOICE_AUDIO_PATH, LOCAL_AUDIO_PATH)
 
     playlist_id = ensure_playlist(base_url, api_key, station)
     remove_previous_bulletin(base_url, api_key, station)

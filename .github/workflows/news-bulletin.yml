@@ -20,6 +20,6 @@ jobs:
           AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
           AZURACAST_BASE_URL: ${{ secrets.AZURACAST_BASE_URL }}
           AZURACAST_STATION: ${{ secrets.AZURACAST_STATION }}
-          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          ANDERSON_VOICE_URL: ${{ secrets.ANDERSON_VOICE_URL }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
         run: python news_bulletin.py
