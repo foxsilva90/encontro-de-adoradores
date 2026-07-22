@@ -21,6 +21,7 @@ Se as credenciais não estiverem presentes, faz SKIP em vez de falhar.
 import base64
 import datetime
 import os
+import re
 import subprocess
 import sys
 import time
@@ -32,15 +33,23 @@ import requests
 ELEVENLABS_MODEL_ID = "eleven_v3"
 ELEVENLABS_SAMPLE_RATE = 24000
 
-# Feeds por editoria — cobre só o essencial (economia, política, mundo,
-# esportes, entretenimento). O boletim gira a ordem a cada hora pra não
-# ficar sempre nas mesmas 3 categorias.
+# Feed(s) gospel — sempre tenta reservar 1 das manchetes pra cá.
+GOSPEL_FEEDS = [
+    "https://guiame.com.br/rss",
+    "https://noticias.gospelmais.com.br/feed",
+]
+
+# Feeds por editoria pras manchetes restantes — cobre só o essencial
+# (economia, política, mundo, entretenimento), com fontes variadas além
+# do G1. Gira a ordem a cada hora pra não ficar sempre nas mesmas
+# categorias. Esportes fora, a pedido.
 CATEGORY_FEEDS = [
     ("Economia", "https://g1.globo.com/rss/g1/economia/"),
     ("Política", "https://g1.globo.com/rss/g1/politica/"),
     ("Mundo", "https://g1.globo.com/rss/g1/mundo/"),
-    ("Esportes", "https://ge.globo.com/rss/ge/"),
     ("Entretenimento", "https://g1.globo.com/rss/g1/pop-arte/"),
+    ("Geral", "https://www.cnnbrasil.com.br/feed/"),
+    ("Geral", "https://rss.uol.com.br/feed/noticias.xml"),
 ]
 HEADLINE_COUNT = 3
 HEADLINE_POOL_SIZE = 15  # quantas manchetes olhar por editoria antes de filtrar
@@ -137,39 +146,69 @@ def _fetch_feed_titles(url):
     return [t.strip() for t in titles if t]
 
 
-def fetch_headlines():
-    # Roda a ordem das editorias por hora, pra variar o que entra nas 3
-    # manchetes ao longo do dia em vez de sempre priorizar as mesmas.
-    start = datetime.datetime.utcnow().hour % len(CATEGORY_FEEDS)
-    rotated = CATEGORY_FEEDS[start:] + CATEGORY_FEEDS[:start]
+QUOTE_CHARS = "\"'‘’“”"
 
+
+def _pick_headline(titles):
+    for t in titles[:HEADLINE_POOL_SIZE]:
+        if not is_appropriate(t):
+            continue
+        # Pula manchete com fala citada em vez de tentar remendar — cortar
+        # só o trecho entre aspas costuma quebrar a gramática da frase.
+        if any(c in t for c in QUOTE_CHARS):
+            continue
+        if len(t) >= 20:
+            return t
+    return None
+
+
+def fetch_headlines():
     headlines = []
-    for _name, url in rotated:
+
+    # Reserva 1 manchete de fonte gospel quando disponível.
+    for url in GOSPEL_FEEDS:
         try:
             titles = _fetch_feed_titles(url)
         except requests.RequestException:
             continue
-        for t in titles[:HEADLINE_POOL_SIZE]:
-            if is_appropriate(t):
-                headlines.append(t)
-                break
+        found = _pick_headline(titles)
+        if found:
+            headlines.append(found)
+            break
+
+    # Roda a ordem das editorias por hora, pra variar o que entra nas
+    # manchetes restantes ao longo do dia em vez de sempre priorizar as
+    # mesmas fontes/categorias.
+    start = datetime.datetime.utcnow().hour % len(CATEGORY_FEEDS)
+    rotated = CATEGORY_FEEDS[start:] + CATEGORY_FEEDS[:start]
+
+    for _name, url in rotated:
         if len(headlines) >= HEADLINE_COUNT:
             break
+        try:
+            titles = _fetch_feed_titles(url)
+        except requests.RequestException:
+            continue
+        found = _pick_headline(titles)
+        if found:
+            headlines.append(found)
     return headlines[:HEADLINE_COUNT]
 
 
 def build_script(headlines):
     if not headlines:
         return None
-    lines = [
-        "Você está ouvindo o boletim de notícias da Rádio Encontro de Adoradores.",
-        "As principais notícias desta hora:",
+    blocks = [
+        "Você está ouvindo o boletim de notícias da Rádio Encontro de Adoradores. As principais notícias desta hora.",
     ]
     for h in headlines:
-        lines.append(h if h.endswith((".", "!", "?")) else f"{h}.")
-    lines.append("Fique com a gente.")
-    lines.append("Voltamos com mais música e adoração.")
-    return " ".join(lines)
+        blocks.append(h if h.endswith((".", "!", "?")) else f"{h}.")
+    blocks.append("Fique com a gente. Voltamos com mais música e adoração.")
+    # Cada bloco vira uma chamada de voz separada (ver generate_audio) —
+    # assim a pausa fica só entre uma notícia e outra, controlada por nós,
+    # em vez de depender da ElevenLabs pausar certo dentro de um texto
+    # corrido (o que também pausava em vírgulas no meio da frase).
+    return blocks
 
 
 def _generate_voice(text, eleven_api_key, eleven_voice_id, retries=4):
@@ -196,25 +235,114 @@ def _generate_voice(text, eleven_api_key, eleven_voice_id, retries=4):
     raise RuntimeError("Geração de voz falhou: excedeu tentativas após 429.")
 
 
-def generate_audio(text, path, eleven_api_key, eleven_voice_id):
-    pcm = _generate_voice(text, eleven_api_key, eleven_voice_id)
+PAUSE_BETWEEN_ITEMS = 0.7  # segundos de silêncio real entre cada bloco do boletim
+TRAILING_PADDING = " Um abraço e continue com a gente."
+VOICE_FADE_OUT = 0.3  # segundos
+SILENCE_NOISE_DB = "-28dB"
+SILENCE_MIN_DURATION = 0.15  # segundos
+GAP_MUSIC_VOLUME = 0.20  # trilha mais alta durante as pausas entre blocos
+
+
+def _get_duration(path):
+    result = subprocess.run(
+        ["ffprobe", "-v", "quiet", "-show_entries", "format=duration", "-of", "csv=p=0", path],
+        check=True, capture_output=True, text=True,
+    )
+    return float(result.stdout.strip())
+
+
+def _detect_silences(path):
+    result = subprocess.run(
+        [
+            "ffmpeg", "-i", path, "-af",
+            f"silencedetect=noise={SILENCE_NOISE_DB}:d={SILENCE_MIN_DURATION}",
+            "-f", "null", "-",
+        ],
+        capture_output=True, text=True,
+    )
+    log = result.stderr
+    starts = [float(m) for m in re.findall(r"silence_start:\s*([\d.]+)", log)]
+    ends = [float(m) for m in re.findall(r"silence_end:\s*([\d.]+)", log)]
+    return list(zip(starts, ends))
+
+
+def _protect_last_segment(pcm):
+    # A ElevenLabs às vezes corta a última fração de segundo do áudio de
+    # forma abrupta. Gera esse bloco com uma frase descartável colada no
+    # final (TRAILING_PADDING), detecta a pausa entre o conteúdo real e
+    # essa frase, e corta ali — a frase nunca fica audível. Como esse
+    # bloco é só "Fique com a gente. Voltamos com mais música e adoração."
+    # + a frase descartável (sem vírgulas), a única pausa esperada aqui é
+    # exatamente essa fronteira, sem ambiguidade com pausas de vírgula.
+    tmp_path = "_tail_segment.wav"
+    with wave.open(tmp_path, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(ELEVENLABS_SAMPLE_RATE)
+        w.writeframes(pcm)
+    silences = _detect_silences(tmp_path)
+    duration = _get_duration(tmp_path)
+    os.remove(tmp_path)
+
+    # Corta no FIM da pausa (não no início) — o início já é onde
+    # "adoração" está decaindo, cortar ali arrisca comer o final da
+    # palavra. O fim da pausa é o ponto seguro logo antes de "Um" começar.
+    trim_end = silences[-1][1] if silences else max(duration - 2.0, 0.1)
+    trim_frames = int(trim_end * ELEVENLABS_SAMPLE_RATE)
+    return pcm[: trim_frames * 2]  # 2 bytes por sample (PCM 16-bit)
+
+
+def generate_audio(blocks, path, eleven_api_key, eleven_voice_id):
+    clips = []
+    for i, block in enumerate(blocks):
+        is_last = i == len(blocks) - 1
+        text = f"{block}{TRAILING_PADDING}" if is_last else block
+        pcm = _generate_voice(text, eleven_api_key, eleven_voice_id)
+        if is_last:
+            pcm = _protect_last_segment(pcm)
+        clips.append(pcm)
+
+    silence_bytes = b"\x00\x00" * int(ELEVENLABS_SAMPLE_RATE * PAUSE_BETWEEN_ITEMS)
+
+    gaps = []
+    t = 0.0
     with wave.open(path, "wb") as out:
         out.setnchannels(1)
         out.setsampwidth(2)  # PCM 16-bit
         out.setframerate(ELEVENLABS_SAMPLE_RATE)
-        out.writeframes(pcm)
+        for i, pcm in enumerate(clips):
+            out.writeframes(pcm)
+            t += len(pcm) / 2 / ELEVENLABS_SAMPLE_RATE
+            if i < len(clips) - 1:
+                out.writeframes(silence_bytes)
+                gaps.append((t, t + PAUSE_BETWEEN_ITEMS))
+                t += PAUSE_BETWEEN_ITEMS
+    return gaps
 
 
-def mix_with_music(voice_path, music_path, output_path):
-    # Loopa a trilha de fundo, abaixa o volume dela e mixa com a voz;
-    # duration=first corta a mixagem no tamanho da voz (faixa da locução).
+def mix_with_music(voice_path, music_path, output_path, gaps=None):
+    voice_duration = _get_duration(voice_path)
+    fade_start = max(voice_duration - VOICE_FADE_OUT, 0)
+
+    if gaps:
+        volume_expr = MUSIC_BED_VOLUME
+        for start, end in gaps:
+            volume_expr = f"if(between(t,{start:.2f},{end:.2f}),{GAP_MUSIC_VOLUME},{volume_expr})"
+        bg_filter = f"volume=eval=frame:volume='{volume_expr}'"
+    else:
+        bg_filter = f"volume={MUSIC_BED_VOLUME}"
+
     subprocess.run(
         [
             "ffmpeg", "-y",
             "-i", voice_path,
             "-stream_loop", "-1", "-i", music_path,
             "-filter_complex",
-            f"[1:a]volume={MUSIC_BED_VOLUME}[bg];[0:a][bg]amix=inputs=2:duration=first:dropout_transition=3",
+            (
+                f"[0:a]afade=t=out:st={fade_start:.3f}:d={VOICE_FADE_OUT}[voice];"
+                f"[1:a]{bg_filter}[bg];"
+                "[voice][bg]amix=inputs=2:duration=first:dropout_transition=3"
+            ),
             "-ac", "1",
             output_path,
         ],
@@ -296,10 +424,10 @@ def main():
         sys.exit(0)
 
     print(f"Boletim: {len(headlines)} manchete(s).")
-    generate_audio(script, VOICE_AUDIO_PATH, eleven_api_key, eleven_voice_id)
+    gaps = generate_audio(script, VOICE_AUDIO_PATH, eleven_api_key, eleven_voice_id)
 
     if os.path.exists(MUSIC_BED_PATH):
-        mix_with_music(VOICE_AUDIO_PATH, MUSIC_BED_PATH, LOCAL_AUDIO_PATH)
+        mix_with_music(VOICE_AUDIO_PATH, MUSIC_BED_PATH, LOCAL_AUDIO_PATH, gaps)
     else:
         os.replace(VOICE_AUDIO_PATH, LOCAL_AUDIO_PATH)
 
