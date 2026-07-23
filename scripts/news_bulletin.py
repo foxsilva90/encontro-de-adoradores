@@ -169,7 +169,7 @@ def fetch_headlines():
     for url in GOSPEL_FEEDS:
         try:
             titles = _fetch_feed_titles(url)
-        except requests.RequestException:
+        except (requests.RequestException, ElementTree.ParseError):
             continue
         found = _pick_headline(titles)
         if found:
@@ -187,7 +187,7 @@ def fetch_headlines():
             break
         try:
             titles = _fetch_feed_titles(url)
-        except requests.RequestException:
+        except (requests.RequestException, ElementTree.ParseError):
             continue
         found = _pick_headline(titles)
         if found:
