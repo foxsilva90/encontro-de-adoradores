@@ -1,3 +1,5 @@
+import { checkRateLimit } from './_rateLimit.js';
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FROM_EMAIL = 'Rádio Encontro de Adoradores <devocional@encontrodeadoradores.com>';
 const COMMUNITY_LINK = 'https://whatsapp.com/channel/0029VbDQwyoIXnlxtiOuSN2R';
@@ -85,6 +87,11 @@ export default async function handler(req, res) {
 
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY || !process.env.RESEND_API_KEY) {
     return res.status(503).json({ error: 'Serviço indisponível' });
+  }
+
+  const allowed = await checkRateLimit(req, 'devocional-signup', 5, 3600);
+  if (!allowed) {
+    return res.status(429).json({ error: 'Muitas tentativas. Tente novamente mais tarde.' });
   }
 
   const { nome, email, whatsapp } = req.body || {};

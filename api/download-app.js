@@ -1,3 +1,5 @@
+import { checkRateLimit } from './_rateLimit.js';
+
 async function logDownload(version, userAgent) {
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) return;
   try {
@@ -20,6 +22,11 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).end();
+  }
+
+  const allowed = await checkRateLimit(req, 'download-app', 10, 3600);
+  if (!allowed) {
+    return res.status(429).json({ error: 'Muitas tentativas. Tente novamente mais tarde.' });
   }
 
   const version = typeof req.query.v === 'string' ? req.query.v : null;
