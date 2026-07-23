@@ -546,9 +546,11 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .f-row{grid-template-columns:1fr;}
   .ft-grid{grid-template-columns:1fr 1fr;}
   .ft-grid > .ft-brand{grid-column:1/-1;}
-  .day-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .day-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;padding-right:28px;}
   .day-tabs::-webkit-scrollbar{display:none;}
   .day-btn{flex-shrink:0;}
+  .day-tabs-wrap{position:relative;}
+  .day-tabs-wrap::after{content:'';position:absolute;top:0;right:0;bottom:2px;width:36px;background:linear-gradient(to right, transparent, var(--s1));pointer-events:none;}
 }
 @media(max-width:520px){
   .pod-grid{grid-template-columns:1fr;}
@@ -1056,14 +1058,16 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <div class="eyebrow">Não perca nenhum momento</div>
       <h2 class="sec-title">Programação Semanal</h2>
     </div>
-    <div class="day-tabs reveal">
-      <button class="day-btn active" onclick="switchDay(this,'seg')">Segunda</button>
-      <button class="day-btn" onclick="switchDay(this,'ter')">Terça</button>
-      <button class="day-btn" onclick="switchDay(this,'qua')">Quarta</button>
-      <button class="day-btn" onclick="switchDay(this,'qui')">Quinta</button>
-      <button class="day-btn" onclick="switchDay(this,'sex')">Sexta</button>
-      <button class="day-btn" onclick="switchDay(this,'sab')">Sábado</button>
-      <button class="day-btn" onclick="switchDay(this,'dom')">Domingo</button>
+    <div class="day-tabs-wrap">
+      <div class="day-tabs reveal">
+        <button class="day-btn active" onclick="switchDay(this,'seg')">Segunda</button>
+        <button class="day-btn" onclick="switchDay(this,'ter')">Terça</button>
+        <button class="day-btn" onclick="switchDay(this,'qua')">Quarta</button>
+        <button class="day-btn" onclick="switchDay(this,'qui')">Quinta</button>
+        <button class="day-btn" onclick="switchDay(this,'sex')">Sexta</button>
+        <button class="day-btn" onclick="switchDay(this,'sab')">Sábado</button>
+        <button class="day-btn" onclick="switchDay(this,'dom')">Domingo</button>
+      </div>
     </div>
     <div class="period-tabs reveal">
       <button class="period-btn" onclick="switchPeriod(this,'madrugada')">Madrugada</button>
