@@ -344,26 +344,26 @@ section{padding:64px 24px;}
 #video-modal.spotify .vm-inner{aspect-ratio:unset;height:232px;max-width:620px;}
 
 /* ── ANUNCIE MODAL ── */
-#anuncie-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9100;align-items:flex-start;justify-content:center;padding:0;}
-#anuncie-modal.open{display:flex;}
+#parceiros-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9100;align-items:flex-start;justify-content:center;padding:0;}
+#parceiros-modal.open{display:flex;}
 .am-inner{position:relative;width:100%;max-width:1100px;height:100vh;display:flex;flex-direction:column;margin:0 auto;}
 .am-close{position:absolute;top:12px;right:16px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:4px 10px;border-radius:6px;opacity:.8;transition:opacity .2s;z-index:10;}
 .am-close:hover{opacity:1;}
 #am-iframe{width:100%;flex:1;border:none;display:block;}
 
 /* ── ANUNCIE ── */
-.anuncie{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 60%,#040d18 100%);padding:80px 0;position:relative;overflow:hidden;}
-.anuncie::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,163,36,.1) 0%,transparent 65%);pointer-events:none;}
-.anuncie-inner{position:relative;z-index:1;}
-.anuncie-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;}
-.anuncie-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:32px 28px;text-align:center;transition:.3s;cursor:pointer;}
-.anuncie-card:hover{border-color:rgba(245,163,36,.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}
-.anuncie-icon{width:56px;height:56px;border-radius:50%;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
-.anuncie-icon svg{width:24px;height:24px;fill:var(--orange);}
-.anuncie-card-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:16px;color:var(--tp);margin-bottom:10px;}
-.anuncie-card-desc{font-size:13px;color:var(--ts);line-height:1.7;}
-.anuncie-cta{text-align:center;margin-top:48px;}
-.anuncie-cta p{font-size:15px;color:var(--ts);margin-bottom:20px;}
+.parceiros{background:linear-gradient(135deg,#040d18 0%,#0d2a4a 60%,#040d18 100%);padding:80px 0;position:relative;overflow:hidden;}
+.parceiros::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,163,36,.1) 0%,transparent 65%);pointer-events:none;}
+.parceiros-inner{position:relative;z-index:1;}
+.parceiros-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;}
+.parceiros-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:32px 28px;text-align:center;transition:.3s;cursor:pointer;}
+.parceiros-card:hover{border-color:rgba(245,163,36,.4);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}
+.parceiros-icon{width:56px;height:56px;border-radius:50%;background:rgba(245,163,36,.1);border:1px solid rgba(245,163,36,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+.parceiros-icon svg{width:24px;height:24px;fill:var(--orange);}
+.parceiros-card-title{font-family:'Raleway',sans-serif;font-weight:800;font-size:16px;color:var(--tp);margin-bottom:10px;}
+.parceiros-card-desc{font-size:13px;color:var(--ts);line-height:1.7;}
+.parceiros-cta{text-align:center;margin-top:48px;}
+.parceiros-cta p{font-size:15px;color:var(--ts);margin-bottom:20px;}
 
 /* ── NOTÍCIAS ── */
 .noticias{background:var(--bg);}
@@ -503,7 +503,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
   .hero-mic-ring-3{width:154px;height:154px;}
   .hero-desc{margin-bottom:12px!important;}
   .news-layout{grid-template-columns:1fr;}
-  .anuncie-grid{grid-template-columns:1fr;}
+  .parceiros-grid{grid-template-columns:1fr;}
   .sobre-inner{grid-template-columns:1fr;}
   .sobre-vis{display:none;}
   .contato-inner{grid-template-columns:1fr;}
@@ -746,7 +746,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
       <a href="#clipes">Clipes</a>
       <a href="#top10">Top Gospel</a>
       <a href="#programacao">Programação</a>
-      <a href="#anuncie">Anuncie</a>
+      <a href="#parceiros">Anuncie</a>
       <a href="#sobre">Sobre</a>
       <a href="#app">App</a>
       <a href="#contato" class="cta">Contato</a>
@@ -1080,37 +1080,37 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
 </section>
 
 <!-- ══════════ ANUNCIE ══════════ -->
-<section class="anuncie" id="anuncie">
-  <div class="wrap anuncie-inner">
+<section class="parceiros" id="parceiros">
+  <div class="wrap parceiros-inner">
     <div class="sec-hdr reveal" style="text-align:center;">
       <div class="eyebrow">Oportunidades</div>
       <h2 class="sec-title">Anuncie no Programa</h2>
       <p style="color:var(--ts);font-size:15px;max-width:540px;margin:12px auto 0;line-height:1.7;">Quer divulgar sua marca, negócio ou ministério? Ou ter um espaço especial na programação? Fale com a gente.</p>
     </div>
-    <div class="anuncie-grid reveal">
-      <div class="anuncie-card">
-        <div class="anuncie-icon">
+    <div class="parceiros-grid reveal">
+      <div class="parceiros-card">
+        <div class="parceiros-icon">
           <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
         </div>
-        <div class="anuncie-card-title">Patrocínio do Programa</div>
-        <div class="anuncie-card-desc">Sua marca associada ao Encontro de Adoradores. Menção ao vivo, inserção no site e nas redes sociais do programa.</div>
+        <div class="parceiros-card-title">Patrocínio do Programa</div>
+        <div class="parceiros-card-desc">Sua marca associada ao Encontro de Adoradores. Menção ao vivo, inserção no site e nas redes sociais do programa.</div>
       </div>
-      <div class="anuncie-card">
-        <div class="anuncie-icon">
+      <div class="parceiros-card">
+        <div class="parceiros-icon">
           <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
         </div>
-        <div class="anuncie-card-title">Espaço na Programação</div>
-        <div class="anuncie-card-desc">Bloco dedicado ao seu ministério, evento ou mensagem dentro da grade semanal do programa ao vivo.</div>
+        <div class="parceiros-card-title">Espaço na Programação</div>
+        <div class="parceiros-card-desc">Bloco dedicado ao seu ministério, evento ou mensagem dentro da grade semanal do programa ao vivo.</div>
       </div>
-      <div class="anuncie-card">
-        <div class="anuncie-icon">
+      <div class="parceiros-card">
+        <div class="parceiros-icon">
           <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
         </div>
-        <div class="anuncie-card-title">Divulgação de Eventos</div>
-        <div class="anuncie-card-desc">Divulgue seu evento gospel, culto, conferência ou lançamento musical para milhares de ouvintes fiéis.</div>
+        <div class="parceiros-card-title">Divulgação de Eventos</div>
+        <div class="parceiros-card-desc">Divulgue seu evento gospel, culto, conferência ou lançamento musical para milhares de ouvintes fiéis.</div>
       </div>
     </div>
-    <div class="anuncie-cta reveal">
+    <div class="parceiros-cta reveal">
       <p>Entre em contato e receba nossa tabela de valores e formatos disponíveis.</p>
       <a href="javascript:void(0)" onclick="openAnuncie()" class="btn-pri" style="font-size:15px;padding:14px 36px;letter-spacing:1px;text-transform:uppercase;font-weight:800;box-shadow:0 4px 24px rgba(245,163,36,.4);">
         <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#080808;flex-shrink:0;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
@@ -1313,7 +1313,7 @@ footer{background:#000;color:var(--ts);padding:48px 24px 24px;}
         <li><a href="#clipes">Clipes</a></li>
         <li><a href="#top10">Top Gospel</a></li>
         <li><a href="#programacao">Programação</a></li>
-        <li><a href="#anuncie">Anuncie</a></li>
+        <li><a href="#parceiros">Anuncie</a></li>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#app">App</a></li>
         <li><a href="#contato">Contato</a></li>
@@ -1868,14 +1868,14 @@ function closeVideo(e) {
   document.body.style.overflow = '';
 }
 function openAnuncie() {
-  document.getElementById('am-iframe').src = 'anuncie.html';
-  document.getElementById('anuncie-modal').classList.add('open');
+  document.getElementById('am-iframe').src = 'parceiros.html';
+  document.getElementById('parceiros-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeAnuncie(e) {
-  if (e && e.type === 'click' && e.target !== document.getElementById('anuncie-modal') && !e.target.closest('.am-close')) return;
+  if (e && e.type === 'click' && e.target !== document.getElementById('parceiros-modal') && !e.target.closest('.am-close')) return;
   document.getElementById('am-iframe').src = '';
-  document.getElementById('anuncie-modal').classList.remove('open');
+  document.getElementById('parceiros-modal').classList.remove('open');
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVideo(); });
@@ -2061,7 +2061,7 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVide
 </script>
 
 <!-- ANUNCIE MODAL -->
-<div id="anuncie-modal" onclick="closeAnuncie(event)">
+<div id="parceiros-modal" onclick="closeAnuncie(event)">
   <div class="am-inner">
     <button class="am-close" onclick="closeAnuncie()" aria-label="Fechar">✕</button>
     <iframe id="am-iframe" src="" title="Anuncie"></iframe>
