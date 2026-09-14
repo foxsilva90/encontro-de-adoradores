@@ -1,0 +1,6 @@
+[Unit]
+Description=Vigia da live 24h do YouTube (reinicia se travar)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/youtube-stream-watchdog.sh

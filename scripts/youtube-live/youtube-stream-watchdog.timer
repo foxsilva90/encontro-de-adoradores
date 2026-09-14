@@ -1,0 +1,10 @@
+[Unit]
+Description=Roda o vigia da live 24h a cada minuto
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target
