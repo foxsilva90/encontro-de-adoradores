@@ -12,3 +12,6 @@ chave API Azuracast *.jpg
 
 # Amostras de voz (dados pessoais, não versionar)
 ElevenLabs*.ogg
+
+# Quadros gerados pela captura da animacao da live
+scripts/youtube-live/frames/
