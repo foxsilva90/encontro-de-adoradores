@@ -17,7 +17,9 @@ Imagem Mais Nítida.png
 preview-logo.html
 
 # Testes e documentação não vão pro site
+# (envio/ NÃO pode entrar aqui: este arquivo também vale pro projeto
+#  envio-programas, que usa envio/ como Root Directory. O site principal
+#  bloqueia /envio/* por redirect no vercel.json.)
 tests/
 docs/
-envio/
 trilhas/
