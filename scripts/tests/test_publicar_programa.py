@@ -80,20 +80,59 @@ def test_plan_replacement_apaga_episodio_gerenciado_e_desvincula_upload_manual()
         _file(3, "musicas/louvor.mp3", [20]),
         _file(4, "programas/manha-com-deus/20261031-080000.mp3", [10]),  # o recém-enviado
     ]
-    plan = pw.plan_replacement(files, playlist_id=10, new_media_id=4, managed_prefix="programas/manha-com-deus/")
+    plan = pw.plan_replacement(files, [10], new_media_id=4, managed_prefix="programas/manha-com-deus/")
     assert plan == {"delete": [1], "unassign": [(2, [20])]}
+
+
+def test_plan_replacement_com_varias_playlists_tira_de_todas():
+    files = [
+        _file(1, "programas/encontro/antigo.mp3", [10, 11, 12, 13]),
+        _file(2, "manual/encontro_06h.mp3", [10, 30]),
+        _file(3, "manual/encontro_22h.mp3", [13]),
+        _file(9, "programas/encontro/novo.mp3", [10, 11, 12, 13]),
+    ]
+    plan = pw.plan_replacement(files, [10, 11, 12, 13], 9, "programas/encontro/")
+    assert plan == {"delete": [1], "unassign": [(2, [30]), (3, [])]}
 
 
 def test_plan_replacement_sem_episodio_anterior_nao_mexe_em_nada():
     files = [_file(3, "musicas/louvor.mp3", [20]), _file(4, "programas/x/novo.mp3", [10])]
-    assert pw.plan_replacement(files, 10, 4, "programas/x/") == {"delete": [], "unassign": []}
+    assert pw.plan_replacement(files, [10], 4, "programas/x/") == {"delete": [], "unassign": []}
 
 
-def test_find_playlist_ignora_maiusculas_e_espacos():
-    playlists = [{"id": 1, "name": "Boletim"}, {"id": 7, "name": "Manhã com Deus "}]
-    assert pw.find_playlist_id(playlists, "manhã com deus") == 7
-    with pytest.raises(LookupError):
-        pw.find_playlist_id(playlists, "Inexistente")
+PLAYLISTS = [
+    {"id": 1, "name": "Boletim"},
+    {"id": 7, "name": "PG Encontro de Adoradores - Bp. Anderson Gustavo (11h"},
+    {"id": 8, "name": "PG Palavra Viva - 15h (Seg) - Patricia Bambrila "},
+]
+
+
+def test_find_playlist_ids_tolera_parenteses_espacos_e_maiusculas():
+    ids = pw.find_playlist_ids(PLAYLISTS, [
+        "PG Encontro de Adoradores - Bp. Anderson Gustavo (11h)",
+        "pg palavra viva - 15h (seg) - patricia bambrila",
+    ])
+    assert ids == [7, 8]
+
+
+def test_find_playlist_ids_lista_as_que_faltam():
+    with pytest.raises(LookupError, match="Inexistente"):
+        pw.find_playlist_ids(PLAYLISTS, ["Boletim", "Inexistente"])
+
+
+def test_find_playlist_ids_recusa_nome_ambiguo():
+    dup = PLAYLISTS + [{"id": 9, "name": "boletim!"}]
+    with pytest.raises(LookupError, match="mais de uma"):
+        pw.find_playlist_ids(dup, ["Boletim"])
+
+
+def test_parse_playlists_usa_json_ou_cai_no_programa():
+    assert pw.parse_playlists('["A", " B ", ""]', "X") == ["A", "B"]
+    assert pw.parse_playlists("", "X") == ["X"]
+    with pytest.raises(ValueError):
+        pw.parse_playlists("não é json", "X")
+    with pytest.raises(ValueError):
+        pw.parse_playlists('{"a": 1}', "X")
 
 
 def test_format_duration():

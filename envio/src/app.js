@@ -9,6 +9,8 @@ const steps = { code: $('step-code'), file: $('step-file'), done: $('step-done')
 
 let codigo = '';
 let programa = '';
+let destinos = [];
+let destino = null;
 let file = null;
 let uploading = false;
 
@@ -45,9 +47,39 @@ async function checkCode(value) {
   const data = await postJson('/api/locutor', { codigo: value });
   codigo = value;
   programa = data.programa;
+  destinos = data.destinos || [];
   localStorage.setItem(STORAGE_KEY, value);
   $('program-name').textContent = programa;
+  renderDestinos();
   show('file');
+}
+
+function renderDestinos() {
+  const list = $('destino-list');
+  list.replaceChildren();
+  destino = destinos.length ? null : 0;
+  $('destinos').hidden = !destinos.length;
+  destinos.forEach((nome, i) => {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'destino';
+    input.value = String(i);
+    input.addEventListener('change', () => { destino = i; updateSendButton(); });
+    const span = document.createElement('span');
+    span.textContent = nome;
+    label.append(input, span);
+    list.append(label);
+  });
+  updateSendButton();
+}
+
+function updateSendButton() {
+  $('send-btn').disabled = uploading || !file || destino === null;
+}
+
+function destinoTitulo() {
+  return destinos.length ? `${programa} - ${destinos[destino]}` : programa;
 }
 
 function selectFile(f) {
@@ -60,7 +92,7 @@ function selectFile(f) {
   file = f;
   $('file-name').textContent = `🎧 ${f.name} (${formatSize(f.size)})`;
   $('file-name').hidden = false;
-  $('send-btn').disabled = false;
+  updateSendButton();
 }
 
 function setProgress(pct, text) {
@@ -75,8 +107,8 @@ function resetFileStep() {
   $('file-name').hidden = true;
   $('bar').hidden = true;
   $('status').textContent = '';
-  $('send-btn').disabled = true;
   $('send-btn').textContent = 'Enviar programa';
+  renderDestinos();
 }
 
 async function sendFile() {
@@ -86,7 +118,7 @@ async function sendFile() {
   showError($('file-error'), '');
   try {
     const ext = (file.name.match(/\.[a-z0-9]{1,5}$/i) || ['.mp3'])[0].toLowerCase();
-    const blob = await upload(`programas/${slugify(programa)}/voz${ext}`, file, {
+    const blob = await upload(`programas/${slugify(destinoTitulo())}/voz${ext}`, file, {
       access: 'public',
       handleUploadUrl: '/api/upload',
       clientPayload: JSON.stringify({ codigo }),
@@ -96,15 +128,15 @@ async function sendFile() {
         setProgress(percentage, `Enviando… ${Math.round(percentage)}% (não feche esta página)`),
     });
     setProgress(100, 'Preparando publicação…');
-    await postJson('/api/publicar', { codigo, url: blob.url });
-    $('done-name').textContent = programa;
+    await postJson('/api/publicar', { codigo, url: blob.url, destino });
+    $('done-name').textContent = destinoTitulo();
     show('done');
   } catch (err) {
     showError($('file-error'), err.message || 'Falha no envio. Confira sua internet e tente de novo.');
-    $('send-btn').disabled = false;
     $('send-btn').textContent = 'Tentar de novo';
   } finally {
     uploading = false;
+    updateSendButton();
   }
 }
 

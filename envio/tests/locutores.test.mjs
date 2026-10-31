@@ -3,26 +3,67 @@ import assert from 'node:assert/strict';
 
 import {
   parseCodeMap,
-  findProgramByCode,
+  findLocutorByCode,
+  resolveDestino,
   isOurBlobUrl,
   isAllowedUploadPath,
   isExpired,
 } from '../api/_locutores.js';
 
-const MAP = parseCodeMap('{"MANHA-7K2P9QX4": "Manhã com Deus", "curto": "X", "NOITE-AB12CD34": ""}');
+const RAW = JSON.stringify({
+  'TALITO-7K2P9QX4': 'PG Clássicos do Talito - Sábado (8h)',
+  'ANDERSON-AB12CD34': {
+    programa: 'Encontro de Adoradores',
+    playlists: ['PG A (06h30)', 'PG A (11h', 'PG A (17h)', 'PG A (22h)'],
+  },
+  'PATRICIA-ZZ99YY88': {
+    programa: 'Palavra Viva',
+    destinos: [
+      { nome: 'Segunda', playlists: ['PG Palavra Viva - 15h (Seg)'] },
+      { nome: 'Terça', playlists: ['PG Palavra Viva - 15h (Ter)'] },
+    ],
+  },
+  curto: 'X',
+  'VAZIO-12345678': { programa: 'Sem playlists', playlists: [] },
+});
+const MAP = parseCodeMap(RAW);
 
-test('lê só códigos válidos (8+ caracteres e programa preenchido)', () => {
-  assert.deepEqual(MAP, { 'MANHA-7K2P9QX4': 'Manhã com Deus' });
+test('aceita os três formatos de cadastro e descarta inválidos', () => {
+  assert.deepEqual(Object.keys(MAP).sort(), ['ANDERSON-AB12CD34', 'PATRICIA-ZZ99YY88', 'TALITO-7K2P9QX4']);
+  assert.deepEqual(MAP['TALITO-7K2P9QX4'], {
+    programa: 'PG Clássicos do Talito - Sábado (8h)',
+    destinos: [{ nome: 'PG Clássicos do Talito - Sábado (8h)', playlists: ['PG Clássicos do Talito - Sábado (8h)'] }],
+  });
+  assert.equal(MAP['ANDERSON-AB12CD34'].destinos.length, 1);
+  assert.equal(MAP['ANDERSON-AB12CD34'].destinos[0].playlists.length, 4);
+  assert.deepEqual(MAP['PATRICIA-ZZ99YY88'].destinos.map((d) => d.nome), ['Segunda', 'Terça']);
   assert.deepEqual(parseCodeMap('lixo'), {});
   assert.deepEqual(parseCodeMap(undefined), {});
 });
 
 test('código ignora maiúsculas e espaços em volta', () => {
-  assert.equal(findProgramByCode(MAP, '  manha-7k2p9qx4 '), 'Manhã com Deus');
-  assert.equal(findProgramByCode(MAP, 'MANHA-7K2P9QX5'), null);
-  assert.equal(findProgramByCode(MAP, ''), null);
-  assert.equal(findProgramByCode(MAP, null), null);
-  assert.equal(findProgramByCode(MAP, 'x'.repeat(500)), null);
+  assert.equal(findLocutorByCode(MAP, '  talito-7k2p9qx4 ').programa, 'PG Clássicos do Talito - Sábado (8h)');
+  assert.equal(findLocutorByCode(MAP, 'TALITO-7K2P9QX5'), null);
+  assert.equal(findLocutorByCode(MAP, ''), null);
+  assert.equal(findLocutorByCode(MAP, null), null);
+  assert.equal(findLocutorByCode(MAP, 'x'.repeat(500)), null);
+});
+
+test('destino único: título é o nome do programa e vai pra todas as playlists', () => {
+  const d = resolveDestino(MAP['ANDERSON-AB12CD34'], 0);
+  assert.equal(d.titulo, 'Encontro de Adoradores');
+  assert.equal(d.playlists.length, 4);
+});
+
+test('vários destinos: título leva o dia e índice inválido é recusado', () => {
+  assert.deepEqual(resolveDestino(MAP['PATRICIA-ZZ99YY88'], 1), {
+    titulo: 'Palavra Viva - Terça',
+    playlists: ['PG Palavra Viva - 15h (Ter)'],
+  });
+  assert.equal(resolveDestino(MAP['PATRICIA-ZZ99YY88'], 2), null);
+  assert.equal(resolveDestino(MAP['PATRICIA-ZZ99YY88'], -1), null);
+  assert.equal(resolveDestino(MAP['PATRICIA-ZZ99YY88'], '1'), null);
+  assert.equal(resolveDestino(MAP['PATRICIA-ZZ99YY88'], undefined), null);
 });
 
 test('aceita só links públicos do Vercel Blob na pasta programas/', () => {

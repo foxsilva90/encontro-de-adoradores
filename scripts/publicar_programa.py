@@ -17,7 +17,9 @@ Episódio anterior:
 O novo entra na playlist ANTES de o antigo sair: a playlist nunca fica vazia.
 
 Variáveis de ambiente:
-- PROGRAMA                      : nome exato da playlist no AzuraCast
+- PROGRAMA                      : título do episódio (e nome da pasta no AzuraCast)
+- PLAYLISTS                     : JSON com as playlists que recebem o episódio
+                                  (vazio = playlist com o mesmo nome de PROGRAMA)
 - AUDIO_URL ou MEDIA_ID         : origem do áudio
 - AZURACAST_API_KEY, AZURACAST_BASE_URL, AZURACAST_STATION
 - Só pra origem WhatsApp: PROGRAMAS_WHATSAPP, WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID
@@ -100,25 +102,57 @@ def resolve_source(audio_url, media_id, programa, mapping):
     return "whatsapp", media_id
 
 
-def find_playlist_id(playlists, name):
-    wanted = name.strip().casefold()
+def _name_key(name):
+    """Compara nomes ignorando maiúsculas, espaços e pontuação: "(11h" == "(11h)"."""
+    return re.sub(r"[\W_]+", "", str(name).casefold())
+
+
+def parse_playlists(raw, programa):
+    """PLAYLISTS (JSON com lista de nomes). Vazio = playlist com o nome do programa."""
+    if not (raw or "").strip():
+        return [programa]
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise ValueError("PLAYLISTS não é JSON válido") from exc
+    if not isinstance(parsed, list):
+        raise ValueError("PLAYLISTS precisa ser uma lista")
+    names = [str(n).strip() for n in parsed if str(n).strip()]
+    if not names:
+        raise ValueError("PLAYLISTS vazia")
+    return names
+
+
+def find_playlist_ids(playlists, names):
+    by_key = {}
     for p in playlists:
-        if str(p.get("name", "")).strip().casefold() == wanted:
-            return p["id"]
-    raise LookupError(f"Playlist '{name}' não existe no AzuraCast")
+        by_key.setdefault(_name_key(p.get("name", "")), []).append(p["id"])
+    ids, missing = [], []
+    for name in names:
+        found = by_key.get(_name_key(name), [])
+        if len(found) > 1:
+            raise LookupError(f"Há mais de uma playlist parecida com '{name}' no AzuraCast")
+        if not found:
+            missing.append(name)
+        else:
+            ids.append(found[0])
+    if missing:
+        raise LookupError("Playlist não existe no AzuraCast: " + "; ".join(missing))
+    return ids
 
 
-def plan_replacement(files, playlist_id, new_media_id, managed_prefix):
-    """Decide o que fazer com os arquivos que já estão na playlist."""
+def plan_replacement(files, playlist_ids, new_media_id, managed_prefix):
+    """Decide o que fazer com os arquivos que já estão nas playlists do programa."""
+    targets = set(playlist_ids)
     delete, unassign = [], []
     for f in files:
         ids = [p["id"] for p in f.get("playlists", [])]
-        if f["id"] == new_media_id or playlist_id not in ids:
+        if f["id"] == new_media_id or not targets.intersection(ids):
             continue
         if f.get("path", "").startswith(managed_prefix):
             delete.append(f["id"])
         else:
-            unassign.append((f["id"], [i for i in ids if i != playlist_id]))
+            unassign.append((f["id"], [i for i in ids if i not in targets]))
     return {"delete": delete, "unassign": unassign}
 
 
@@ -208,9 +242,9 @@ def api_request(method, base_url, api_key, path, timeout=30, **kwargs):
     return resp.json() if resp.content else None
 
 
-def publish(base_url, api_key, station, programa, mp3_path):
+def publish(base_url, api_key, station, programa, playlist_names, mp3_path):
     playlists = api_request("GET", base_url, api_key, f"/station/{station}/playlists")
-    playlist_id = find_playlist_id(playlists, programa)
+    playlist_ids = find_playlist_ids(playlists, playlist_names)
 
     prefix = f"{MANAGED_ROOT}/{slugify(programa)}/"
     stamp = datetime.datetime.now(BRT).strftime("%Y%m%d-%H%M%S")
@@ -223,11 +257,11 @@ def publish(base_url, api_key, station, programa, mp3_path):
     new_id = media["id"]
     api_request(
         "PUT", base_url, api_key, f"/station/{station}/file/{new_id}",
-        json={"playlists": [playlist_id]},
+        json={"playlists": playlist_ids},
     )
 
     files = api_request("GET", base_url, api_key, f"/station/{station}/files", timeout=120)
-    plan = plan_replacement(files, playlist_id, new_id, prefix)
+    plan = plan_replacement(files, playlist_ids, new_id, prefix)
     for fid, remaining in plan["unassign"]:
         api_request("PUT", base_url, api_key, f"/station/{station}/file/{fid}", json={"playlists": remaining})
     for fid in plan["delete"]:
@@ -272,6 +306,7 @@ def main():
         (os.environ.get("MEDIA_ID") or "").strip(),
         programa, mapping,
     )
+    playlist_names = parse_playlists(os.environ.get("PLAYLISTS"), programa)
     base_url = _env("AZURACAST_BASE_URL").rstrip("/")
     api_key = _env("AZURACAST_API_KEY")
     station = _env("AZURACAST_STATION")
@@ -285,7 +320,7 @@ def main():
             else:
                 download_whatsapp_media(source, _env("WHATSAPP_TOKEN"), voice)
             duration = build_program(voice, mp3, programa)
-            publish(base_url, api_key, station, programa, mp3)
+            publish(base_url, api_key, station, programa, playlist_names, mp3)
     except Exception as exc:
         print(f"ERRO: {type(exc).__name__}: {exc}")
         _notify(kind, programa, mapping, ok=False)

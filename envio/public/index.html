@@ -46,6 +46,15 @@
       padding: 12px 16px; border-radius: 10px; background: var(--blue); margin-bottom: 20px; }
     .program small { display: block; color: #cfe0f5; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
     .program strong { font-family: 'Raleway', sans-serif; font-size: 1.125rem; }
+    fieldset { border: 0; padding: 0; margin: 0 0 20px; }
+    legend { font-weight: 700; margin-bottom: 8px; }
+    .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+    .days label { margin: 0; font-weight: 600; text-align: center; padding: 12px 8px; border-radius: 10px;
+      border: 1px solid var(--line); background: #111; cursor: pointer; }
+    .days input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .days input:checked + span { color: #111; }
+    .days label:has(input:checked) { background: var(--orange); border-color: var(--orange); color: #111; }
+    .days label:has(input:focus-visible) { outline: 2px solid var(--blue-light); }
     .drop {
       display: block; border: 2px dashed var(--line); border-radius: 12px; padding: 28px 16px;
       text-align: center; cursor: pointer; transition: border-color .2s, background .2s;
@@ -88,6 +97,10 @@
         <div class="program">
           <div><small>Programa</small><strong id="program-name"></strong></div>
         </div>
+        <fieldset id="destinos" hidden>
+          <legend>Para qual dia é este programa?</legend>
+          <div class="days" id="destino-list"></div>
+        </fieldset>
         <label class="drop" id="drop">
           <input type="file" id="arquivo" accept="audio/*,.mp3,.wav,.m4a,.ogg,.opus,.aac,.mp4">
           <div class="icon" aria-hidden="true">🎙️</div>

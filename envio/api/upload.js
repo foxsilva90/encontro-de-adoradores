@@ -2,7 +2,7 @@
 // (sem passar pelo limite de 4,5 MB das funções). Só com código válido.
 import { handleUpload } from '@vercel/blob/client';
 import {
-  parseCodeMap, findProgramByCode, isAllowedUploadPath, json,
+  parseCodeMap, findLocutorByCode, isAllowedUploadPath, json,
   ALLOWED_CONTENT_TYPES, MAX_UPLOAD_BYTES,
 } from './_locutores.js';
 
@@ -21,7 +21,7 @@ export async function POST(request) {
         } catch {
           /* payload inválido cai na checagem abaixo */
         }
-        if (!findProgramByCode(parseCodeMap(process.env.CODIGOS_LOCUTORES), codigo)) {
+        if (!findLocutorByCode(parseCodeMap(process.env.CODIGOS_LOCUTORES), codigo)) {
           throw new Error('Código inválido');
         }
         if (!isAllowedUploadPath(pathname)) throw new Error('Caminho inválido');

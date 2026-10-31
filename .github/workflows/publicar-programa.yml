@@ -15,8 +15,12 @@ on:
         required: false
         default: ''
       programa:
-        description: 'Nome exato da playlist no AzuraCast'
+        description: 'Título do episódio (ex.: Palavra Viva - Segunda)'
         required: true
+      playlists:
+        description: 'JSON com as playlists que recebem o episódio (vazio = playlist com o nome do programa)'
+        required: false
+        default: ''
 
 # Dois envios do mesmo programa entram em fila, nunca ao mesmo tempo.
 concurrency:
@@ -45,6 +49,7 @@ jobs:
           AUDIO_URL: ${{ inputs.audio_url }}
           MEDIA_ID: ${{ inputs.media_id }}
           PROGRAMA: ${{ inputs.programa }}
+          PLAYLISTS: ${{ inputs.playlists }}
           PROGRAMAS_WHATSAPP: ${{ secrets.PROGRAMAS_WHATSAPP }}
           WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
           WHATSAPP_PHONE_NUMBER_ID: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
