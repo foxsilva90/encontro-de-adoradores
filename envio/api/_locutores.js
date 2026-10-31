@@ -6,11 +6,11 @@ export const MAX_UPLOAD_BYTES = 500 * 1024 * 1024;
 export const TEMP_FILE_TTL_MS = 24 * 60 * 60 * 1000;
 export const ALLOWED_CONTENT_TYPES = ['audio/*', 'video/mp4', 'video/quicktime', 'application/octet-stream'];
 
-const MIN_CODE_LENGTH = 8;
-const MAX_CODE_LENGTH = 64;
+export const MIN_CODE_LENGTH = 8;
+export const MAX_CODE_LENGTH = 64;
 const BLOB_HOST_RE = /^[a-z0-9]+\.public\.blob\.vercel-storage\.com$/;
 
-const normalizeCode = (code) => String(code ?? '').trim().toUpperCase();
+export const normalizeCode = (code) => String(code ?? '').trim().toUpperCase();
 
 const cleanStr = (v) => (typeof v === 'string' ? v.trim() : '');
 const cleanList = (v) => (Array.isArray(v) ? v.map(cleanStr).filter(Boolean) : []);
@@ -20,12 +20,13 @@ const cleanList = (v) => (Array.isArray(v) ? v.map(cleanStr).filter(Boolean) : [
  *   "CODIGO": "Nome da playlist"
  *   "CODIGO": {"programa": "Nome", "playlists": ["P1", "P2"]}          (1 envio → várias playlists)
  *   "CODIGO": {"programa": "Nome", "destinos": [{"nome": "Segunda", "playlists": ["P1"]}, ...]}
- * @returns {{programa: string, destinos: {nome: string, playlists: string[]}[]} | null}
+ * Campos opcionais: "nome" (do locutor) e "editar": false (programa já vem pronto).
+ * @returns {{programa: string, nome: string, editar: boolean, destinos: {nome: string, playlists: string[]}[]} | null}
  */
-function normalizeEntry(value) {
+export function normalizeEntry(value) {
   if (typeof value === 'string') {
     const name = value.trim();
-    return name ? { programa: name, destinos: [{ nome: name, playlists: [name] }] } : null;
+    return name ? { programa: name, nome: '', editar: true, destinos: [{ nome: name, playlists: [name] }] } : null;
   }
   if (!value || typeof value !== 'object') return null;
   const programa = cleanStr(value.programa);
@@ -35,7 +36,9 @@ function normalizeEntry(value) {
         .map((d) => ({ nome: cleanStr(d?.nome), playlists: cleanList(d?.playlists) }))
         .filter((d) => d.nome && d.playlists.length)
     : [{ nome: programa, playlists: cleanList(value.playlists) }].filter((d) => d.playlists.length);
-  return destinos.length ? { programa, destinos } : null;
+  return destinos.length
+    ? { programa, nome: cleanStr(value.nome), editar: value.editar !== false, destinos }
+    : null;
 }
 
 /** @param {string | undefined} json */

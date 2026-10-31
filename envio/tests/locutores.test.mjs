@@ -32,6 +32,8 @@ test('aceita os três formatos de cadastro e descarta inválidos', () => {
   assert.deepEqual(Object.keys(MAP).sort(), ['ANDERSON-AB12CD34', 'PATRICIA-ZZ99YY88', 'TALITO-7K2P9QX4']);
   assert.deepEqual(MAP['TALITO-7K2P9QX4'], {
     programa: 'PG Clássicos do Talito - Sábado (8h)',
+    nome: '',
+    editar: true,
     destinos: [{ nome: 'PG Clássicos do Talito - Sábado (8h)', playlists: ['PG Clássicos do Talito - Sábado (8h)'] }],
   });
   assert.equal(MAP['ANDERSON-AB12CD34'].destinos.length, 1);
@@ -84,4 +86,14 @@ test('arquivo temporário expira depois de 24h', () => {
   const now = Date.parse('2026-10-31T12:00:00Z');
   assert.equal(isExpired('2026-10-30T11:59:00Z', now), true);
   assert.equal(isExpired('2026-10-31T10:00:00Z', now), false);
+});
+
+test('cadastro guarda nome do locutor e permite desligar a edição', () => {
+  const map = parseCodeMap(JSON.stringify({
+    'TALITO-7K2P9QX4': { programa: 'Talito', nome: 'Talito', editar: false, playlists: ['P'] },
+    'OUTRO-7K2P9QX4': { programa: 'Outro', playlists: ['P'] },
+  }));
+  assert.equal(map['TALITO-7K2P9QX4'].editar, false);
+  assert.equal(map['TALITO-7K2P9QX4'].nome, 'Talito');
+  assert.equal(map['OUTRO-7K2P9QX4'].editar, true);
 });

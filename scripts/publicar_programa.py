@@ -20,6 +20,8 @@ Variáveis de ambiente:
 - PROGRAMA                      : título do episódio (e nome da pasta no AzuraCast)
 - PLAYLISTS                     : JSON com as playlists que recebem o episódio
                                   (vazio = playlist com o mesmo nome de PROGRAMA)
+                                  ou {"playlists": [...], "editar": false} pra programa
+                                  já pronto (sobe sem vinheta, playback nem ajuste de volume)
 - AUDIO_URL ou MEDIA_ID         : origem do áudio
 - AZURACAST_API_KEY, AZURACAST_BASE_URL, AZURACAST_STATION
 - Só pra origem WhatsApp: PROGRAMAS_WHATSAPP, WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID
@@ -110,20 +112,35 @@ def _name_key(name):
     return re.sub(r"[\W_]+", "", str(name).casefold())
 
 
-def parse_playlists(raw, programa):
-    """PLAYLISTS (JSON com lista de nomes). Vazio = playlist com o nome do programa."""
+def parse_destino(raw, programa):
+    """PLAYLISTS do workflow. Formatos:
+    - vazio                                   -> playlist com o nome do programa, com edição
+    - ["P1", "P2"]                            -> essas playlists, com edição
+    - {"playlists": ["P1"], "editar": false}  -> programa pronto, sobe sem edição
+    @returns (lista de nomes, editar)
+    """
     if not (raw or "").strip():
-        return [programa]
+        return [programa], True
     try:
         parsed = json.loads(raw)
     except json.JSONDecodeError as exc:
         raise ValueError("PLAYLISTS não é JSON válido") from exc
+    editar = True
+    if isinstance(parsed, dict):
+        if "playlists" not in parsed:
+            raise ValueError("PLAYLISTS precisa da lista 'playlists'")
+        editar = parsed.get("editar") is not False
+        parsed = parsed["playlists"]
     if not isinstance(parsed, list):
         raise ValueError("PLAYLISTS precisa ser uma lista")
     names = [str(n).strip() for n in parsed if str(n).strip()]
     if not names:
         raise ValueError("PLAYLISTS vazia")
-    return names
+    return names, editar
+
+
+def parse_playlists(raw, programa):
+    return parse_destino(raw, programa)[0]
 
 
 def find_playlist_ids(playlists, names):
@@ -174,6 +191,15 @@ def find_media_id_by_path(files, path):
         if f.get("path") == path:
             return f["id"]
     raise LookupError(f"Arquivo enviado não apareceu no AzuraCast: {path}")
+
+
+def build_passthrough_command(src_path, out_path, codec, title, artist, ffmpeg="ffmpeg"):
+    """Programa pronto: MP3 é só copiado; outros formatos viram MP3 sem filtro nenhum."""
+    audio = ["-c:a", "copy"] if codec == "mp3" else ["-c:a", "libmp3lame", "-b:a", audio_mix.MP3_BITRATE]
+    return [
+        ffmpeg, "-y", "-loglevel", "error", "-i", src_path, "-map", "0:a:0", "-vn",
+        *audio, "-metadata", f"title={title}", "-metadata", f"artist={artist}", out_path,
+    ]
 
 
 def format_duration(seconds):
@@ -249,6 +275,23 @@ def build_program(voice_path, out_path, programa):
     if voice_seconds < 1:
         raise ValueError("Áudio vazio ou curto demais")
     audio_mix.mix_program(voice_path, bed, intro, out_path, voice_seconds, programa, ARTIST)
+    return get_duration(out_path)
+
+
+def get_audio_codec(path):
+    out = subprocess.run(
+        ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=codec_name",
+         "-of", "csv=p=0", path],
+        check=True, capture_output=True, text=True,
+    )
+    return out.stdout.strip()
+
+
+def prepare_as_is(src_path, out_path, programa):
+    if get_duration(src_path) < 1:
+        raise ValueError("Áudio vazio ou curto demais")
+    cmd = build_passthrough_command(src_path, out_path, get_audio_codec(src_path), programa, ARTIST)
+    subprocess.run(cmd, check=True)
     return get_duration(out_path)
 
 
@@ -364,7 +407,8 @@ def main():
         (os.environ.get("MEDIA_ID") or "").strip(),
         programa, mapping,
     )
-    playlist_names = parse_playlists(os.environ.get("PLAYLISTS"), programa)
+    playlist_names, editar = parse_destino(os.environ.get("PLAYLISTS"), programa)
+    print("Modo: " + ("edição (vinheta + playback)" if editar else "sem edição (programa pronto)"))
     base_url = _env("AZURACAST_BASE_URL").rstrip("/")
     api_key = _env("AZURACAST_API_KEY")
     station = _env("AZURACAST_STATION")
@@ -377,7 +421,10 @@ def main():
                 download_url(source, voice)
             else:
                 download_whatsapp_media(source, _env("WHATSAPP_TOKEN"), voice)
-            duration = build_program(voice, mp3, programa)
+            if editar:
+                duration = build_program(voice, mp3, programa)
+            else:
+                duration = prepare_as_is(voice, mp3, programa)
             publish(base_url, api_key, station, programa, playlist_names, mp3)
     except Exception as exc:
         print(f"ERRO: {type(exc).__name__}: {exc}")

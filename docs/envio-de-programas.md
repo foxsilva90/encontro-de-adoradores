@@ -55,6 +55,8 @@ para o repositório `encontro-de-adoradores`, com permissão
 | `GITHUB_DISPATCH_TOKEN` | token do passo 2 |
 | `GITHUB_REPO` | `foxsilva90/encontro-de-adoradores` |
 | `CRON_SECRET` | texto aleatório longo (protege a limpeza diária) |
+| `ADMIN_PASSWORD` | senha do painel de administração |
+| `ADMIN_SECRET` | texto aleatório longo (criptografa o cadastro; **não trocar**) |
 
 Os códigos precisam ter pelo menos 8 caracteres. Use códigos aleatórios, não
 nomes. Pra trocar o código de alguém, edite o JSON e faça redeploy.
@@ -63,6 +65,31 @@ nomes. Pra trocar o código de alguém, edite o JSON e faça redeploy.
 
 `AZURACAST_API_KEY`, `AZURACAST_BASE_URL` e `AZURACAST_STATION` já existem (são
 os do boletim). Nada novo é necessário pro link de envio.
+
+## Painel de administração
+
+`https://envio.encontrodeadoradores.com/admin.html` (senha em `ADMIN_PASSWORD`).
+
+- **Novo locutor**: nome, programa, se o áudio é só voz (monta com vinheta e
+  playback) ou programa pronto (sobe como veio), e as playlists. Com "o locutor
+  escolhe o dia", cada dia tem as próprias playlists. O código é gerado sozinho.
+- **Copiar mensagem**: texto pronto com o código e o link, pra colar no WhatsApp.
+- **Gerar novo código**: o antigo para de funcionar na hora (use quando alguém
+  esqueceu, perdeu ou saiu da equipe).
+- **Editar / Remover**: vale a partir do próximo envio.
+
+O cadastro fica no Vercel Blob em `config/locutores.enc`, criptografado com
+AES-256-GCM (chave derivada de `ADMIN_SECRET`). Enquanto o painel nunca salvou
+nada, vale a variável `CODIGOS_LOCUTORES`; no primeiro acesso ao painel ela é
+copiada pro Blob e, dali em diante, **o painel é quem manda** (editar a
+variável não muda mais nada).
+
+> **Não troque o `ADMIN_SECRET`**: sem ele o cadastro salvo não abre e o link
+> de envio para. Pra trocar a senha, mude só o `ADMIN_PASSWORD`.
+
+Se `AZURACAST_BASE_URL`, `AZURACAST_API_KEY` e `AZURACAST_STATION` estiverem no
+projeto `envio-programas`, o formulário sugere as playlists direto do
+AzuraCast. Sem elas, sugere as que já estão no cadastro.
 
 ## Quando algo dá errado
 

@@ -222,3 +222,31 @@ def test_upload_in_chunks_falha_quando_azuracast_recusa_o_audio(tmp_path, monkey
     )
     with pytest.raises(RuntimeError, match="arquivo corrompido"):
         pw.upload_in_chunks("https://r", "k", "st", "d", "f.mp3", str(mp3), chunk_size=4)
+
+
+def test_parse_destino_lista_simples_edita():
+    assert pw.parse_destino('["A", "B"]', "X") == (["A", "B"], True)
+    assert pw.parse_destino("", "X") == (["X"], True)
+
+
+def test_parse_destino_objeto_pode_desligar_edicao():
+    assert pw.parse_destino('{"playlists": ["A"], "editar": false}', "X") == (["A"], False)
+    assert pw.parse_destino('{"playlists": ["A"], "editar": true}', "X") == (["A"], True)
+    assert pw.parse_destino('{"playlists": ["A"]}', "X") == (["A"], True)
+
+
+def test_parse_destino_objeto_sem_playlists_e_recusado():
+    with pytest.raises(ValueError):
+        pw.parse_destino('{"editar": false}', "X")
+
+
+def test_passthrough_mp3_copia_sem_reencodar():
+    cmd = pw.build_passthrough_command("in", "out.mp3", "mp3", "Título", "Rádio")
+    assert cmd[cmd.index("-c:a") + 1] == "copy"
+    assert "-af" not in cmd and "-filter_complex" not in cmd
+
+
+def test_passthrough_outro_formato_converte_pra_mp3_sem_filtros():
+    cmd = pw.build_passthrough_command("in", "out.mp3", "aac", "Título", "Rádio")
+    assert cmd[cmd.index("-c:a") + 1] == "libmp3lame"
+    assert "-af" not in cmd and "-filter_complex" not in cmd

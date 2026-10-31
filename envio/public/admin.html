@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Painel de Locutores · Rádio Encontro de Adoradores</title>
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #121212; --card: #1c1c1c; --line: #2c2c2c; --blue: #1A4F8A; --blue-light: #2563B0;
+      --orange: #F5A324; --orange-dk: #D4881A; --tp: #fff; --ts: #b3b3b3; --tm: #8a8a8a;
+      --ok: #3fb950; --err: #f85149;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { min-height: 100vh; padding: 24px 16px; color: var(--tp); font: 16px/1.5 'Nunito', sans-serif;
+      background: radial-gradient(circle at top, #0D2A4A 0%, var(--bg) 60%) fixed; }
+    main { max-width: 760px; margin: 0 auto; }
+    [hidden] { display: none !important; }
+    header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    header img { width: 110px; border-radius: 8px; }
+    h1, h2 { font-family: 'Raleway', sans-serif; font-weight: 800; }
+    h1 { font-size: 1.5rem; flex: 1; }
+    h2 { font-size: 1.25rem; margin-bottom: 16px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+    label, legend { display: block; font-weight: 700; margin: 14px 0 6px; }
+    input[type=text], input[type=password] { width: 100%; padding: 12px 14px; border-radius: 10px;
+      border: 1px solid var(--line); background: #111; color: var(--tp); font: inherit; }
+    input:focus { outline: 2px solid var(--blue-light); border-color: transparent; }
+    button { padding: 10px 16px; border: 0; border-radius: 10px; cursor: pointer; font: 800 .9375rem 'Raleway', sans-serif;
+      background: var(--orange); color: #111; }
+    button:hover:not(:disabled) { background: var(--orange-dk); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    button.ghost { background: #2a2a2a; color: var(--tp); }
+    button.ghost:hover:not(:disabled) { background: #333; }
+    button.danger { background: none; color: var(--err); text-decoration: underline; padding: 10px 4px; }
+    button.wide { width: 100%; margin-top: 18px; }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .row input { flex: 1; min-width: 180px; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .item h3 { font-family: 'Raleway', sans-serif; font-size: 1.125rem; }
+    .item .who { color: var(--ts); }
+    .code { display: inline-block; font: 700 1.0625rem ui-monospace, monospace; letter-spacing: .06em;
+      background: #111; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; margin: 10px 8px 10px 0; }
+    .tag { display: inline-block; font-size: .8125rem; font-weight: 700; padding: 2px 10px; border-radius: 99px;
+      background: var(--blue); margin-right: 6px; }
+    .tag.pronto { background: #2f4f2f; }
+    .dest { color: var(--tm); font-size: .875rem; margin-top: 8px; }
+    .dest b { color: var(--ts); }
+    .actions { margin-top: 12px; }
+    .choice label { font-weight: 600; display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; cursor: pointer; }
+    .choice input { margin-top: 5px; }
+    .destino { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-top: 12px; }
+    .destino .pl { margin-top: 8px; }
+    .msg { margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-weight: 600; }
+    .msg.err { background: rgba(248,81,73,.12); color: var(--err); }
+    .msg.ok { background: rgba(63,185,80,.12); color: var(--ok); }
+    .hint { color: var(--tm); font-size: .875rem; margin-top: 6px; }
+    .empty { color: var(--ts); text-align: center; padding: 24px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <img src="/logo.jpg" alt="Rádio Encontro de Adoradores" width="165" height="85">
+      <h1>Painel de Locutores</h1>
+      <button type="button" class="ghost" id="logout" hidden>Sair</button>
+    </header>
+
+    <form class="card" id="login" novalidate>
+      <h2>Entrar</h2>
+      <label for="senha">Senha do painel</label>
+      <input type="password" id="senha" autocomplete="current-password" required>
+      <div class="msg err" id="login-error" role="alert" hidden></div>
+      <button type="submit" class="wide" id="login-btn">Entrar</button>
+    </form>
+
+    <section id="painel" hidden>
+      <div class="toolbar">
+        <button type="button" id="novo">+ Novo locutor</button>
+      </div>
+      <div class="msg ok" id="aviso" role="status" hidden></div>
+      <div class="msg err" id="lista-error" role="alert" hidden></div>
+      <div id="lista"></div>
+    </section>
+
+    <form class="card" id="form" hidden novalidate>
+      <h2 id="form-title">Novo locutor</h2>
+      <label for="f-nome">Nome do locutor</label>
+      <input type="text" id="f-nome" maxlength="100" placeholder="Ex.: Pr. Tiago Iracet">
+      <label for="f-programa">Nome do programa</label>
+      <input type="text" id="f-programa" maxlength="100" placeholder="Ex.: Jesus é a Resposta">
+
+      <fieldset class="choice">
+        <legend>O áudio enviado…</legend>
+        <label><input type="radio" name="editar" value="sim" checked>
+          <span>É só a voz: <b>montar com vinheta de responsabilidade e playback</b></span></label>
+        <label><input type="radio" name="editar" value="nao">
+          <span>Já é o <b>programa pronto</b>: publicar do jeito que veio, sem edição</span></label>
+      </fieldset>
+
+      <fieldset class="choice">
+        <legend>Onde o programa entra</legend>
+        <label><input type="radio" name="modo" value="unico" checked>
+          <span>Um envio vai pra playlist(s) abaixo</span></label>
+        <label><input type="radio" name="modo" value="dias">
+          <span>O locutor escolhe o dia (ex.: segunda a sexta, cada dia numa playlist)</span></label>
+      </fieldset>
+
+      <div id="destinos"></div>
+      <div class="row" style="margin-top:12px">
+        <button type="button" class="ghost" id="add-destino" hidden>+ Adicionar dia</button>
+      </div>
+      <p class="hint" id="pl-hint">O nome da playlist precisa ser igual ao do AzuraCast (maiúsculas e pontuação não importam).</p>
+      <datalist id="playlists"></datalist>
+
+      <div class="msg err" id="form-error" role="alert" hidden></div>
+      <div class="row" style="margin-top:18px">
+        <button type="submit" id="salvar">Salvar</button>
+        <button type="button" class="ghost" id="cancelar">Cancelar</button>
+      </div>
+    </form>
+  </main>
+  <script type="module" src="/admin.js"></script>
+</body>
+</html>

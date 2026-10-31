@@ -1,13 +1,14 @@
 // Depois do upload, dispara o workflow que monta e publica o programa.
 // Variáveis: CODIGOS_LOCUTORES, GITHUB_DISPATCH_TOKEN, GITHUB_REPO
-import { parseCodeMap, findLocutorByCode, resolveDestino, isOurBlobUrl, json } from './_locutores.js';
+import { findLocutorByCode, resolveDestino, isOurBlobUrl, json } from './_locutores.js';
+import { loadLocutorMap } from './_store.js';
 
 const WORKFLOW_FILE = 'publicar-programa.yml';
 const WORKFLOW_REF = 'main';
 
 export async function POST(request) {
   const body = await request.json().catch(() => ({}));
-  const locutor = findLocutorByCode(parseCodeMap(process.env.CODIGOS_LOCUTORES), body.codigo);
+  const locutor = findLocutorByCode(await loadLocutorMap(), body.codigo);
   if (!locutor) return json(401, { error: 'Código não encontrado.' });
   const destino = resolveDestino(locutor, body.destino ?? 0);
   if (!destino) return json(400, { error: 'Escolha para qual dia é o programa.' });
@@ -32,7 +33,14 @@ export async function POST(request) {
       },
       body: JSON.stringify({
         ref: WORKFLOW_REF,
-        inputs: { audio_url: body.url, programa: destino.titulo, playlists: JSON.stringify(destino.playlists) },
+        inputs: {
+          audio_url: body.url,
+          programa: destino.titulo,
+          // Programa pronto vai como objeto: o workflow não tem campo próprio pra isso.
+          playlists: JSON.stringify(locutor.editar === false
+            ? { playlists: destino.playlists, editar: false }
+            : destino.playlists),
+        },
       }),
     },
   );
