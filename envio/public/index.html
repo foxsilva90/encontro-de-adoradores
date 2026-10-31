@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Envio de Programas · Rádio Encontro de Adoradores</title>
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #121212; --card: #1c1c1c; --line: #2c2c2c;
+      --blue: #1A4F8A; --blue-light: #2563B0;
+      --orange: #F5A324; --orange-dk: #D4881A;
+      --tp: #ffffff; --ts: #b3b3b3; --tm: #8a8a8a;
+      --ok: #3fb950; --err: #f85149;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px; background: radial-gradient(circle at top, #0D2A4A 0%, var(--bg) 60%);
+      color: var(--tp); font-family: 'Nunito', sans-serif; font-size: 16px; line-height: 1.5;
+    }
+    main { width: 100%; max-width: 440px; }
+    header { text-align: center; margin-bottom: 24px; }
+    header img { width: 140px; height: auto; border-radius: 8px; }
+    h1 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.5rem; margin-top: 16px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+    .step[hidden] { display: none; }
+    label { display: block; font-weight: 700; margin-bottom: 8px; }
+    .hint { color: var(--tm); font-size: .875rem; margin-top: 8px; }
+    input[type=text] {
+      width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line);
+      background: #111; color: var(--tp); font-size: 1.125rem; letter-spacing: .08em; text-transform: uppercase;
+    }
+    input[type=text]:focus { outline: 2px solid var(--blue-light); border-color: transparent; }
+    button {
+      width: 100%; margin-top: 16px; padding: 14px; border: 0; border-radius: 10px; cursor: pointer;
+      background: var(--orange); color: #111; font: 800 1rem 'Raleway', sans-serif;
+    }
+    button:hover:not(:disabled) { background: var(--orange-dk); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    button.link { background: none; color: var(--ts); font: 600 .875rem 'Nunito', sans-serif; text-decoration: underline; padding: 8px; margin-top: 8px; }
+    .program { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 12px 16px; border-radius: 10px; background: var(--blue); margin-bottom: 20px; }
+    .program small { display: block; color: #cfe0f5; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
+    .program strong { font-family: 'Raleway', sans-serif; font-size: 1.125rem; }
+    .drop {
+      display: block; border: 2px dashed var(--line); border-radius: 12px; padding: 28px 16px;
+      text-align: center; cursor: pointer; transition: border-color .2s, background .2s;
+    }
+    .drop:hover, .drop.over { border-color: var(--orange); background: rgba(245,163,36,.06); }
+    .drop .icon { font-size: 2rem; }
+    .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .file { margin-top: 12px; color: var(--ts); font-size: .9375rem; word-break: break-all; }
+    .bar { height: 10px; border-radius: 99px; background: #111; overflow: hidden; margin-top: 16px; }
+    .bar div { height: 100%; width: 0; background: var(--orange); transition: width .2s; }
+    .status { margin-top: 12px; text-align: center; color: var(--ts); }
+    .msg { margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-weight: 600; }
+    .msg.err { background: rgba(248,81,73,.12); color: var(--err); }
+    .done { text-align: center; }
+    .done .icon { font-size: 3rem; }
+    .done h2 { font-family: 'Raleway', sans-serif; margin: 8px 0; }
+    .done p { color: var(--ts); }
+    footer { text-align: center; color: var(--tm); font-size: .8125rem; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <img src="/logo.jpg" alt="Rádio Encontro de Adoradores" width="165" height="85">
+      <h1>Envio de Programas</h1>
+    </header>
+
+    <div class="card">
+      <!-- Passo 1: código -->
+      <form class="step" id="step-code" novalidate>
+        <label for="codigo">Seu código de locutor</label>
+        <input type="text" id="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="EX: MANHA-7K2P9QX4" required>
+        <p class="hint">Quem passa o código é a equipe da rádio. Você só digita uma vez neste aparelho.</p>
+        <div class="msg err" id="code-error" role="alert" hidden></div>
+        <button type="submit" id="code-btn">Continuar</button>
+      </form>
+
+      <!-- Passo 2: arquivo -->
+      <form class="step" id="step-file" hidden novalidate>
+        <div class="program">
+          <div><small>Programa</small><strong id="program-name"></strong></div>
+        </div>
+        <label class="drop" id="drop">
+          <input type="file" id="arquivo" accept="audio/*,.mp3,.wav,.m4a,.ogg,.opus,.aac,.mp4">
+          <div class="icon" aria-hidden="true">🎙️</div>
+          <div><strong>Toque para escolher o áudio</strong></div>
+          <div class="hint">Só a sua voz. A vinheta e o playback a rádio coloca. MP3, WAV, M4A ou áudio do WhatsApp, até 500 MB.</div>
+        </label>
+        <div class="file" id="file-name" hidden></div>
+        <div class="bar" id="bar" hidden><div id="bar-fill"></div></div>
+        <div class="status" id="status" aria-live="polite"></div>
+        <div class="msg err" id="file-error" role="alert" hidden></div>
+        <button type="submit" id="send-btn" disabled>Enviar programa</button>
+        <button type="button" class="link" id="change-code">Não é seu programa? Trocar código</button>
+      </form>
+
+      <!-- Passo 3: pronto -->
+      <div class="step done" id="step-done" hidden>
+        <div class="icon" aria-hidden="true">✅</div>
+        <h2>Programa recebido!</h2>
+        <p>Em poucos minutos o novo episódio de <strong id="done-name"></strong> entra na programação, no lugar do anterior.</p>
+        <button type="button" id="again">Enviar outro</button>
+      </div>
+    </div>
+
+    <footer>Rádio Encontro de Adoradores</footer>
+  </main>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

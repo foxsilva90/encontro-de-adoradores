@@ -15,3 +15,9 @@ AGTv.jpg
 Design sem nome (53).png
 Imagem Mais Nítida.png
 preview-logo.html
+
+# Testes e documentação não vão pro site
+tests/
+docs/
+envio/
+trilhas/

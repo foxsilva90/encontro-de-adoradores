@@ -1,0 +1,54 @@
+name: Rádio — Publicar programa enviado por locutor
+
+# Disparado pelo link de envio (envio/api/publicar.js) ou pelo webhook do
+# WhatsApp (api/whatsapp-webhook.js). Monta o programa com vinheta e
+# playback (scripts/audio_mix.py) e substitui na playlist do AzuraCast.
+on:
+  workflow_dispatch:
+    inputs:
+      audio_url:
+        description: 'Link do arquivo no Vercel Blob (link de envio)'
+        required: false
+        default: ''
+      media_id:
+        description: 'ID da mídia na WhatsApp Cloud API'
+        required: false
+        default: ''
+      programa:
+        description: 'Nome exato da playlist no AzuraCast'
+        required: true
+
+# Dois envios do mesmo programa entram em fila, nunca ao mesmo tempo.
+concurrency:
+  group: programa-${{ inputs.programa }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Instalar ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Publicar programa na playlist
+        working-directory: scripts
+        env:
+          # Inputs via env (nunca interpolados direto no shell).
+          AUDIO_URL: ${{ inputs.audio_url }}
+          MEDIA_ID: ${{ inputs.media_id }}
+          PROGRAMA: ${{ inputs.programa }}
+          PROGRAMAS_WHATSAPP: ${{ secrets.PROGRAMAS_WHATSAPP }}
+          WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
+          WHATSAPP_PHONE_NUMBER_ID: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
+          AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
+          AZURACAST_BASE_URL: ${{ secrets.AZURACAST_BASE_URL }}
+          AZURACAST_STATION: ${{ secrets.AZURACAST_STATION }}
+        run: python publicar_programa.py
