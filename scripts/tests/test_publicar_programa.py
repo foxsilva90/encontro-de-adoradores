@@ -138,3 +138,87 @@ def test_parse_playlists_usa_json_ou_cai_no_programa():
 def test_format_duration():
     assert pw.format_duration(3725.4) == "1h02min"
     assert pw.format_duration(1530) == "25min30s"
+
+
+def test_chunk_plan_divide_em_pedacos_e_o_ultimo_leva_o_resto():
+    assert pw.chunk_plan(10, 4) == [(1, 0, 4), (2, 4, 4), (3, 8, 2)]
+
+
+def test_chunk_plan_arquivo_menor_que_um_pedaco():
+    assert pw.chunk_plan(3, 4) == [(1, 0, 3)]
+
+
+def test_chunk_plan_recusa_arquivo_vazio():
+    with pytest.raises(ValueError):
+        pw.chunk_plan(0, 4)
+
+
+def test_find_media_id_by_path_acha_o_arquivo_enviado():
+    files = [{"id": 1, "path": "programas/a/1.mp3"}, {"id": 2, "path": "programas/a/2.mp3"}]
+    assert pw.find_media_id_by_path(files, "programas/a/2.mp3") == 2
+
+
+def test_find_media_id_by_path_avisa_quando_nao_acha():
+    with pytest.raises(LookupError):
+        pw.find_media_id_by_path([{"id": 1, "path": "x.mp3"}], "programas/a/2.mp3")
+
+
+class _FakeResp:
+    def __init__(self, status, payload=None):
+        self.status_code = status
+        self._payload = payload
+        self.content = b"x" if payload is not None else b""
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise RuntimeError(f"HTTP {self.status_code}")
+
+    def json(self):
+        return self._payload
+
+
+def test_upload_in_chunks_manda_todos_os_pedacos_com_campos_do_flow(tmp_path, monkeypatch):
+    mp3 = tmp_path / "programa.mp3"
+    mp3.write_bytes(b"abcdefghij")
+    calls = []
+
+    def fake_post(url, headers, data, files, timeout):
+        calls.append((url, data, files["file"][1]))
+        last = data["flowChunkNumber"] == data["flowTotalChunks"]
+        return _FakeResp(200, {"success": True} if last else None)
+
+    monkeypatch.setattr(pw.requests, "post", fake_post)
+    pw.upload_in_chunks("https://r", "k", "st", "programas/talito", "20261031.mp3", str(mp3), chunk_size=4)
+
+    assert [c[2] for c in calls] == [b"abcd", b"efgh", b"ij"]
+    url, data, _ = calls[-1]
+    assert url == "https://r/api/station/st/files/upload"
+    assert data["flowTotalChunks"] == 3 and data["flowTotalSize"] == 10
+    assert data["flowCurrentChunkSize"] == 2 and data["flowFilename"] == "20261031.mp3"
+    assert data["currentDirectory"] == "programas/talito"
+
+
+def test_upload_in_chunks_reenvia_ultimo_pedaco_quando_servidor_pede(tmp_path, monkeypatch):
+    mp3 = tmp_path / "programa.mp3"
+    mp3.write_bytes(b"abcdef")
+    answers = iter([_FakeResp(200), _FakeResp(204), _FakeResp(200, {"success": True})])
+    sent = []
+
+    def fake_post(url, headers, data, files, timeout):
+        sent.append(data["flowChunkNumber"])
+        return next(answers)
+
+    monkeypatch.setattr(pw.requests, "post", fake_post)
+    pw.upload_in_chunks("https://r", "k", "st", "d", "f.mp3", str(mp3), chunk_size=4)
+    assert sent == [1, 2, 2]
+
+
+def test_upload_in_chunks_falha_quando_azuracast_recusa_o_audio(tmp_path, monkeypatch):
+    mp3 = tmp_path / "programa.mp3"
+    mp3.write_bytes(b"abc")
+    monkeypatch.setattr(
+        pw.requests, "post",
+        lambda *a, **k: _FakeResp(200, {"success": False, "message": "arquivo corrompido"}),
+    )
+    with pytest.raises(RuntimeError, match="arquivo corrompido"):
+        pw.upload_in_chunks("https://r", "k", "st", "d", "f.mp3", str(mp3), chunk_size=4)

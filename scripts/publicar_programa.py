@@ -24,7 +24,6 @@ Variáveis de ambiente:
 - AZURACAST_API_KEY, AZURACAST_BASE_URL, AZURACAST_STATION
 - Só pra origem WhatsApp: PROGRAMAS_WHATSAPP, WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID
 """
-import base64
 import datetime
 import json
 import os
@@ -45,6 +44,10 @@ MEDIA_ID_RE = re.compile(r"^[0-9A-Za-z_-]{1,64}$")
 BLOB_HOST_RE = re.compile(r"^[a-z0-9]+\.public\.blob\.vercel-storage\.com$")
 MAX_WHATSAPP_BYTES = 100 * 1024 * 1024   # limite da própria WhatsApp pra documentos
 MAX_UPLOAD_BYTES = 500 * 1024 * 1024     # mesmo limite do link de envio
+# Upload pro AzuraCast em pedaços (protocolo Flow, igual ao painel web): cada
+# requisição fica bem abaixo do limite de tamanho do servidor (erro 413).
+UPLOAD_CHUNK_BYTES = 4 * 1024 * 1024
+UPLOAD_LAST_CHUNK_RETRIES = 3
 ARTIST = "Rádio Encontro de Adoradores"
 BRT = datetime.timezone(datetime.timedelta(hours=-3))
 
@@ -156,6 +159,23 @@ def plan_replacement(files, playlist_ids, new_media_id, managed_prefix):
     return {"delete": delete, "unassign": unassign}
 
 
+def chunk_plan(total_size, chunk_size):
+    """Pedaços do upload: lista de (número a partir de 1, posição inicial, tamanho)."""
+    if total_size <= 0:
+        raise ValueError("Arquivo vazio")
+    return [
+        (i + 1, offset, min(chunk_size, total_size - offset))
+        for i, offset in enumerate(range(0, total_size, chunk_size))
+    ]
+
+
+def find_media_id_by_path(files, path):
+    for f in files:
+        if f.get("path") == path:
+            return f["id"]
+    raise LookupError(f"Arquivo enviado não apareceu no AzuraCast: {path}")
+
+
 def format_duration(seconds):
     total = int(round(seconds))
     h, rem = divmod(total, 3600)
@@ -242,25 +262,63 @@ def api_request(method, base_url, api_key, path, timeout=30, **kwargs):
     return resp.json() if resp.content else None
 
 
+def _post_chunk(url, api_key, data, filename, payload):
+    resp = requests.post(
+        url, headers={"X-API-Key": api_key}, data=data,
+        files={"file": (filename, payload, "application/octet-stream")}, timeout=300,
+    )
+    resp.raise_for_status()
+    return resp
+
+
+def upload_in_chunks(base_url, api_key, station, directory, filename, path, chunk_size=UPLOAD_CHUNK_BYTES):
+    """Sobe o arquivo em pedaços pra pasta `directory` da biblioteca do AzuraCast."""
+    url = f"{base_url}/api/station/{station}/files/upload"
+    total = os.path.getsize(path)
+    plan = chunk_plan(total, chunk_size)
+    identifier = re.sub(r"[^0-9A-Za-z_-]", "-", f"{total}-{directory}-{filename}")
+    with open(path, "rb") as fh:
+        for number, offset, size in plan:
+            fh.seek(offset)
+            payload = fh.read(size)
+            data = {
+                "flowChunkNumber": number, "flowTotalChunks": len(plan),
+                "flowChunkSize": chunk_size, "flowCurrentChunkSize": size,
+                "flowTotalSize": total, "flowIdentifier": identifier,
+                "flowFilename": filename, "flowRelativePath": filename,
+                "currentDirectory": directory,
+            }
+            resp = _post_chunk(url, api_key, data, filename, payload)
+            if number < len(plan):
+                continue
+            # Último pedaço: 204 = servidor ainda não juntou tudo, pede de novo.
+            for _ in range(UPLOAD_LAST_CHUNK_RETRIES):
+                if resp.status_code != 204:
+                    break
+                resp = _post_chunk(url, api_key, data, filename, payload)
+            result = resp.json() if resp.content else None
+            if not result or not result.get("success"):
+                message = (result or {}).get("message") or f"resposta {resp.status_code}"
+                raise RuntimeError(f"AzuraCast não aceitou o arquivo: {message}")
+
+
 def publish(base_url, api_key, station, programa, playlist_names, mp3_path):
     playlists = api_request("GET", base_url, api_key, f"/station/{station}/playlists")
     playlist_ids = find_playlist_ids(playlists, playlist_names)
 
-    prefix = f"{MANAGED_ROOT}/{slugify(programa)}/"
-    stamp = datetime.datetime.now(BRT).strftime("%Y%m%d-%H%M%S")
-    with open(mp3_path, "rb") as fh:
-        encoded = base64.b64encode(fh.read()).decode("ascii")
-    media = api_request(
-        "POST", base_url, api_key, f"/station/{station}/files", timeout=600,
-        json={"path": f"{prefix}{stamp}.mp3", "file": encoded},
-    )
-    new_id = media["id"]
+    directory = f"{MANAGED_ROOT}/{slugify(programa)}"
+    prefix = f"{directory}/"
+    filename = datetime.datetime.now(BRT).strftime("%Y%m%d-%H%M%S") + ".mp3"
+    upload_in_chunks(base_url, api_key, station, directory, filename, mp3_path)
+
+    files = api_request("GET", base_url, api_key, f"/station/{station}/files", timeout=120)
+    new_id = find_media_id_by_path(files, prefix + filename)
     api_request(
         "PUT", base_url, api_key, f"/station/{station}/file/{new_id}",
         json={"playlists": playlist_ids},
     )
 
-    files = api_request("GET", base_url, api_key, f"/station/{station}/files", timeout=120)
+    # O plano usa a lista de antes de vincular o novo: ele é ignorado pelo id.
     plan = plan_replacement(files, playlist_ids, new_id, prefix)
     for fid, remaining in plan["unassign"]:
         api_request("PUT", base_url, api_key, f"/station/{station}/file/{fid}", json={"playlists": remaining})
