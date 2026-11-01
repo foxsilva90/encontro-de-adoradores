@@ -320,8 +320,13 @@ def test_media_tags_usa_pg_no_titulo_e_pessoa_da_playlist():
 
 
 def test_media_tags_sem_pessoa_na_playlist_usa_nome_da_radio():
+    assert pw.media_tags("Outro Programa", ["PG Outro Programa - Sábado (8h)"]) == \
+        ("PG Outro Programa", pw.ARTIST)
+
+
+def test_media_tags_artista_fixo_do_talito():
     assert pw.media_tags("Clássicos do Talito", ["PG Clássicos do Talito - Sábado (8h)"]) == \
-        ("PG Clássicos do Talito", pw.ARTIST)
+        ("PG Clássicos do Talito", "Talito")
     assert pw.media_tags("X", []) == ("PG X", pw.ARTIST)
 
 

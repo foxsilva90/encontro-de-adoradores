@@ -156,6 +156,8 @@ def parse_playlists(raw, programa):
 
 
 TITLE_PREFIX = "PG "
+# Programas cuja playlist não tem o nome de quem apresenta (chave: slug do programa).
+ARTIST_BY_PROGRAM = {"classicos-do-talito": "Talito"}
 HONORIFIC_RE = re.compile(r"^(bp|bispo|pr|pra|pastor|pastora|ap|apóstolo|apostolo|ev|miss|dc|dr|dra)\.?\s", re.I)
 WEEKDAY_RE = re.compile(r"^(seg|ter|qua|qui|sex|s[áa]b|dom)", re.I)
 PAREN_RE = re.compile(r"\(([^()]*)\)?")
@@ -183,6 +185,9 @@ def _person_in_playlist(name):
 def media_tags(programa, playlist_names):
     """Título e artista que aparecem no AzuraCast: ("PG <programa>", apresentador)."""
     title = programa if programa.upper().startswith(TITLE_PREFIX) else TITLE_PREFIX + programa
+    fixed = ARTIST_BY_PROGRAM.get(slugify(programa))
+    if fixed:
+        return title, fixed
     people = (_person_in_playlist(n) for n in playlist_names)
     return title, next((p for p in people if p), ARTIST)
 
