@@ -155,6 +155,38 @@ def parse_playlists(raw, programa):
     return parse_destino(raw, programa)[0]
 
 
+TITLE_PREFIX = "PG "
+HONORIFIC_RE = re.compile(r"^(bp|bispo|pr|pra|pastor|pastora|ap|apóstolo|apostolo|ev|miss|dc|dr|dra)\.?\s", re.I)
+WEEKDAY_RE = re.compile(r"^(seg|ter|qua|qui|sex|s[áa]b|dom)", re.I)
+PAREN_RE = re.compile(r"\(([^()]*)\)?")
+
+
+def _person_in_playlist(name):
+    """Acha o nome de quem apresenta no nome da playlist.
+
+    Ex.: "PG Palavras de Fé (Pr. Anderson Barbosa) - 14h (QUI/TER)" -> "Pr. Anderson Barbosa".
+    Prioriza quem tem título (Pr., Bp., ...); senão aceita um trecho depois de " - "
+    sem número nem dia da semana ("... - Patricia Bambrila"). Nada achado: None.
+    """
+    parts = [p.strip() for p in name.split(" - ")]
+    groups = [g.strip() for g in PAREN_RE.findall(name)]
+    candidates = [PAREN_RE.sub("", p).strip() for p in parts[1:]] + groups
+    for cand in candidates:
+        if HONORIFIC_RE.match(cand):
+            return cand
+    for cand in (PAREN_RE.sub("", p).strip() for p in parts[1:]):
+        if cand and not re.search(r"\d", cand) and not WEEKDAY_RE.match(cand):
+            return cand
+    return None
+
+
+def media_tags(programa, playlist_names):
+    """Título e artista que aparecem no AzuraCast: ("PG <programa>", apresentador)."""
+    title = programa if programa.upper().startswith(TITLE_PREFIX) else TITLE_PREFIX + programa
+    people = (_person_in_playlist(n) for n in playlist_names)
+    return title, next((p for p in people if p), ARTIST)
+
+
 def find_playlist_ids(playlists, names):
     by_key = {}
     for p in playlists:
@@ -285,12 +317,12 @@ def trilha_paths():
     return intro, bed
 
 
-def build_program(voice_path, out_path, programa):
+def build_program(voice_path, out_path, title, artist):
     intro, bed = trilha_paths()
     voice_seconds = get_duration(voice_path)
     if voice_seconds < 1:
         raise ValueError("Áudio vazio ou curto demais")
-    audio_mix.mix_program(voice_path, bed, intro, out_path, voice_seconds, programa, ARTIST)
+    audio_mix.mix_program(voice_path, bed, intro, out_path, voice_seconds, title, artist)
     return get_duration(out_path)
 
 
@@ -303,10 +335,10 @@ def get_audio_codec(path):
     return out.stdout.strip()
 
 
-def prepare_as_is(src_path, out_path, programa):
+def prepare_as_is(src_path, out_path, title, artist):
     if get_duration(src_path) < 1:
         raise ValueError("Áudio vazio ou curto demais")
-    cmd = build_passthrough_command(src_path, out_path, get_audio_codec(src_path), programa, ARTIST)
+    cmd = build_passthrough_command(src_path, out_path, get_audio_codec(src_path), title, artist)
     subprocess.run(cmd, check=True)
     return get_duration(out_path)
 
@@ -361,7 +393,7 @@ def upload_in_chunks(base_url, api_key, station, directory, filename, path, chun
                 raise RuntimeError(f"AzuraCast não aceitou o arquivo: {message}")
 
 
-def publish(base_url, api_key, station, programa, playlist_names, mp3_path):
+def publish(base_url, api_key, station, programa, playlist_names, mp3_path, tags):
     playlists = api_request("GET", base_url, api_key, f"/station/{station}/playlists")
     playlist_ids = find_playlist_ids(playlists, playlist_names)
 
@@ -374,7 +406,7 @@ def publish(base_url, api_key, station, programa, playlist_names, mp3_path):
     new_id = find_media_id_by_path(files, prefix + filename)
     api_request(
         "PUT", base_url, api_key, f"/station/{station}/file/{new_id}",
-        json={"playlists": playlist_ids},
+        json={"playlists": playlist_ids, "title": tags[0], "artist": tags[1]},
     )
 
     # O plano usa a lista de antes de vincular o novo: ele é ignorado pelo id.
@@ -437,11 +469,13 @@ def main():
                 download_url(source, voice)
             else:
                 download_whatsapp_media(source, _env("WHATSAPP_TOKEN"), voice)
+            tags = media_tags(programa, playlist_names)
+            print(f"Título: {tags[0]} | Artista: {tags[1]}")
             if editar:
-                duration = build_program(voice, mp3, programa)
+                duration = build_program(voice, mp3, *tags)
             else:
-                duration = prepare_as_is(voice, mp3, programa)
-            publish(base_url, api_key, station, programa, playlist_names, mp3)
+                duration = prepare_as_is(voice, mp3, *tags)
+            publish(base_url, api_key, station, programa, playlist_names, mp3, tags)
     except Exception as exc:
         print(f"ERRO: {type(exc).__name__}: {exc}")
         _notify(kind, programa, mapping, ok=False)

@@ -299,3 +299,31 @@ def test_passthrough_outro_formato_converte_pra_mp3_sem_filtros():
     cmd = pw.build_passthrough_command("in", "out.mp3", "aac", "Título", "Rádio")
     assert cmd[cmd.index("-c:a") + 1] == "libmp3lame"
     assert "-af" not in cmd and "-filter_complex" not in cmd
+
+
+# ---------------------------------------------------------------- título e artista
+
+def test_media_tags_usa_pg_no_titulo_e_pessoa_da_playlist():
+    casos = [
+        ("Palavras de Fé", ["PG Palavras de Fé (Pr. Anderson Barbosa) - 14h (QUI/TER)"],
+         ("PG Palavras de Fé", "Pr. Anderson Barbosa")),
+        ("Encontro de Adoradores", ["PG Encontro de Adoradores - Bp. Anderson Gustavo (06h30)",
+                                    "PG Encontro de Adoradores - Bp. Anderson Gustavo (11h"],
+         ("PG Encontro de Adoradores", "Bp. Anderson Gustavo")),
+        ("Jesus é a Resposta", ["PG Jesus é a Resposta - Pr. Tiago Iracet (QUA 9h)"],
+         ("PG Jesus é a Resposta", "Pr. Tiago Iracet")),
+        ("Palavra Viva - Segunda", ["PG Palavra Viva - 15h (Seg) - Patricia Bambrila"],
+         ("PG Palavra Viva - Segunda", "Patricia Bambrila")),
+    ]
+    for programa, playlists, esperado in casos:
+        assert pw.media_tags(programa, playlists) == esperado, programa
+
+
+def test_media_tags_sem_pessoa_na_playlist_usa_nome_da_radio():
+    assert pw.media_tags("Clássicos do Talito", ["PG Clássicos do Talito - Sábado (8h)"]) == \
+        ("PG Clássicos do Talito", pw.ARTIST)
+    assert pw.media_tags("X", []) == ("PG X", pw.ARTIST)
+
+
+def test_media_tags_nao_duplica_pg():
+    assert pw.media_tags("PG Palavras de Fé", [])[0] == "PG Palavras de Fé"
