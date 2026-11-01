@@ -31,6 +31,16 @@ Vercel Cron diário → /api/limpar apaga do Blob os arquivos com mais de 24h
 - Episódio anterior enviado pelo sistema (pasta `programas/<programa>/`) é
   apagado. Se tiver sido subido à mão, só sai da playlist e o arquivo fica.
 
+### Link do Google Drive
+
+Em vez de subir o arquivo, o locutor pode colar o link de um arquivo do Drive.
+O arquivo precisa estar em Compartilhar → "Qualquer pessoa com o link".
+`api/publicar.js` aceita os formatos `drive.google.com/file/d/<id>/…`, `open?id=`, `uc?id=`
+(recusa link de pasta) e confere na hora se o arquivo baixa sem login. Se não baixar,
+mostra o erro pro locutor. O workflow recebe
+`https://drive.usercontent.google.com/download?id=<id>&export=download&confirm=t`
+(o `confirm=t` pula o aviso de vírus do Drive em arquivos grandes) e baixa dali.
+
 ## Configuração (uma vez)
 
 ### 1. Projeto novo na Vercel

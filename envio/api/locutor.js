@@ -8,6 +8,7 @@ export async function POST(request) {
   if (!locutor) return json(401, { error: 'Código não encontrado. Confira com a equipe da rádio.' });
   return json(200, {
     programa: locutor.programa,
+    editar: locutor.editar !== false,
     // Só os nomes: as playlists não precisam ir pro navegador.
     destinos: locutor.destinos.length > 1 ? locutor.destinos.map((d) => d.nome) : [],
   });

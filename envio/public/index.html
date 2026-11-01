@@ -34,6 +34,14 @@
       width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line);
       background: #111; color: var(--tp); font-size: 1.125rem; letter-spacing: .08em; text-transform: uppercase;
     }
+    input[type=url] {
+      width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line);
+      background: #111; color: var(--tp); font-size: .9375rem;
+    }
+    input[type=url]:focus { outline: 2px solid var(--blue-light); border-color: transparent; }
+    .or { display: flex; align-items: center; gap: 12px; color: var(--tm); font-size: .8125rem;
+      text-transform: uppercase; letter-spacing: .08em; margin: 16px 0; }
+    .or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
     input[type=text]:focus { outline: 2px solid var(--blue-light); border-color: transparent; }
     button {
       width: 100%; margin-top: 16px; padding: 14px; border: 0; border-radius: 10px; cursor: pointer;
@@ -105,8 +113,12 @@
           <input type="file" id="arquivo" accept="audio/*,.mp3,.wav,.m4a,.ogg,.opus,.aac,.mp4">
           <div class="icon" aria-hidden="true">🎙️</div>
           <div><strong>Toque para escolher o áudio</strong></div>
-          <div class="hint">Só a sua voz. A vinheta e o playback a rádio coloca. MP3, WAV, M4A ou áudio do WhatsApp, até 500 MB.</div>
+          <div class="hint" id="drop-hint">Só a sua voz. A vinheta e o playback a rádio coloca. MP3, WAV, M4A ou áudio do WhatsApp, até 500 MB.</div>
         </label>
+        <div class="or">ou</div>
+        <label for="drive">Link do arquivo no Google Drive</label>
+        <input type="url" id="drive" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://drive.google.com/file/d/…">
+        <p class="hint">No Drive, o arquivo precisa estar em Compartilhar → "Qualquer pessoa com o link".</p>
         <div class="file" id="file-name" hidden></div>
         <div class="bar" id="bar" hidden><div id="bar-fill"></div></div>
         <div class="status" id="status" aria-live="polite"></div>

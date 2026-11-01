@@ -42,6 +42,55 @@ def test_resolve_source_recusa_link_de_outro_site():
             pw.resolve_source(url, "", "P", {})
 
 
+DRIVE = "https://drive.usercontent.google.com/download?id=1AbCdEfGhIjKlMnOpQrStUvWxYz012345&export=download&confirm=t"
+
+
+def test_resolve_source_aceita_link_do_drive():
+    assert pw.resolve_source(DRIVE, "", "P", {}) == ("url", DRIVE)
+
+
+def test_resolve_source_recusa_drive_fora_do_formato():
+    for url in ["https://drive.usercontent.google.com/download?id=../x",
+                "https://drive.usercontent.google.com/outra?id=1AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                "https://drive.usercontent.google.com.evil.com/download?id=1AbCdEfGhIjKlMnOpQrStUvWxYz012345",
+                "http://drive.usercontent.google.com/download?id=1AbCdEfGhIjKlMnOpQrStUvWxYz012345"]:
+        with pytest.raises(ValueError):
+            pw.resolve_source(url, "", "P", {})
+
+
+class _FakeDownload:
+    def __init__(self, content_type, body=b"abc", status=200):
+        self.headers = {"Content-Type": content_type}
+        self._body = body
+        self.status_code = status
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise RuntimeError(self.status_code)
+
+    def iter_content(self, chunk_size):
+        yield self._body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def test_download_url_recusa_pagina_html_do_drive(tmp_path, monkeypatch):
+    monkeypatch.setattr(pw.requests, "get", lambda *a, **k: _FakeDownload("text/html; charset=utf-8"))
+    with pytest.raises(ValueError, match="compartilhado"):
+        pw.download_url(DRIVE, str(tmp_path / "voz"))
+
+
+def test_download_url_baixa_audio(tmp_path, monkeypatch):
+    monkeypatch.setattr(pw.requests, "get", lambda *a, **k: _FakeDownload("audio/mpeg", b"ID3data"))
+    dest = tmp_path / "voz"
+    pw.download_url(DRIVE, str(dest))
+    assert dest.read_bytes() == b"ID3data"
+
+
 def test_resolve_source_whatsapp_exige_programa_cadastrado():
     mapping = {"5511988887777": "Manhã com Deus"}
     assert pw.resolve_source("", "12345", "Manhã com Deus", mapping) == ("whatsapp", "12345")

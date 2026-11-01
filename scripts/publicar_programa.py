@@ -3,7 +3,8 @@
 Publica na rádio um programa enviado por um locutor.
 
 Origens possíveis (workflow_dispatch):
-- AUDIO_URL : arquivo enviado pelo link de envio (projeto envio/ na Vercel)
+- AUDIO_URL : arquivo enviado pelo link de envio (projeto envio/ na Vercel):
+              upload no Vercel Blob ou link de download de um arquivo do Google Drive
 - MEDIA_ID  : áudio recebido pelo WhatsApp (api/whatsapp-webhook.js)
 
 Fluxo: baixa a voz -> monta o programa (vinheta de responsabilidade + voz com
@@ -34,7 +35,7 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 import requests
 
@@ -44,6 +45,8 @@ GRAPH_API = "https://graph.facebook.com/v23.0"
 MANAGED_ROOT = "programas"
 MEDIA_ID_RE = re.compile(r"^[0-9A-Za-z_-]{1,64}$")
 BLOB_HOST_RE = re.compile(r"^[a-z0-9]+\.public\.blob\.vercel-storage\.com$")
+DRIVE_HOST = "drive.usercontent.google.com"
+DRIVE_ID_RE = re.compile(r"^[A-Za-z0-9_-]{20,100}$")
 MAX_WHATSAPP_BYTES = 100 * 1024 * 1024   # limite da própria WhatsApp pra documentos
 MAX_UPLOAD_BYTES = 500 * 1024 * 1024     # mesmo limite do link de envio
 # Upload pro AzuraCast em pedaços (protocolo Flow, igual ao painel web): cada
@@ -90,6 +93,15 @@ def is_blob_url(url):
     return parsed.scheme == "https" and bool(BLOB_HOST_RE.match(parsed.hostname or ""))
 
 
+def is_drive_url(url):
+    """Só o formato que api/publicar.js monta: drive.usercontent.google.com/download?id=..."""
+    parsed = urlparse(url or "")
+    if parsed.scheme != "https" or parsed.hostname != DRIVE_HOST or parsed.path != "/download":
+        return False
+    ids = parse_qs(parsed.query).get("id", [])
+    return len(ids) == 1 and bool(DRIVE_ID_RE.match(ids[0]))
+
+
 def resolve_source(audio_url, media_id, programa, mapping):
     """Valida os inputs e devolve ("url", valor) ou ("whatsapp", valor)."""
     if not programa:
@@ -97,8 +109,8 @@ def resolve_source(audio_url, media_id, programa, mapping):
     if bool(audio_url) == bool(media_id):
         raise ValueError("Informe AUDIO_URL ou MEDIA_ID (um dos dois)")
     if audio_url:
-        if not is_blob_url(audio_url):
-            raise ValueError("AUDIO_URL não é do Vercel Blob")
+        if not (is_blob_url(audio_url) or is_drive_url(audio_url)):
+            raise ValueError("AUDIO_URL não é do Vercel Blob nem do Google Drive")
         return "url", audio_url
     if not MEDIA_ID_RE.match(media_id):
         raise ValueError("MEDIA_ID inválido")
@@ -224,6 +236,10 @@ def _stream_to_file(resp, dest_path, max_bytes):
 
 def download_url(url, dest_path):
     with requests.get(url, timeout=600, stream=True) as resp:
+        # Drive com arquivo privado devolve página de login (HTML) em vez do áudio.
+        if (resp.headers.get("Content-Type") or "").startswith("text/html"):
+            raise ValueError("o link devolveu uma página, não um áudio "
+                             "(arquivo do Drive não está compartilhado com 'qualquer pessoa com o link'?)")
         _stream_to_file(resp, dest_path, MAX_UPLOAD_BYTES)
 
 

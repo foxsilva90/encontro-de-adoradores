@@ -2,9 +2,21 @@
 // Variáveis: CODIGOS_LOCUTORES, GITHUB_DISPATCH_TOKEN, GITHUB_REPO
 import { findLocutorByCode, resolveDestino, isOurBlobUrl, json } from './_locutores.js';
 import { loadLocutorMap } from './_store.js';
+import { extractDriveId, driveDownloadUrl, checkDriveFile, DRIVE_ERRORS } from './_drive.js';
 
 const WORKFLOW_FILE = 'publicar-programa.yml';
 const WORKFLOW_REF = 'main';
+
+// O áudio vem do upload (Vercel Blob) ou de um link do Google Drive.
+async function resolveAudioUrl(body) {
+  if (body.drive) {
+    const { id, error } = extractDriveId(body.drive);
+    if (error) return { error: DRIVE_ERRORS[error] };
+    const check = await checkDriveFile(id);
+    return check.ok ? { url: driveDownloadUrl(id) } : { error: DRIVE_ERRORS[check.error] };
+  }
+  return isOurBlobUrl(body.url) ? { url: body.url } : { error: 'Arquivo inválido.' };
+}
 
 export async function POST(request) {
   const body = await request.json().catch(() => ({}));
@@ -12,7 +24,8 @@ export async function POST(request) {
   if (!locutor) return json(401, { error: 'Código não encontrado.' });
   const destino = resolveDestino(locutor, body.destino ?? 0);
   if (!destino) return json(400, { error: 'Escolha para qual dia é o programa.' });
-  if (!isOurBlobUrl(body.url)) return json(400, { error: 'Arquivo inválido.' });
+  const source = await resolveAudioUrl(body);
+  if (source.error) return json(400, { error: source.error });
 
   const repo = process.env.GITHUB_REPO;
   const token = process.env.GITHUB_DISPATCH_TOKEN;
@@ -34,7 +47,7 @@ export async function POST(request) {
       body: JSON.stringify({
         ref: WORKFLOW_REF,
         inputs: {
-          audio_url: body.url,
+          audio_url: source.url,
           programa: destino.titulo,
           // Programa pronto vai como objeto: o workflow não tem campo próprio pra isso.
           playlists: JSON.stringify(locutor.editar === false

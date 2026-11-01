@@ -12,6 +12,7 @@ let programa = '';
 let destinos = [];
 let destino = null;
 let file = null;
+let driveLink = '';
 let uploading = false;
 
 function show(step) {
@@ -48,6 +49,9 @@ async function checkCode(value) {
   codigo = value;
   programa = data.programa;
   destinos = data.destinos || [];
+  $('drop-hint').textContent = data.editar === false
+    ? 'Mande o programa completo, do jeito que vai ao ar. MP3, WAV ou M4A, até 500 MB.'
+    : 'Só a sua voz. A vinheta e o playback a rádio coloca. MP3, WAV, M4A ou áudio do WhatsApp, até 500 MB.';
   localStorage.setItem(STORAGE_KEY, value);
   $('program-name').textContent = programa;
   renderDestinos();
@@ -75,7 +79,7 @@ function renderDestinos() {
 }
 
 function updateSendButton() {
-  $('send-btn').disabled = uploading || !file || destino === null;
+  $('send-btn').disabled = uploading || (!file && !driveLink) || destino === null;
 }
 
 function destinoTitulo() {
@@ -90,8 +94,21 @@ function selectFile(f) {
     return;
   }
   file = f;
+  driveLink = '';
+  $('drive').value = '';
   $('file-name').textContent = `🎧 ${f.name} (${formatSize(f.size)})`;
   $('file-name').hidden = false;
+  updateSendButton();
+}
+
+function setDriveLink(value) {
+  showError($('file-error'), '');
+  driveLink = value.trim();
+  if (driveLink && file) {
+    file = null;
+    $('arquivo').value = '';
+    $('file-name').hidden = true;
+  }
   updateSendButton();
 }
 
@@ -103,6 +120,8 @@ function setProgress(pct, text) {
 
 function resetFileStep() {
   file = null;
+  driveLink = '';
+  $('drive').value = '';
   $('arquivo').value = '';
   $('file-name').hidden = true;
   $('bar').hidden = true;
@@ -111,24 +130,35 @@ function resetFileStep() {
   renderDestinos();
 }
 
+async function uploadFile() {
+  const ext = (file.name.match(/\.[a-z0-9]{1,5}$/i) || ['.mp3'])[0].toLowerCase();
+  const blob = await upload(`programas/${slugify(destinoTitulo())}/voz${ext}`, file, {
+    access: 'public',
+    handleUploadUrl: '/api/upload',
+    clientPayload: JSON.stringify({ codigo }),
+    contentType: file.type || 'application/octet-stream',
+    multipart: file.size > MULTIPART_FROM_BYTES,
+    onUploadProgress: ({ percentage }) =>
+      setProgress(percentage, `Enviando… ${Math.round(percentage)}% (não feche esta página)`),
+  });
+  setProgress(100, 'Preparando publicação…');
+  return { url: blob.url };
+}
+
 async function sendFile() {
   uploading = true;
   $('send-btn').disabled = true;
   $('send-btn').textContent = 'Enviando…';
   showError($('file-error'), '');
   try {
-    const ext = (file.name.match(/\.[a-z0-9]{1,5}$/i) || ['.mp3'])[0].toLowerCase();
-    const blob = await upload(`programas/${slugify(destinoTitulo())}/voz${ext}`, file, {
-      access: 'public',
-      handleUploadUrl: '/api/upload',
-      clientPayload: JSON.stringify({ codigo }),
-      contentType: file.type || 'application/octet-stream',
-      multipart: file.size > MULTIPART_FROM_BYTES,
-      onUploadProgress: ({ percentage }) =>
-        setProgress(percentage, `Enviando… ${Math.round(percentage)}% (não feche esta página)`),
-    });
-    setProgress(100, 'Preparando publicação…');
-    await postJson('/api/publicar', { codigo, url: blob.url, destino });
+    let source;
+    if (file) {
+      source = await uploadFile();
+    } else {
+      setProgress(50, 'Conferindo o link do Drive…');
+      source = { drive: driveLink };
+    }
+    await postJson('/api/publicar', { codigo, destino, ...source });
     $('done-name').textContent = destinoTitulo();
     show('done');
   } catch (err) {
@@ -156,6 +186,7 @@ $('step-code').addEventListener('submit', async (e) => {
 });
 
 $('arquivo').addEventListener('change', (e) => selectFile(e.target.files[0]));
+$('drive').addEventListener('input', (e) => setDriveLink(e.target.value));
 const drop = $('drop');
 drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
 drop.addEventListener('dragleave', () => drop.classList.remove('over'));
@@ -167,7 +198,7 @@ drop.addEventListener('drop', (e) => {
 
 $('step-file').addEventListener('submit', (e) => {
   e.preventDefault();
-  if (file && !uploading) sendFile();
+  if ((file || driveLink) && !uploading) sendFile();
 });
 
 $('change-code').addEventListener('click', () => {
