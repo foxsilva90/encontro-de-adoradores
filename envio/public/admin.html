@@ -37,6 +37,9 @@
     button.ghost:hover:not(:disabled) { background: #333; }
     button.danger { background: none; color: var(--err); text-decoration: underline; padding: 10px 4px; }
     button.wide { width: 100%; margin-top: 18px; }
+    button.link { display: block; margin: 14px auto 0; background: none; color: var(--ts); text-decoration: underline;
+      font: 600 .9375rem 'Nunito', sans-serif; padding: 4px; }
+    button.link:hover:not(:disabled) { background: none; color: var(--tp); }
     .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     .row input { flex: 1; min-width: 180px; }
     .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -75,6 +78,19 @@
       <input type="password" id="senha" autocomplete="current-password" required>
       <div class="msg err" id="login-error" role="alert" hidden></div>
       <button type="submit" class="wide" id="login-btn">Entrar</button>
+      <button type="button" class="link" id="esqueci">Esqueci a senha</button>
+      <div class="msg ok" id="esqueci-ok" role="status" hidden></div>
+    </form>
+
+    <form class="card" id="reset" hidden novalidate>
+      <h2>Criar nova senha</h2>
+      <label for="nova-senha">Nova senha</label>
+      <input type="password" id="nova-senha" autocomplete="new-password" minlength="10" required>
+      <p class="hint">Pelo menos 10 caracteres.</p>
+      <label for="nova-senha2">Repita a nova senha</label>
+      <input type="password" id="nova-senha2" autocomplete="new-password" required>
+      <div class="msg err" id="reset-error" role="alert" hidden></div>
+      <button type="submit" class="wide" id="reset-btn">Salvar nova senha</button>
     </form>
 
     <section id="painel" hidden>

@@ -1,6 +1,6 @@
 // Login do painel: senha em ADMIN_PASSWORD, sessão em cookie assinado.
 import { BlobPreconditionFailedError } from '@vercel/blob';
-import { keyFor, safeEqual, signSession, verifySession } from './_crypto.js';
+import { keyFor, signSession, verifySession } from './_crypto.js';
 import { json } from './_locutores.js';
 
 const COOKIE = 'envio_admin';
@@ -10,7 +10,7 @@ const sessionKey = () => keyFor(process.env.ADMIN_SECRET, 'session');
 
 export const isConfigured = () => Boolean(process.env.ADMIN_PASSWORD && process.env.ADMIN_SECRET);
 
-export const checkPassword = (senha) => safeEqual(senha, process.env.ADMIN_PASSWORD);
+export { checkPassword } from './_password.js';
 
 function readCookie(request, name) {
   const header = request.headers.get('cookie') || '';

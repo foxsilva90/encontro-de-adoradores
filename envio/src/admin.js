@@ -33,6 +33,7 @@ async function api(method, url, body) {
 // ------------------------------------------------------------ telas
 
 function showLogin() {
+  $('reset').hidden = true;
   $('login').hidden = false;
   $('painel').hidden = true;
   $('form').hidden = true;
@@ -40,6 +41,7 @@ function showLogin() {
 }
 
 function showPainel() {
+  $('reset').hidden = true;
   $('login').hidden = true;
   $('form').hidden = true;
   $('painel').hidden = false;
@@ -259,6 +261,47 @@ $('login').addEventListener('submit', async (e) => {
   }
 });
 
+$('esqueci').addEventListener('click', async () => {
+  showMsg($('login-error'), '');
+  showMsg($('esqueci-ok'), '');
+  $('esqueci').disabled = true;
+  try {
+    const data = await api('POST', '/api/admin/recuperar', {});
+    showMsg($('esqueci-ok'), data.message);
+  } catch (err) {
+    showMsg($('login-error'), err.message);
+  } finally {
+    $('esqueci').disabled = false;
+  }
+});
+
+const resetToken = new URLSearchParams(window.location.hash.slice(1)).get('reset');
+if (resetToken) {
+  $('login').hidden = true;
+  $('reset').hidden = false;
+}
+
+$('reset').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  showMsg($('reset-error'), '');
+  const senha = $('nova-senha').value;
+  if (senha !== $('nova-senha2').value) return showMsg($('reset-error'), 'As duas senhas não são iguais.');
+  $('reset-btn').disabled = true;
+  try {
+    await api('POST', '/api/admin/redefinir', { token: resetToken, senha });
+    $('nova-senha').value = '';
+    $('nova-senha2').value = '';
+    history.replaceState(null, '', window.location.pathname);
+    await carregar();
+    carregarPlaylists();
+    aviso('Senha alterada. Use a nova senha nas próximas vezes.');
+  } catch (err) {
+    showMsg($('reset-error'), err.message);
+  } finally {
+    $('reset-btn').disabled = false;
+  }
+});
+
 $('logout').addEventListener('click', async () => {
   await api('DELETE', '/api/admin/login').catch(() => {});
   showLogin();
@@ -279,4 +322,4 @@ $('add-destino').addEventListener('click', () => {
   aplicarModo();
 });
 
-carregar().then(carregarPlaylists).catch(() => showLogin());
+if (!resetToken) carregar().then(carregarPlaylists).catch(() => showLogin());
