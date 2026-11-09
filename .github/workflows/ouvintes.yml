@@ -1,0 +1,70 @@
+name: Relatório de Ouvintes
+
+# Coleta as sessões de ouvintes do AzuraCast a cada 2h (o AzuraCast não guarda
+# o histórico) e atualiza o relatório semanal de ouvintes únicos.
+# Os dados ficam no branch "dados-ouvintes" para não poluir o main nem
+# disparar deploy do site na Vercel.
+
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ouvintes
+  cancel-in-progress: false
+
+env:
+  BRANCH_DADOS: dados-ouvintes
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install requests
+
+      - name: Abrir branch de dados
+        run: |
+          if git fetch --depth=1 origin "$BRANCH_DADOS"; then
+            git worktree add -B "$BRANCH_DADOS" dados FETCH_HEAD
+          else
+            git worktree add --detach dados
+            cd dados
+            git checkout --orphan "$BRANCH_DADOS"
+            git rm -rfq .
+            # Branch só de dados: impede deploys na Vercel (site e envio/)
+            mkdir -p envio
+            echo '{ "git": { "deploymentEnabled": false } }' > vercel.json
+            cp vercel.json envio/vercel.json
+          fi
+
+      - name: Coletar ouvintes
+        env:
+          AZURACAST_API_KEY: ${{ secrets.AZURACAST_API_KEY }}
+        run: python scripts/ouvintes_coletar.py --dir dados/sessoes
+
+      - name: Gerar relatório
+        run: |
+          python scripts/ouvintes_relatorio.py --dir dados/sessoes --saida dados/README.md
+          cat dados/README.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Salvar dados
+        working-directory: dados
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nada novo."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -qm "chore: coleta de ouvintes $(TZ=America/Sao_Paulo date '+%d/%m %H:%M')"
+          git push origin "HEAD:$BRANCH_DADOS"
