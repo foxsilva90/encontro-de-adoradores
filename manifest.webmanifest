@@ -1,0 +1,16 @@
+{
+  "name": "Rádio Encontro de Adoradores",
+  "short_name": "Encontro",
+  "description": "Rádio gospel online com Anderson Gustavo, ao vivo 24 horas por dia.",
+  "lang": "pt-BR",
+  "start_url": "/radio.html?origem=tela-inicial",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0D2A4A",
+  "theme_color": "#0D2A4A",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
