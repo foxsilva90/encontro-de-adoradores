@@ -50,10 +50,20 @@ Clássicos do Talito (sáb 8h).
 - **Media Session:** o site avisa o celular que está tocando mídia. Aparecem play/pause
   e o nome da música na tela de bloqueio, e o sistema não suspende a página.
   O título e o artista vêm do "tocando agora" do AzuraCast (`updateMediaSession`).
-- **Reconexão automática:** se o stream cair (`error`, `stalled`, `ended` ou quando a
-  internet volta), ele reconecta em 2s, 4s, 8s… até 30s entre tentativas. Cada conexão
-  usa `?t=<hora>` no endereço para não reaproveitar um buffer velho.
-- Funções: `startRadio`, `stopRadio`, `toggleRadio`, `scheduleReconnect`.
+- **Reconexão automática:** se o stream cair (`error`, `ended` ou quando a internet
+  volta), ele reconecta em 2s, 4s, 8s… até 30s entre tentativas. Cada conexão usa
+  `?t=<hora>` no endereço para não reaproveitar um buffer velho.
+- **Soluços da rede não reconectam (corrigido em 12/11/2026, commit `1fc213f`):**
+  `stalled` e `waiting` disparam em qualquer falha curta, como a troca de antena no 4G.
+  Reconectar na hora descartava o buffer e fazia a rádio engasgar na rua. Agora esses
+  eventos só armam um vigia: se o áudio ficar parado por 10s (`STALL_TIMEOUT_MS`), aí
+  reconecta. Qualquer `timeupdate` (áudio andando) desarma o vigia.
+- Funções: `startRadio`, `stopRadio`, `toggleRadio`, `scheduleReconnect`,
+  `armStallWatchdog`, `clearStallWatchdog`.
+- **Se ainda engasgar no celular:** o stream é MP3 192 kbps vindo de um servidor em
+  Boston, e o Icecast manda só uns 3s de áudio adiantado. No AzuraCast dá para baixar o
+  mount `/radio.mp3` para 128 kbps e aumentar o `burst-size` do Icecast (ex.: 262144)
+  para o celular começar com uns 10s guardados.
 - Em alguns Android com economia de bateria agressiva (Xiaomi, Samsung no modo
   economia), o sistema ainda pode cortar o navegador. Nesse caso, tire o navegador
   da economia de bateria no próprio celular.
