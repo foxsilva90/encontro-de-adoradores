@@ -1492,6 +1492,7 @@ function setPlayerUi(playing) {
 
 function connectStream() {
   var audio = document.getElementById('radioAudio');
+  clearStallWatchdog();
   // parâmetro novo a cada conexão evita o navegador reaproveitar um buffer velho do ao vivo
   audio.src = RADIO_STREAM + '?t=' + Date.now();
   audio.volume = parseFloat(document.getElementById('radioVol').value);
@@ -1513,6 +1514,7 @@ function stopRadio() {
   var audio = document.getElementById('radioAudio');
   radioPlaying = false;
   clearTimeout(_reconnectTimer);
+  clearStallWatchdog();
   audio.pause();
   audio.removeAttribute('src');
   audio.load();
@@ -1533,12 +1535,36 @@ function scheduleReconnect() {
   _reconnectDelay = Math.min(_reconnectDelay * 2, RECONNECT_MAX_MS);
 }
 
+// 'stalled' e 'waiting' disparam em qualquer soluço da rede e quase sempre se resolvem sozinhos.
+// Reconectar na hora jogava fora o buffer e fazia o áudio engasgar. Só reconecta se o
+// áudio ficar parado de verdade por STALL_TIMEOUT_MS.
+var STALL_TIMEOUT_MS = 10000;
+var _stallTimer = null;
+
+function armStallWatchdog() {
+  if (!radioPlaying || _stallTimer) return;
+  _stallTimer = setTimeout(function () {
+    _stallTimer = null;
+    if (radioPlaying) connectStream();
+  }, STALL_TIMEOUT_MS);
+}
+
+function clearStallWatchdog() {
+  clearTimeout(_stallTimer);
+  _stallTimer = null;
+}
+
 (function initRadioAudio() {
   var audio = document.getElementById('radioAudio');
-  ['error', 'stalled', 'ended'].forEach(function (ev) {
-    audio.addEventListener(ev, scheduleReconnect);
+  ['error', 'ended'].forEach(function (ev) {
+    audio.addEventListener(ev, function () { clearStallWatchdog(); scheduleReconnect(); });
   });
-  audio.addEventListener('playing', function () { _reconnectDelay = 2000; });
+  ['stalled', 'waiting'].forEach(function (ev) {
+    audio.addEventListener(ev, armStallWatchdog);
+  });
+  // áudio andando = conexão saudável
+  audio.addEventListener('timeupdate', clearStallWatchdog);
+  audio.addEventListener('playing', function () { clearStallWatchdog(); _reconnectDelay = 2000; });
   window.addEventListener('online', function () { if (radioPlaying) connectStream(); });
 
   // Media Session: controles na tela de bloqueio e na notificação, e o celular
