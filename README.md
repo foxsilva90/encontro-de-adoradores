@@ -1,6 +1,21 @@
 # Ouvintes da Rádio Encontro de Adoradores
 
-_Atualizado em 15/11/2026 19:54 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+_Atualizado em 16/11/2026 03:41 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+
+## Semana 16/11 a 22/11/2026
+
+- **Ouvintes únicos:** 12
+- **Sessões de escuta:** 12
+- **Horas ouvidas:** 0.5 h (média de 2 min por sessão)
+- Conexões descartadas (robôs, diretórios, testes < 60s): 30
+
+| seg | ter | qua | qui | sex | sáb | dom |
+|---|---|---|---|---|---|---|
+| 12 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+**De onde ouvem:** Madrid, Madrid, ES (7); Milan, Lombardy, IT (2); Frankfurt am Main (Innenstadt I), Hesse, DE (1); Bordeaux, New Aquitaine, FR (1); Frankfurt am Main, Hesse, DE (1)
+
+**Como ouvem:** App / player de rádio (12)
 
 ## Semana 09/11 a 15/11/2026
 
