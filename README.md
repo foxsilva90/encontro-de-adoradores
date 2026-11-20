@@ -1,21 +1,21 @@
 # Ouvintes da Rádio Encontro de Adoradores
 
-_Atualizado em 20/11/2026 00:26 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+_Atualizado em 20/11/2026 10:01 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
 
 ## Semana 16/11 a 22/11/2026
 
-- **Ouvintes únicos:** 87
-- **Sessões de escuta:** 90
-- **Horas ouvidas:** 4.8 h (média de 3 min por sessão)
-- Conexões descartadas (robôs, diretórios, testes < 60s): 125
+- **Ouvintes únicos:** 99
+- **Sessões de escuta:** 102
+- **Horas ouvidas:** 5.2 h (média de 3 min por sessão)
+- Conexões descartadas (robôs, diretórios, testes < 60s): 143
 
 | seg | ter | qua | qui | sex | sáb | dom |
 |---|---|---|---|---|---|---|
-| 40 | 12 | 9 | 21 | 7 | 0 | 0 |
+| 40 | 12 | 9 | 21 | 19 | 0 | 0 |
 
-**De onde ouvem:** Madrid, Madrid, ES (36); Frankfurt am Main, Hesse, DE (21); Milan, Lombardy, IT (13); Frankfurt am Main (Innenstadt I), Hesse, DE (7); Bordeaux, New Aquitaine, FR (7); São João de Meriti, Rio de Janeiro, BR (1); Cajati, São Paulo, BR (1); Rio das Ostras, Rio de Janeiro, BR (1)
+**De onde ouvem:** Madrid, Madrid, ES (38); Frankfurt am Main, Hesse, DE (26); Milan, Lombardy, IT (15); Frankfurt am Main (Innenstadt I), Hesse, DE (8); Bordeaux, New Aquitaine, FR (8); São João de Meriti, Rio de Janeiro, BR (1); Cajati, São Paulo, BR (1); Rio das Ostras, Rio de Janeiro, BR (1); Cachoeiro de Itapemirim, Espírito Santo, BR (1)
 
-**Como ouvem:** App / player de rádio (85); Computador (navegador) (1); Celular (navegador) (1)
+**Como ouvem:** App / player de rádio (96); Computador (navegador) (2); Celular (navegador) (1)
 
 ## Semana 09/11 a 15/11/2026
 
