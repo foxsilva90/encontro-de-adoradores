@@ -1,21 +1,21 @@
 # Ouvintes da Rádio Encontro de Adoradores
 
-_Atualizado em 21/11/2026 09:44 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+_Atualizado em 21/11/2026 17:34 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
 
 ## Semana 16/11 a 22/11/2026
 
-- **Ouvintes únicos:** 108
-- **Sessões de escuta:** 112
-- **Horas ouvidas:** 7.0 h (média de 4 min por sessão)
-- Conexões descartadas (robôs, diretórios, testes < 60s): 148
+- **Ouvintes únicos:** 113
+- **Sessões de escuta:** 117
+- **Horas ouvidas:** 7.5 h (média de 4 min por sessão)
+- Conexões descartadas (robôs, diretórios, testes < 60s): 150
 
 | seg | ter | qua | qui | sex | sáb | dom |
 |---|---|---|---|---|---|---|
-| 40 | 12 | 9 | 21 | 20 | 8 | 0 |
+| 40 | 12 | 9 | 21 | 20 | 13 | 0 |
 
-**De onde ouvem:** Madrid, Madrid, ES (39); Frankfurt am Main, Hesse, DE (31); Milan, Lombardy, IT (16); Bordeaux, New Aquitaine, FR (9); Frankfurt am Main (Innenstadt I), Hesse, DE (8); São João de Meriti, Rio de Janeiro, BR (1); Cajati, São Paulo, BR (1); Rio das Ostras, Rio de Janeiro, BR (1); Cachoeiro de Itapemirim, Espírito Santo, BR (1); Manaus, Amazonas, BR (1)
+**De onde ouvem:** Madrid, Madrid, ES (40); Frankfurt am Main, Hesse, DE (34); Milan, Lombardy, IT (16); Frankfurt am Main (Innenstadt I), Hesse, DE (9); Bordeaux, New Aquitaine, FR (9); São João de Meriti, Rio de Janeiro, BR (1); Cajati, São Paulo, BR (1); Rio das Ostras, Rio de Janeiro, BR (1); Cachoeiro de Itapemirim, Espírito Santo, BR (1); Manaus, Amazonas, BR (1)
 
-**Como ouvem:** App / player de rádio (105); Computador (navegador) (2); Celular (navegador) (1)
+**Como ouvem:** App / player de rádio (110); Computador (navegador) (2); Celular (navegador) (1)
 
 ## Semana 09/11 a 15/11/2026
 
