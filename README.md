@@ -1,21 +1,21 @@
 # Ouvintes da Rádio Encontro de Adoradores
 
-_Atualizado em 24/11/2026 11:57 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+_Atualizado em 24/11/2026 21:49 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
 
 ## Semana 23/11 a 29/11/2026
 
-- **Ouvintes únicos:** 7
-- **Sessões de escuta:** 7
-- **Horas ouvidas:** 3.8 h (média de 33 min por sessão)
-- Conexões descartadas (robôs, diretórios, testes < 60s): 21
+- **Ouvintes únicos:** 8
+- **Sessões de escuta:** 8
+- **Horas ouvidas:** 4.6 h (média de 34 min por sessão)
+- Conexões descartadas (robôs, diretórios, testes < 60s): 24
 
 | seg | ter | qua | qui | sex | sáb | dom |
 |---|---|---|---|---|---|---|
-| 6 | 1 | 0 | 0 | 0 | 0 | 0 |
+| 6 | 2 | 0 | 0 | 0 | 0 | 0 |
 
-**De onde ouvem:** Frankfurt am Main, Hesse, DE (2); Bordeaux, New Aquitaine, FR (1); Duque de Caxias, Rio de Janeiro, BR (1); São João del Rei, Minas Gerais, BR (1); Disraeli, Quebec, CA (1); São Gonçalo, Rio de Janeiro, BR (1)
+**De onde ouvem:** Frankfurt am Main, Hesse, DE (3); Bordeaux, New Aquitaine, FR (1); Duque de Caxias, Rio de Janeiro, BR (1); São João del Rei, Minas Gerais, BR (1); Disraeli, Quebec, CA (1); São Gonçalo, Rio de Janeiro, BR (1)
 
-**Como ouvem:** App / player de rádio (3); Celular (navegador) (3); Computador (navegador) (1)
+**Como ouvem:** App / player de rádio (4); Celular (navegador) (3); Computador (navegador) (1)
 
 ## Semana 16/11 a 22/11/2026
 
