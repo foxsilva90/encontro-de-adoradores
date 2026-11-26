@@ -1,21 +1,21 @@
 # Ouvintes da Rádio Encontro de Adoradores
 
-_Atualizado em 26/11/2026 10:58 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+_Atualizado em 26/11/2026 20:02 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
 
 ## Semana 23/11 a 29/11/2026
 
-- **Ouvintes únicos:** 11
-- **Sessões de escuta:** 13
-- **Horas ouvidas:** 6.9 h (média de 32 min por sessão)
-- Conexões descartadas (robôs, diretórios, testes < 60s): 34
+- **Ouvintes únicos:** 12
+- **Sessões de escuta:** 15
+- **Horas ouvidas:** 8.0 h (média de 32 min por sessão)
+- Conexões descartadas (robôs, diretórios, testes < 60s): 40
 
 | seg | ter | qua | qui | sex | sáb | dom |
 |---|---|---|---|---|---|---|
-| 6 | 2 | 3 | 1 | 0 | 0 | 0 |
+| 6 | 2 | 3 | 2 | 0 | 0 | 0 |
 
-**De onde ouvem:** Frankfurt am Main, Hesse, DE (3); Bordeaux, New Aquitaine, FR (1); Duque de Caxias, Rio de Janeiro, BR (1); São João del Rei, Minas Gerais, BR (1); Disraeli, Quebec, CA (1); São Gonçalo, Rio de Janeiro, BR (1); Madrid, Madrid, ES (1); Rio das Ostras, Rio de Janeiro, BR (1); Frankfurt am Main (Innenstadt I), Hesse, DE (1)
+**De onde ouvem:** Frankfurt am Main, Hesse, DE (3); Bordeaux, New Aquitaine, FR (1); Duque de Caxias, Rio de Janeiro, BR (1); São João del Rei, Minas Gerais, BR (1); Disraeli, Quebec, CA (1); São Gonçalo, Rio de Janeiro, BR (1); Madrid, Madrid, ES (1); Rio das Ostras, Rio de Janeiro, BR (1); Frankfurt am Main (Innenstadt I), Hesse, DE (1); Salvador, Bahia, BR (1)
 
-**Como ouvem:** App / player de rádio (6); Celular (navegador) (4); Computador (navegador) (1)
+**Como ouvem:** App / player de rádio (7); Celular (navegador) (4); Computador (navegador) (1)
 
 ## Semana 16/11 a 22/11/2026
 
