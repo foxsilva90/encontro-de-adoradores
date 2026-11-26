@@ -1,13 +1,13 @@
 # Ouvintes da Rádio Encontro de Adoradores
 
-_Atualizado em 26/11/2026 01:11 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
+_Atualizado em 26/11/2026 10:58 (Brasília). Ouvinte único = mesmo aparelho/conexão contado uma vez por semana._
 
 ## Semana 23/11 a 29/11/2026
 
 - **Ouvintes únicos:** 11
-- **Sessões de escuta:** 12
-- **Horas ouvidas:** 5.9 h (média de 30 min por sessão)
-- Conexões descartadas (robôs, diretórios, testes < 60s): 29
+- **Sessões de escuta:** 13
+- **Horas ouvidas:** 6.9 h (média de 32 min por sessão)
+- Conexões descartadas (robôs, diretórios, testes < 60s): 34
 
 | seg | ter | qua | qui | sex | sáb | dom |
 |---|---|---|---|---|---|---|
